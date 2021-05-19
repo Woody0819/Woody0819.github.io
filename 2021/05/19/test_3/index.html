@@ -118,7 +118,7 @@
 <li>None是不可以参与运算的  </li>
 </ul>
 </li>
-<li>在pandas中如果遇到了None形式的空值则pandas会将其强转成NAN的形式。    </li>
+<li>在pandas中如果遇到了None形式的空值则pandas会将其强转成NAN的形式。    <span id="more"></span></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(np.nan+<span class="number">1</span>) <span class="comment"># 输出结果仍为nan</span></span><br><span class="line"><span class="built_in">print</span>(<span class="literal">None</span>+<span class="number">1</span>)   <span class="comment"># 会出现编译错误</span></span><br></pre></td></tr></table></figure>
 
@@ -143,7 +143,7 @@ TypeError: unsupported operand type(s) for +: &#39;NoneType&#39; and &#39;int&#3
 <li>any</li>
 <li>all</li>
 <li>dropna</li>
-<li>fillna<span id="more"></span></li>
+<li>fillna</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame,Series</span><br><span class="line"><span class="comment"># 创建一组含有空值的数据</span></span><br><span class="line">df = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">8</span>,<span class="number">6</span>)))</span><br><span class="line">df.iloc[<span class="number">2</span>,<span class="number">3</span>] = <span class="literal">None</span></span><br><span class="line">df.iloc[<span class="number">4</span>,<span class="number">4</span>] = np.nan</span><br><span class="line">df.iloc[<span class="number">5</span>,<span class="number">2</span>] = <span class="literal">None</span></span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
 

@@ -122,6 +122,8 @@
 3  17  93  46
 4  99  56   8
 </code></pre>
+<span id="more"></span>
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(pd.concat((df1,df2),axis=<span class="number">1</span>))  <span class="comment"># 横向级联</span></span><br></pre></td></tr></table></figure>
 
 <pre><code>    A   B   C   A   D   C
@@ -167,8 +169,6 @@
 3  17  46
 4  99   8
 </code></pre>
-<span id="more"></span>
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df3 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">2</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(pd.concat((df1,df3),axis=<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(pd.concat((df1,df3),axis=<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
 
 <ul>
