@@ -1,0 +1,2870 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title> Woody</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+    <link rel="alternate" href="/atom.xml" title="Woody" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      
+<section class="cover">
+    
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="/images/cover1.jpg" alt="image frame" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">Woody</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
+  </div>
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 100,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
+<div id="main">
+  <section class="outer">
+  
+  
+  
+
+<div class="notice" style="margin-top:50px">
+    <i class="ri-heart-fill"></i>
+    <div class="notice-content" id="broad"></div>
+</div>
+<script type="text/javascript">
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("broad").innerHTML = data.hitokoto;
+        })
+        .catch(console.error)
+</script>
+
+<style>
+    .notice {
+        padding: 20px;
+        border: 1px dashed #e6e6e6;
+        color: #969696;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #fbfbfb50;
+        border-radius: 10px;
+    }
+
+    .notice i {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        padding-right: 10px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+
+    .notice-content {
+        display: initial;
+        vertical-align: middle;
+    }
+</style>
+  
+  <article class="articles">
+    
+    
+    
+    
+    <article
+  id="post-test_1"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/05/19/test_1/"
+    >股票分析</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/19/test_1/" class="article-date">
+  <time datetime="2021-05-19T09:43:53.298Z" itemprop="datePublished">2021-05-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="需求：股票分析"><a href="#需求：股票分析" class="headerlink" title="需求：股票分析"></a>需求：股票分析</h1><p>1.使用tushare包获取某股票的历史行情数据<br>2.输出该股票所有收盘比开盘上涨3%以上的日期<br>3.输出该股票所有开盘比前日收盘跌幅超2%的日期<br>4.假如从2017年1月1日开始，每月第一个交易日买入1手股票，每年最后一个交易日卖出所有股票，迄今为止收益如何？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df = ts.get_k_data(code=<span class="string">&#x27;600519&#x27;</span>,start=<span class="string">&#x27;2015-01-01&#x27;</span>)</span><br><span class="line">df.to_csv(<span class="string">&#x27;moutai.csv&#x27;</span>)</span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;moutai.csv&#x27;</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<pre><code>本接口即将停止更新，请尽快使用Pro版接口：https://waditu.com/document/2
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>date</th>
+      <th>open</th>
+      <th>close</th>
+      <th>high</th>
+      <th>low</th>
+      <th>volume</th>
+      <th>code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>2015-01-05</td>
+      <td>161.056</td>
+      <td>172.013</td>
+      <td>173.474</td>
+      <td>160.266</td>
+      <td>94515.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2015-01-06</td>
+      <td>169.872</td>
+      <td>168.029</td>
+      <td>172.047</td>
+      <td>166.492</td>
+      <td>55020.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>2015-01-07</td>
+      <td>166.509</td>
+      <td>163.876</td>
+      <td>169.448</td>
+      <td>161.370</td>
+      <td>54797.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>2015-01-08</td>
+      <td>164.776</td>
+      <td>162.874</td>
+      <td>165.218</td>
+      <td>161.498</td>
+      <td>40525.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>2015-01-09</td>
+      <td>161.719</td>
+      <td>161.642</td>
+      <td>166.280</td>
+      <td>161.472</td>
+      <td>53982.0</td>
+      <td>600519</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.drop(labels=<span class="string">&#x27;Unnamed: 0&#x27;</span>,axis=<span class="number">1</span>,inplace=<span class="literal">True</span>) <span class="comment"># drop中axis与常规相反,1是垂直方向，0是水平方向</span></span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>open</th>
+      <th>close</th>
+      <th>high</th>
+      <th>low</th>
+      <th>volume</th>
+      <th>code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2015-01-05</td>
+      <td>161.056</td>
+      <td>172.013</td>
+      <td>173.474</td>
+      <td>160.266</td>
+      <td>94515.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2015-01-06</td>
+      <td>169.872</td>
+      <td>168.029</td>
+      <td>172.047</td>
+      <td>166.492</td>
+      <td>55020.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2015-01-07</td>
+      <td>166.509</td>
+      <td>163.876</td>
+      <td>169.448</td>
+      <td>161.370</td>
+      <td>54797.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2015-01-08</td>
+      <td>164.776</td>
+      <td>162.874</td>
+      <td>165.218</td>
+      <td>161.498</td>
+      <td>40525.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2015-01-09</td>
+      <td>161.719</td>
+      <td>161.642</td>
+      <td>166.280</td>
+      <td>161.472</td>
+      <td>53982.0</td>
+      <td>600519</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df[<span class="string">&#x27;date&#x27;</span>].dtype)</span><br><span class="line">df.info()   <span class="comment"># 查看每一列的数据类型</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>object
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1536 entries, 0 to 1535
+Data columns (total 7 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   date    1536 non-null   object 
+ 1   open    1536 non-null   float64
+ 2   close   1536 non-null   float64
+ 3   high    1536 non-null   float64
+ 4   low     1536 non-null   float64
+ 5   volume  1536 non-null   float64
+ 6   code    1536 non-null   int64  
+dtypes: float64(5), int64(1), object(1)
+memory usage: 84.1+ KB
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>]) <span class="comment"># 将日期时间转换为时间序列格式</span></span><br><span class="line">df.info()</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1536 entries, 0 to 1535
+Data columns (total 7 columns):
+ #   Column  Non-Null Count  Dtype         
+---  ------  --------------  -----         
+ 0   date    1536 non-null   datetime64[ns]
+ 1   open    1536 non-null   float64       
+ 2   close   1536 non-null   float64       
+ 3   high    1536 non-null   float64       
+ 4   low     1536 non-null   float64       
+ 5   volume  1536 non-null   float64       
+ 6   code    1536 non-null   int64         
+dtypes: datetime64[ns](1), float64(5), int64(1)
+memory usage: 84.1 KB
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>open</th>
+      <th>close</th>
+      <th>high</th>
+      <th>low</th>
+      <th>volume</th>
+      <th>code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2015-01-05</td>
+      <td>161.056</td>
+      <td>172.013</td>
+      <td>173.474</td>
+      <td>160.266</td>
+      <td>94515.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2015-01-06</td>
+      <td>169.872</td>
+      <td>168.029</td>
+      <td>172.047</td>
+      <td>166.492</td>
+      <td>55020.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2015-01-07</td>
+      <td>166.509</td>
+      <td>163.876</td>
+      <td>169.448</td>
+      <td>161.370</td>
+      <td>54797.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2015-01-08</td>
+      <td>164.776</td>
+      <td>162.874</td>
+      <td>165.218</td>
+      <td>161.498</td>
+      <td>40525.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2015-01-09</td>
+      <td>161.719</td>
+      <td>161.642</td>
+      <td>166.280</td>
+      <td>161.472</td>
+      <td>53982.0</td>
+      <td>600519</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df.set_index(<span class="string">&#x27;date&#x27;</span>,inplace=<span class="literal">True</span>)   <span class="comment"># set_index重新设置索引,inplace表示是否作用于源数据</span></span><br><span class="line">df.head()</span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
+
+<pre><code>                open     close      high       low   volume    code
+date                                                               
+2015-01-05   161.056   172.013   173.474   160.266  94515.0  600519
+2015-01-06   169.872   168.029   172.047   166.492  55020.0  600519
+2015-01-07   166.509   163.876   169.448   161.370  54797.0  600519
+2015-01-08   164.776   162.874   165.218   161.498  40525.0  600519
+2015-01-09   161.719   161.642   166.280   161.472  53982.0  600519
+...              ...       ...       ...       ...      ...     ...
+2021-04-19  2055.000  2088.000  2098.360  2033.000  31754.0  600519
+2021-04-20  2071.100  2094.800  2129.000  2070.000  28290.0  600519
+2021-04-21  2076.000  2080.000  2097.800  2065.100  26150.0  600519
+2021-04-22  2089.900  2055.500  2099.000  2051.500  26850.0  600519
+2021-04-23  2055.970  2108.940  2119.880  2052.500  33463.0  600519
+
+[1536 rows x 6 columns]
+</code></pre>
+<p>2.输出该股票所有收盘比开盘上涨3%以上的日期<br>（收盘-开盘）/开盘&gt;0.03</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(df[<span class="string">&#x27;close&#x27;</span>]-df[<span class="string">&#x27;open&#x27;</span>])/df[<span class="string">&#x27;open&#x27;</span>]&gt;<span class="number">0.03</span>    <span class="comment"># 返回应为boolean类型</span></span><br><span class="line">df.loc[(df[<span class="string">&#x27;close&#x27;</span>]-df[<span class="string">&#x27;open&#x27;</span>])/df[<span class="string">&#x27;open&#x27;</span>]&gt;<span class="number">0.03</span>]   <span class="comment"># 获取了True所对应的行数据</span></span><br><span class="line">df.loc[(df[<span class="string">&#x27;close&#x27;</span>]-df[<span class="string">&#x27;open&#x27;</span>])/df[<span class="string">&#x27;open&#x27;</span>]&gt;<span class="number">0.03</span>].index  <span class="comment"># 获取对应行的索引</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>DatetimeIndex([&#39;2015-01-05&#39;, &#39;2015-02-09&#39;, &#39;2015-03-09&#39;, &#39;2015-04-16&#39;,
+               &#39;2015-04-21&#39;, &#39;2015-05-08&#39;, &#39;2015-05-19&#39;, &#39;2015-05-22&#39;,
+               &#39;2015-05-25&#39;, &#39;2015-06-08&#39;, &#39;2015-06-23&#39;, &#39;2015-06-24&#39;,
+               &#39;2015-06-30&#39;, &#39;2015-07-08&#39;, &#39;2015-07-09&#39;, &#39;2015-07-10&#39;,
+               &#39;2015-08-25&#39;, &#39;2015-08-26&#39;, &#39;2015-08-27&#39;, &#39;2015-08-31&#39;,
+               &#39;2015-09-14&#39;, &#39;2015-11-30&#39;, &#39;2015-12-02&#39;, &#39;2015-12-21&#39;,
+               &#39;2016-01-14&#39;, &#39;2016-01-19&#39;, &#39;2016-03-04&#39;, &#39;2016-03-15&#39;,
+               &#39;2016-03-24&#39;, &#39;2016-04-06&#39;, &#39;2016-05-03&#39;, &#39;2016-05-31&#39;,
+               &#39;2016-06-03&#39;, &#39;2016-06-27&#39;, &#39;2016-07-06&#39;, &#39;2016-07-26&#39;,
+               &#39;2016-12-06&#39;, &#39;2017-01-04&#39;, &#39;2017-02-20&#39;, &#39;2017-04-25&#39;,
+               &#39;2017-08-14&#39;, &#39;2017-10-19&#39;, &#39;2017-10-27&#39;, &#39;2017-11-10&#39;,
+               &#39;2017-11-16&#39;, &#39;2017-11-28&#39;, &#39;2017-12-11&#39;, &#39;2017-12-28&#39;,
+               &#39;2018-01-09&#39;, &#39;2018-01-31&#39;, &#39;2018-04-19&#39;, &#39;2018-05-07&#39;,
+               &#39;2018-05-28&#39;, &#39;2018-06-04&#39;, &#39;2018-06-20&#39;, &#39;2018-08-09&#39;,
+               &#39;2018-08-21&#39;, &#39;2018-08-27&#39;, &#39;2018-09-18&#39;, &#39;2018-09-26&#39;,
+               &#39;2018-10-19&#39;, &#39;2018-10-31&#39;, &#39;2018-11-13&#39;, &#39;2018-12-28&#39;,
+               &#39;2019-01-15&#39;, &#39;2019-02-11&#39;, &#39;2019-03-01&#39;, &#39;2019-03-18&#39;,
+               &#39;2019-04-10&#39;, &#39;2019-04-16&#39;, &#39;2019-05-10&#39;, &#39;2019-05-15&#39;,
+               &#39;2019-06-11&#39;, &#39;2019-06-20&#39;, &#39;2019-09-12&#39;, &#39;2019-09-18&#39;,
+               &#39;2020-02-11&#39;, &#39;2020-03-02&#39;, &#39;2020-03-05&#39;, &#39;2020-03-10&#39;,
+               &#39;2020-04-02&#39;, &#39;2020-04-22&#39;, &#39;2020-05-06&#39;, &#39;2020-05-18&#39;,
+               &#39;2020-07-02&#39;, &#39;2020-07-06&#39;, &#39;2020-07-07&#39;, &#39;2020-07-13&#39;,
+               &#39;2020-12-30&#39;, &#39;2021-01-05&#39;, &#39;2021-01-12&#39;, &#39;2021-01-25&#39;,
+               &#39;2021-02-04&#39;, &#39;2021-02-09&#39;, &#39;2021-02-10&#39;, &#39;2021-03-03&#39;,
+               &#39;2021-03-05&#39;, &#39;2021-03-11&#39;, &#39;2021-04-02&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
+</code></pre>
+<p>3.输出该股票所有开盘比前日收盘跌幅超2%的日期<br>（开盘-前日收盘）/前日收盘&lt;-0.02</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>open</th>
+      <th>close</th>
+      <th>high</th>
+      <th>low</th>
+      <th>volume</th>
+      <th>code</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2015-01-05</th>
+      <td>161.056</td>
+      <td>172.013</td>
+      <td>173.474</td>
+      <td>160.266</td>
+      <td>94515.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-06</th>
+      <td>169.872</td>
+      <td>168.029</td>
+      <td>172.047</td>
+      <td>166.492</td>
+      <td>55020.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-07</th>
+      <td>166.509</td>
+      <td>163.876</td>
+      <td>169.448</td>
+      <td>161.370</td>
+      <td>54797.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-08</th>
+      <td>164.776</td>
+      <td>162.874</td>
+      <td>165.218</td>
+      <td>161.498</td>
+      <td>40525.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-09</th>
+      <td>161.719</td>
+      <td>161.642</td>
+      <td>166.280</td>
+      <td>161.472</td>
+      <td>53982.0</td>
+      <td>600519</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;close&#x27;</span>].shift(<span class="number">1</span>)    <span class="comment"># shift(1)使close整体下移一位,-1为上移；移动后两列相减即可实现开盘-前日收盘</span></span><br><span class="line">df.loc[(df[<span class="string">&#x27;open&#x27;</span>]-df[<span class="string">&#x27;close&#x27;</span>].shift(<span class="number">1</span>))/df[<span class="string">&#x27;close&#x27;</span>].shift(<span class="number">1</span>)&lt;-<span class="number">0.02</span>].index</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>DatetimeIndex([&#39;2015-01-19&#39;, &#39;2015-05-25&#39;, &#39;2015-07-03&#39;, &#39;2015-07-08&#39;,
+               &#39;2015-07-13&#39;, &#39;2015-08-24&#39;, &#39;2015-09-02&#39;, &#39;2015-09-15&#39;,
+               &#39;2017-11-17&#39;, &#39;2018-02-06&#39;, &#39;2018-02-09&#39;, &#39;2018-03-23&#39;,
+               &#39;2018-03-28&#39;, &#39;2018-07-11&#39;, &#39;2018-10-11&#39;, &#39;2018-10-24&#39;,
+               &#39;2018-10-25&#39;, &#39;2018-10-29&#39;, &#39;2018-10-30&#39;, &#39;2019-05-06&#39;,
+               &#39;2019-05-08&#39;, &#39;2019-10-16&#39;, &#39;2020-01-02&#39;, &#39;2020-02-03&#39;,
+               &#39;2020-03-13&#39;, &#39;2020-03-23&#39;, &#39;2020-10-26&#39;, &#39;2021-02-26&#39;,
+               &#39;2021-03-04&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
+</code></pre>
+<p>4.假如从2017年1月1日开始，每月第一个交易日买入1手股票，每年最后一个交易日卖出所有股票，迄今为止收益如何？<br>①时间节点拆分：2017-2021<br>②一手股票：100股<br>③买股票：<br>    找出每个月第一个交易日–&gt;每月第一行数据(每年共1200股)<br> 卖股票：<br>    每年最后一个交易日将所有股票全部卖出（特殊情况：该分析进行时，当年买入的股票由于没到该年最后一天所以无法卖出）<br>    最后手中剩余的股票要估量其价值计算到总收益当中<br> 买卖股票的单价：可以开盘价为准</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">new_df = df[<span class="string">&#x27;2017-01&#x27;</span>:<span class="string">&#x27;2021-03&#x27;</span>]    <span class="comment"># 只有在索引为时间序列时才可如此切分（pd.to_datetime()）</span></span><br><span class="line"><span class="built_in">print</span>(new_df)</span><br><span class="line">new_df.resample(<span class="string">&#x27;M&#x27;</span>).first()    <span class="comment"># 根据月份重新取样;取每月的第一行数据;此处索引有问题但数据确为每月第一行</span></span><br><span class="line">df_monthly = new_df.resample(<span class="string">&#x27;M&#x27;</span>).first()</span><br><span class="line">cost = df_monthly[<span class="string">&#x27;open&#x27;</span>].<span class="built_in">sum</span>()*<span class="number">100</span> <span class="comment"># 总花费</span></span><br><span class="line"><span class="built_in">print</span>(cost)</span><br></pre></td></tr></table></figure>
+
+<pre><code>                open     close      high       low   volume    code
+date                                                               
+2017-01-03   324.689   324.961   327.331   323.261  20763.0  600519
+2017-01-04   325.019   341.813   342.066   325.000  65257.0  600519
+2017-01-05   339.958   336.792   341.366   335.529  41704.0  600519
+2017-01-06   336.694   340.696   349.457   336.170  68095.0  600519
+2017-01-09   337.821   338.511   342.755   336.597  35405.0  600519
+...              ...       ...       ...       ...      ...     ...
+2021-03-25  1970.010  1971.000  1988.880  1946.800  31575.0  600519
+2021-03-26  1985.000  2013.000  2022.000  1958.000  50016.0  600519
+2021-03-29  2043.200  2034.100  2096.350  2026.150  56992.0  600519
+2021-03-30  2040.000  2056.050  2086.000  2035.080  32627.0  600519
+2021-03-31  2045.100  2009.000  2046.020  2000.000  37154.0  600519
+
+[1032 rows x 6 columns]
+4817018.8
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df_yearly = new_df.resample(<span class="string">&#x27;A&#x27;</span>).last()[:-<span class="number">1</span>]   <span class="comment"># 最后2021年一行的数据需要忽略掉</span></span><br><span class="line"><span class="built_in">print</span>(df_yearly)</span><br><span class="line">resv = df_yearly[<span class="string">&#x27;open&#x27;</span>].<span class="built_in">sum</span>()*<span class="number">1200</span> <span class="comment"># 截止2020年末收益</span></span><br><span class="line">resv = <span class="number">300</span>*df[<span class="string">&#x27;close&#x27;</span>][-<span class="number">1</span>] + resv   <span class="comment"># 加上2021年前三个月的收益，该收益以昨日收盘价计价</span></span><br><span class="line">resv = resv-cost</span><br><span class="line"><span class="built_in">print</span>(resv)</span><br></pre></td></tr></table></figure>
+
+<pre><code>                open     close      high       low   volume    code
+date                                                               
+2017-12-31   707.948   687.725   716.329   681.918  76038.0  600519
+2018-12-31   563.300   590.010   596.400   560.000  63678.0  600519
+2019-12-31  1183.000  1183.000  1188.000  1176.510  22588.0  600519
+2020-12-31  1941.000  1998.000  1998.980  1939.000  38860.0  600519
+1089960.7999999998
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-test_4"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/05/19/test_4/"
+    >级联操作</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/19/test_4/" class="article-date">
+  <time datetime="2021-05-19T09:31:23.655Z" itemprop="datePublished">2021-05-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="级联操作"><a href="#级联操作" class="headerlink" title="级联操作"></a>级联操作</h1><ul>
+<li>pd.concat,pd.append<br>pandas使用pd.concat函数，与np.concatenate函数类似，只是多了一些参数：<br>objs<br>axis<br>keys<br>join=’outer’/‘inner’：表示的是级联方式，outer会将所有的项进行级联（忽略匹配和不匹配），而inner只会将匹配的项级联在一起，不匹配的不级联<br>ignore_index=False</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>匹配级联</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df1 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line">df2 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;D&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(df1)</span><br><span class="line"><span class="built_in">print</span>(df2)</span><br></pre></td></tr></table></figure>
+
+<pre><code>    A   B   C
+0  79  32  25
+1  25  25  37
+2  10  83  72
+3   0  48   3
+4  59  31  86
+    A   D   C
+0  35  54  59
+1   5   7  76
+2  76  82  89
+3  17  93  46
+4  99  56   8
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(pd.concat((df1,df2),axis=<span class="number">1</span>))  <span class="comment"># 横向级联</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>    A   B   C   A   D   C
+0  79  32  25  35  54  59
+1  25  25  37   5   7  76
+2  10  83  72  76  82  89
+3   0  48   3  17  93  46
+4  59  31  86  99  56   8
+</code></pre>
+<ul>
+<li>不匹配级联<ul>
+<li>不匹配级联指的是级联的维度索引不一致。例如纵向级联时列索引不一致，横向级联时行索引不一致</li>
+<li>有2中连接方式：<ul>
+<li>外连接：补NAN（默认模式），如果想要保留数据的完整性必须使用outer(外连接)</li>
+<li>内连接：只连接匹配的项</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(pd.concat((df1,df2),axis=<span class="number">0</span>))  <span class="comment"># 纵向级联，出现不匹配级联</span></span><br><span class="line"><span class="built_in">print</span>(pd.concat((df1,df2),axis=<span class="number">0</span>,join=<span class="string">&#x27;inner&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>    A     B   C     D
+0  79  32.0  25   NaN
+1  25  25.0  37   NaN
+2  10  83.0  72   NaN
+3   0  48.0   3   NaN
+4  59  31.0  86   NaN
+0  35   NaN  59  54.0
+1   5   NaN  76   7.0
+2  76   NaN  89  82.0
+3  17   NaN  46  93.0
+4  99   NaN   8  56.0
+    A   C
+0  79  25
+1  25  37
+2  10  72
+3   0   3
+4  59  86
+0  35  59
+1   5  76
+2  76  89
+3  17  46
+4  99   8
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df3 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">2</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(pd.concat((df1,df3),axis=<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(pd.concat((df1,df3),axis=<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>append函数的使用<ul>
+<li>默认纵向级联外连接</li>
+<li>知道即可，一般不用</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df1.append(df2))</span><br></pre></td></tr></table></figure>
+
+<pre><code>    A     B   C     D
+0  79  32.0  25   NaN
+1  25  25.0  37   NaN
+2  10  83.0  72   NaN
+3   0  48.0   3   NaN
+4  59  31.0  86   NaN
+0  35   NaN  59  54.0
+1   5   NaN  76   7.0
+2  76   NaN  89  82.0
+3  17   NaN  46  93.0
+4  99   NaN   8  56.0
+</code></pre>
+<h1 id="合并操作"><a href="#合并操作" class="headerlink" title="合并操作"></a>合并操作</h1><ul>
+<li>merge与concat的区别在于，merge需要依据某一共同列来进行合并；merge是对数据进行合并，而concat是对表格进行级联</li>
+<li>使用pd.merge()合并时，会自动根据两者相同column名称的那一列，作为key来进行合并</li>
+<li>注意每一列元素的顺序不要求一致</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一对一合并</span></span><br><span class="line">df1 = DataFrame(&#123;<span class="string">&#x27;employee&#x27;</span>:[<span class="string">&#x27;Bob&#x27;</span>,<span class="string">&#x27;Jake&#x27;</span>,<span class="string">&#x27;Lisa&#x27;</span>],<span class="string">&#x27;group&#x27;</span>:[<span class="string">&#x27;Accounting&#x27;</span>,<span class="string">&#x27;Engineering&#x27;</span>,<span class="string">&#x27;Engineering&#x27;</span>]&#125;)</span><br><span class="line">df2 = DataFrame(&#123;<span class="string">&#x27;employee&#x27;</span>:[<span class="string">&#x27;Lisa&#x27;</span>,<span class="string">&#x27;Bob&#x27;</span>,<span class="string">&#x27;Jake&#x27;</span>],<span class="string">&#x27;hire_date&#x27;</span>:[<span class="number">2004</span>,<span class="number">2008</span>,<span class="number">2012</span>]&#125;)</span><br><span class="line"><span class="built_in">print</span>(df1)</span><br><span class="line"><span class="built_in">print</span>(df2)</span><br><span class="line"><span class="built_in">print</span>(pd.merge(df1,df2,on=<span class="string">&#x27;employee&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(pd.merge(df1,df2))    <span class="comment"># on也可以不写，默认会将两表中共有的列作为合并条件，此处结果相同</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>  employee        group
+0      Bob   Accounting
+1     Jake  Engineering
+2     Lisa  Engineering
+  employee  hire_date
+0     Lisa       2004
+1      Bob       2008
+2     Jake       2012
+  employee        group  hire_date
+0      Bob   Accounting       2008
+1     Jake  Engineering       2012
+2     Lisa  Engineering       2004
+  employee        group  hire_date
+0      Bob   Accounting       2008
+1     Jake  Engineering       2012
+2     Lisa  Engineering       2004
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一对多合并</span></span><br><span class="line">df3 = DataFrame(&#123;<span class="string">&#x27;employee&#x27;</span>:[<span class="string">&#x27;Lisa&#x27;</span>,<span class="string">&#x27;Jake&#x27;</span>],<span class="string">&#x27;group&#x27;</span>:[<span class="string">&#x27;Accounting&#x27;</span>,<span class="string">&#x27;Engineering&#x27;</span>],<span class="string">&#x27;hire_date&#x27;</span>:[<span class="number">2004</span>,<span class="number">2016</span>]&#125;)</span><br><span class="line">df4 = DataFrame(&#123;<span class="string">&#x27;group&#x27;</span>:[<span class="string">&#x27;Accounting&#x27;</span>,<span class="string">&#x27;Engineering&#x27;</span>,<span class="string">&#x27;Engineering&#x27;</span>],<span class="string">&#x27;supervisor&#x27;</span>:[<span class="string">&#x27;Carly&#x27;</span>,<span class="string">&#x27;Guido&#x27;</span>,<span class="string">&#x27;Steve&#x27;</span>]&#125;)</span><br><span class="line"><span class="built_in">print</span>(df3)</span><br><span class="line"><span class="built_in">print</span>(df4)</span><br><span class="line"><span class="built_in">print</span>(pd.merge(df3,df4))</span><br></pre></td></tr></table></figure>
+
+<pre><code>  employee        group  hire_date
+0     Lisa   Accounting       2004
+1     Jake  Engineering       2016
+         group supervisor
+0   Accounting      Carly
+1  Engineering      Guido
+2  Engineering      Steve
+  employee        group  hire_date supervisor
+0     Lisa   Accounting       2004      Carly
+1     Jake  Engineering       2016      Guido
+2     Jake  Engineering       2016      Steve
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 多对多合并</span></span><br><span class="line">df5 = DataFrame(&#123;<span class="string">&#x27;group&#x27;</span>:[<span class="string">&#x27;Engineering&#x27;</span>,<span class="string">&#x27;Engineering&#x27;</span>,<span class="string">&#x27;HR&#x27;</span>],<span class="string">&#x27;supervisor&#x27;</span>:[<span class="string">&#x27;Carly&#x27;</span>,<span class="string">&#x27;Guido&#x27;</span>,<span class="string">&#x27;Steve&#x27;</span>]&#125;)</span><br><span class="line"><span class="built_in">print</span>(df5)</span><br><span class="line"><span class="built_in">print</span>(pd.merge(df1,df5))    <span class="comment"># 默认内连接</span></span><br><span class="line"><span class="built_in">print</span>(pd.merge(df1,df5,how=<span class="string">&#x27;outer&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(pd.merge(df1,df5,how=<span class="string">&#x27;left&#x27;</span>)) <span class="comment"># 保留左连接</span></span><br><span class="line"><span class="built_in">print</span>(pd.merge(df1,df5,how=<span class="string">&#x27;right&#x27;</span>))    <span class="comment"># 保留右连接</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>         group supervisor
+0  Engineering      Carly
+1  Engineering      Guido
+2           HR      Steve
+  employee        group supervisor
+0     Jake  Engineering      Carly
+1     Jake  Engineering      Guido
+2     Lisa  Engineering      Carly
+3     Lisa  Engineering      Guido
+  employee        group supervisor
+0      Bob   Accounting        NaN
+1     Jake  Engineering      Carly
+2     Jake  Engineering      Guido
+3     Lisa  Engineering      Carly
+4     Lisa  Engineering      Guido
+5      NaN           HR      Steve
+  employee        group supervisor
+0      Bob   Accounting        NaN
+1     Jake  Engineering      Carly
+2     Jake  Engineering      Guido
+3     Lisa  Engineering      Carly
+4     Lisa  Engineering      Guido
+  employee        group supervisor
+0     Jake  Engineering      Carly
+1     Lisa  Engineering      Carly
+2     Jake  Engineering      Guido
+3     Lisa  Engineering      Guido
+4      NaN           HR      Steve
+</code></pre>
+<h2 id="key的规范化"><a href="#key的规范化" class="headerlink" title="key的规范化"></a>key的规范化</h2><ul>
+<li>当列冲突时，即有多个列名称相同时需要使用on=来指定哪一个列作为Key,配合suffixes指定冲突列名</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df1 = DataFrame(&#123;<span class="string">&#x27;employee&#x27;</span>:[<span class="string">&#x27;Jack&#x27;</span>,<span class="string">&#x27;Summer&#x27;</span>,<span class="string">&#x27;Steve&#x27;</span>],<span class="string">&#x27;group&#x27;</span>:[<span class="string">&#x27;Accounting&#x27;</span>,<span class="string">&#x27;Finance&#x27;</span>,<span class="string">&#x27;Marketing&#x27;</span>]&#125;)</span><br><span class="line">df2 = DataFrame(&#123;<span class="string">&#x27;employee&#x27;</span>:[<span class="string">&#x27;Jack&#x27;</span>,<span class="string">&#x27;Bob&#x27;</span>,<span class="string">&#x27;Jake&#x27;</span>],<span class="string">&#x27;hire_date&#x27;</span>:[<span class="number">2003</span>,<span class="number">2009</span>,<span class="number">2012</span>],<span class="string">&#x27;group&#x27;</span>:[<span class="string">&#x27;Accounting&#x27;</span>,<span class="string">&#x27;Sell&#x27;</span>,<span class="string">&#x27;CEO&#x27;</span>]&#125;)</span><br><span class="line"><span class="built_in">print</span>(df1)</span><br><span class="line"><span class="built_in">print</span>(df2)</span><br><span class="line"><span class="built_in">print</span>(pd.merge(df1,df2))    <span class="comment"># 不指定合并条件则相同的几项共同作为合并条件</span></span><br><span class="line"><span class="built_in">print</span>(pd.merge(df1,df2,on=<span class="string">&#x27;group&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>  employee       group
+0     Jack  Accounting
+1   Summer     Finance
+2    Steve   Marketing
+  employee  hire_date       group
+0     Jack       2003  Accounting
+1      Bob       2009        Sell
+2     Jake       2012         CEO
+  employee       group  hire_date
+0     Jack  Accounting       2003
+  employee_x       group employee_y  hire_date
+0       Jack  Accounting       Jack       2003
+</code></pre>
+<ul>
+<li>当两张表没有可进行连接的列时，可使用left_on和right_on手动指定merge中左右两边的哪一列作为连接的列</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df1 = DataFrame(&#123;<span class="string">&#x27;employee&#x27;</span>:[<span class="string">&#x27;Bobs&#x27;</span>,<span class="string">&#x27;Linda&#x27;</span>,<span class="string">&#x27;Bill&#x27;</span>],<span class="string">&#x27;group&#x27;</span>:[<span class="string">&#x27;Accounting&#x27;</span>,<span class="string">&#x27;Product&#x27;</span>,<span class="string">&#x27;Marketing&#x27;</span>],<span class="string">&#x27;hire_date&#x27;</span>:[<span class="number">1998</span>,<span class="number">2017</span>,<span class="number">2018</span>]&#125;)</span><br><span class="line">df5 = DataFrame(&#123;<span class="string">&#x27;name&#x27;</span>:[<span class="string">&#x27;Lisa&#x27;</span>,<span class="string">&#x27;Bobs&#x27;</span>,<span class="string">&#x27;Bill&#x27;</span>],<span class="string">&#x27;hire_dates&#x27;</span>:[<span class="number">1998</span>,<span class="number">2016</span>,<span class="number">2007</span>]&#125;)</span><br><span class="line"><span class="built_in">print</span>(df1)</span><br><span class="line"><span class="built_in">print</span>(df5)</span><br><span class="line"><span class="comment"># print(pd.merge(df1,df5))  # 此处合并出错，因为没有共同的列，需要指定左右标准</span></span><br><span class="line"><span class="built_in">print</span>(pd.merge(df1,df5,left_on=<span class="string">&#x27;employee&#x27;</span>,right_on=<span class="string">&#x27;name&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>  employee       group  hire_date
+0     Bobs  Accounting       1998
+1    Linda     Product       2017
+2     Bill   Marketing       2018
+   name  hire_dates
+0  Lisa        1998
+1  Bobs        2016
+2  Bill        2007
+  employee       group  hire_date  name  hire_dates
+0     Bobs  Accounting       1998  Bobs        2016
+1     Bill   Marketing       2018  Bill        2007
+</code></pre>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-test_3"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/05/19/test_3/"
+    >处理丢失数据</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/19/test_3/" class="article-date">
+  <time datetime="2021-05-19T09:31:23.651Z" itemprop="datePublished">2021-05-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="处理丢失数据"><a href="#处理丢失数据" class="headerlink" title="处理丢失数据"></a>处理丢失数据</h1><p>1、原始数据中会存在缺失值（空值）<br>2、重复值<br>3、异常值  </p>
+<ul>
+<li>有两种丢失数据  <ul>
+<li>None  </li>
+<li>np.nan(NAN)</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">两种丢失数据的区别</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="literal">None</span>))   <span class="comment"># None对象类型</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(np.nan)) <span class="comment"># NAN浮点型</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;class &#39;NoneType&#39;&gt;
+&lt;class &#39;float&#39;&gt;
+</code></pre>
+<ul>
+<li>为什么在数据分析中需要用到的是浮点类型的空而不是对象类型？  <ul>
+<li>数据分析中会经常使用某些形式的运算来处理原始数据，如果原始数据中的空值为NAN形式，则不会干扰或者中断运算，NAN是可以参与运算的；  </li>
+<li>None是不可以参与运算的  </li>
+</ul>
+</li>
+<li>在pandas中如果遇到了None形式的空值则pandas会将其强转成NAN的形式。    </li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(np.nan+<span class="number">1</span>) <span class="comment"># 输出结果仍为nan</span></span><br><span class="line"><span class="built_in">print</span>(<span class="literal">None</span>+<span class="number">1</span>)   <span class="comment"># 会出现编译错误</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>nan
+
+
+
+---------------------------------------------------------------------------
+
+TypeError                                 Traceback (most recent call last)
+
+&lt;ipython-input-49-e38e0a464830&gt; in &lt;module&gt;()
+      1 print(np.nan+1) # 输出结果仍为nan
+----&gt; 2 print(None+1)   # 会出现编译错误
+
+
+TypeError: unsupported operand type(s) for +: &#39;NoneType&#39; and &#39;int&#39;
+</code></pre>
+<h1 id="pandas处理空值操作"><a href="#pandas处理空值操作" class="headerlink" title="pandas处理空值操作"></a>pandas处理空值操作</h1><ul>
+<li>isnull</li>
+<li>notnull</li>
+<li>any</li>
+<li>all</li>
+<li>dropna</li>
+<li>fillna</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame,Series</span><br><span class="line"><span class="comment"># 创建一组含有空值的数据</span></span><br><span class="line">df = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">8</span>,<span class="number">6</span>)))</span><br><span class="line">df.iloc[<span class="number">2</span>,<span class="number">3</span>] = <span class="literal">None</span></span><br><span class="line">df.iloc[<span class="number">4</span>,<span class="number">4</span>] = np.nan</span><br><span class="line">df.iloc[<span class="number">5</span>,<span class="number">2</span>] = <span class="literal">None</span></span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1     2     3     4   5
+0  44  13  76.0  12.0  75.0  27
+1   7  67  62.0  46.0  95.0  60
+2  88  31   2.0   NaN  18.0  33
+3  90   1  61.0  66.0  50.0  69
+4  54  78  65.0  31.0   NaN  19
+5  97   7   NaN  37.0  26.0  90
+6  52  79   2.0  46.0   1.0  21
+7   7  58  29.0  87.0   7.0  49
+</code></pre>
+<ul>
+<li>方式1：对空值进行过滤（删除空值所在的行数据）<ul>
+<li>isnull, notnull, any, all  <ul>
+<li>isnull-&gt;any</li>
+<li>notnull-&gt;all</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.isnull())</span><br><span class="line"><span class="comment"># 哪些行中存在true</span></span><br><span class="line"><span class="built_in">print</span>(df.isnull().<span class="built_in">any</span>(axis=<span class="number">1</span>)) <span class="comment"># any：用来检测行或列中是否存在True，若存在返回True否则返回False</span></span><br><span class="line"><span class="comment"># 将该Boolean值作为行索引，即可得到存在缺失值的行数据以及相应的行索引</span></span><br><span class="line"><span class="built_in">print</span>(df.loc[df.isnull().<span class="built_in">any</span>(axis=<span class="number">1</span>)])</span><br><span class="line">drop_index = df.loc[df.isnull().<span class="built_in">any</span>(axis=<span class="number">1</span>)].index  <span class="comment"># 将要删除的行索引</span></span><br><span class="line"><span class="built_in">print</span>(df.drop(labels=drop_index,axis=<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>       0      1      2      3      4      5
+0  False  False  False  False  False  False
+1  False  False  False  False  False  False
+2  False  False  False   True  False  False
+3  False  False  False  False  False  False
+4  False  False  False  False   True  False
+5  False  False   True  False  False  False
+6  False  False  False  False  False  False
+7  False  False  False  False  False  False
+0    False
+1    False
+2     True
+3    False
+4     True
+5     True
+6    False
+7    False
+dtype: bool
+    0   1     2     3     4   5
+2  88  31   2.0   NaN  18.0  33
+4  54  78  65.0  31.0   NaN  19
+5  97   7   NaN  37.0  26.0  90
+    0   1     2     3     4   5
+0  44  13  76.0  12.0  75.0  27
+1   7  67  62.0  46.0  95.0  60
+3  90   1  61.0  66.0  50.0  69
+6  52  79   2.0  46.0   1.0  21
+7   7  58  29.0  87.0   7.0  49
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.notnull())</span><br><span class="line"><span class="built_in">print</span>(df.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>)) <span class="comment"># all:用来检测行或列中是否存在False,如果全为True返回True否则返回False</span></span><br><span class="line"><span class="built_in">print</span>(df.loc[df.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>)]) <span class="comment"># 以True为索引即忽略了含有缺失值的行</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>      0     1      2      3      4     5
+0  True  True   True   True   True  True
+1  True  True   True   True   True  True
+2  True  True   True  False   True  True
+3  True  True   True   True   True  True
+4  True  True   True   True  False  True
+5  True  True  False   True   True  True
+6  True  True   True   True   True  True
+7  True  True   True   True   True  True
+0     True
+1     True
+2    False
+3     True
+4    False
+5    False
+6     True
+7     True
+dtype: bool
+    0   1     2     3     4   5
+0  44  13  76.0  12.0  75.0  27
+1   7  67  62.0  46.0  95.0  60
+3  90   1  61.0  66.0  50.0  69
+6  52  79   2.0  46.0   1.0  21
+7   7  58  29.0  87.0   7.0  49
+</code></pre>
+<ul>
+<li><p>方式2：</p>
+<ul>
+<li>dropna:可以直接将缺失的行或者列进行删除</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.dropna(axis=<span class="number">0</span>))</span><br><span class="line"><span class="built_in">print</span>(df.dropna(axis=<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1     2     3     4   5
+0  44  13  76.0  12.0  75.0  27
+1   7  67  62.0  46.0  95.0  60
+3  90   1  61.0  66.0  50.0  69
+6  52  79   2.0  46.0   1.0  21
+7   7  58  29.0  87.0   7.0  49
+    0   1   5
+0  44  13  27
+1   7  67  60
+2  88  31  33
+3  90   1  69
+4  54  78  19
+5  97   7  90
+6  52  79  21
+7   7  58  49
+</code></pre>
+<ul>
+<li>对缺失值进行覆盖<ul>
+<li>fillna</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.fillna(value=<span class="number">666</span>)) <span class="comment"># 使用设定值覆盖缺失值，但合理性不足意义不大</span></span><br><span class="line"><span class="built_in">print</span>(df.fillna(method=<span class="string">&#x27;ffill&#x27;</span>,axis=<span class="number">1</span>)) <span class="comment"># 一般采用缺失值周围临近的值去覆盖,ffill使用前值覆盖bfill使用后值覆盖，axis选择水平或垂直方向</span></span><br><span class="line"><span class="built_in">print</span>(df.fillna(method=<span class="string">&#x27;bfill&#x27;</span>,axis=<span class="number">0</span>)) <span class="comment"># 使用垂直方向的后值覆盖</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">但无论如何覆盖都不是最合理的，故一般选择删除而不选择覆盖，假如删除的成本太高（删除数据太多），才选择覆盖</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1      2      3      4   5
+0  44  13   76.0   12.0   75.0  27
+1   7  67   62.0   46.0   95.0  60
+2  88  31    2.0  666.0   18.0  33
+3  90   1   61.0   66.0   50.0  69
+4  54  78   65.0   31.0  666.0  19
+5  97   7  666.0   37.0   26.0  90
+6  52  79    2.0   46.0    1.0  21
+7   7  58   29.0   87.0    7.0  49
+      0     1     2     3     4     5
+0  44.0  13.0  76.0  12.0  75.0  27.0
+1   7.0  67.0  62.0  46.0  95.0  60.0
+2  88.0  31.0   2.0   2.0  18.0  33.0
+3  90.0   1.0  61.0  66.0  50.0  69.0
+4  54.0  78.0  65.0  31.0  31.0  19.0
+5  97.0   7.0   7.0  37.0  26.0  90.0
+6  52.0  79.0   2.0  46.0   1.0  21.0
+7   7.0  58.0  29.0  87.0   7.0  49.0
+    0   1     2     3     4   5
+0  44  13  76.0  12.0  75.0  27
+1   7  67  62.0  46.0  95.0  60
+2  88  31   2.0  66.0  18.0  33
+3  90   1  61.0  66.0  50.0  69
+4  54  78  65.0  31.0  26.0  19
+5  97   7   2.0  37.0  26.0  90
+6  52  79   2.0  46.0   1.0  21
+7   7  58  29.0  87.0   7.0  49
+
+
+
+
+
+&#39;\n但无论如何覆盖都不是最合理的，故一般选择删除而不选择覆盖，假如删除的成本太高（删除数据太多），才选择覆盖\n&#39;
+</code></pre>
+<h1 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h1><ul>
+<li>数据说明：<ul>
+<li>数据是一个冷库的温度数据，1-7对应7个温度采集设备，1分钟采集一次。</li>
+</ul>
+</li>
+<li>数据处理目标：<ul>
+<li>用1-4对应的4个必须设备，通过建立冷库的温度场关系模型，预估出5-7对应的数据。</li>
+<li>最后每个冷库中仅需放置4个设备，取代放置7个设备。</li>
+<li>f(1-4) –&gt; y(5-7)</li>
+</ul>
+</li>
+<li>数据处理过程：<ul>
+<li>1.原始数据中有丢帧现象，需要做预处理；</li>
+<li>2.matplotlib绘图；</li>
+<li>3.建立逻辑回归模型。</li>
+</ul>
+</li>
+<li>无标准答案，按个人理解操作即可，请把自己的操作过程以文字形式简单描述。</li>
+<li>测试数据为testData.xlsx</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df2 = pd.read_excel(<span class="string">&#x27;testData.xlsx&#x27;</span>,engine=<span class="string">&#x27;openpyxl&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(df2.head())</span><br><span class="line">df2 = df2[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line">df2.head()</span><br></pre></td></tr></table></figure>
+
+<pre><code>                 time  none     1     2     3     4  none1     5     6     7
+0 2019-01-27 17:00:00   NaN -24.8 -18.2 -20.8 -18.8    NaN   NaN   NaN   NaN
+1 2019-01-27 17:01:00   NaN -23.5 -18.8 -20.5 -19.8    NaN -15.2 -14.5 -16.0
+2 2019-01-27 17:02:00   NaN -23.2 -19.2   NaN   NaN    NaN -13.0   NaN -14.0
+3 2019-01-27 17:03:00   NaN -22.8 -19.2 -20.0 -20.5    NaN   NaN -12.2  -9.8
+4 2019-01-27 17:04:00   NaN -23.2 -18.5 -20.0 -18.8    NaN -10.2 -10.8  -8.8
+C:\Users\86156\.conda\envs\DL\lib\site-packages\openpyxl\worksheet\_reader.py:312: UserWarning: Unknown extension is not supported and will be removed
+  warn(msg)
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-24.8</td>
+      <td>-18.2</td>
+      <td>-20.8</td>
+      <td>-18.8</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-23.5</td>
+      <td>-18.8</td>
+      <td>-20.5</td>
+      <td>-19.8</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-23.2</td>
+      <td>-19.2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-22.8</td>
+      <td>-19.2</td>
+      <td>-20.0</td>
+      <td>-20.5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-23.2</td>
+      <td>-18.5</td>
+      <td>-20.0</td>
+      <td>-18.8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可将空值对应的行数据删除</span></span><br><span class="line"><span class="built_in">print</span>(df2.dropna(axis=<span class="number">0</span>))</span><br><span class="line"><span class="built_in">print</span>(df2.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(df2.loc[df2.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>)])</span><br></pre></td></tr></table></figure>
+
+<pre><code>         1     2     3     4
+0    -24.8 -18.2 -20.8 -18.8
+1    -23.5 -18.8 -20.5 -19.8
+3    -22.8 -19.2 -20.0 -20.5
+4    -23.2 -18.5 -20.0 -18.8
+7    -24.8 -18.0 -17.5 -17.2
+...    ...   ...   ...   ...
+1055 -26.2 -27.2 -28.8 -27.5
+1056 -26.8 -27.5 -29.0 -27.8
+1057 -27.2 -27.8 -29.0 -28.0
+1058 -27.5 -27.0 -29.0 -28.0
+1059 -27.0 -27.2 -29.0 -27.8
+
+[982 rows x 4 columns]
+0        True
+1        True
+2       False
+3        True
+4        True
+        ...  
+1055     True
+1056     True
+1057     True
+1058     True
+1059     True
+Length: 1060, dtype: bool
+         1     2     3     4
+0    -24.8 -18.2 -20.8 -18.8
+1    -23.5 -18.8 -20.5 -19.8
+3    -22.8 -19.2 -20.0 -20.5
+4    -23.2 -18.5 -20.0 -18.8
+7    -24.8 -18.0 -17.5 -17.2
+...    ...   ...   ...   ...
+1055 -26.2 -27.2 -28.8 -27.5
+1056 -26.8 -27.5 -29.0 -27.8
+1057 -27.2 -27.8 -29.0 -28.0
+1058 -27.5 -27.0 -29.0 -28.0
+1059 -27.0 -27.2 -29.0 -27.8
+
+[982 rows x 4 columns]
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 填充空值</span></span><br><span class="line">data = df2.fillna(method=<span class="string">&#x27;ffill&#x27;</span>,axis=<span class="number">0</span>).fillna(method=<span class="string">&#x27;bfill&#x27;</span>,axis=<span class="number">0</span>)  <span class="comment"># 前部填充一次再候补填充一次确保开头和结尾没有缺失值</span></span><br><span class="line"><span class="built_in">print</span>(data.isnull().<span class="built_in">any</span>(axis=<span class="number">0</span>))    <span class="comment"># 检测下是否填充完整，any检查是否有True，此处4列中均无True故返回False</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>1    False
+2    False
+3    False
+4    False
+dtype: bool
+</code></pre>
+<h1 id="处理重复数据"><a href="#处理重复数据" class="headerlink" title="处理重复数据"></a>处理重复数据</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成一组带有重复数据的数据源</span></span><br><span class="line">df3 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">8</span>,<span class="number">4</span>)))</span><br><span class="line">df3.iloc[<span class="number">2</span>] = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">df3.iloc[<span class="number">5</span>] = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line"><span class="built_in">print</span>(df3)</span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1   2   3
+0  77  77  99  27
+1  70  38  58  77
+2   0   0   0   0
+3  93  73  10   8
+4  66  45  98  29
+5   0   0   0   0
+6  14  40  61  81
+7  67  10  92  42
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用drop_duplicates</span></span><br><span class="line"><span class="built_in">print</span>(df3.drop_duplicates(keep=<span class="string">&#x27;first&#x27;</span>))    <span class="comment"># keep为保留第几条重复数据，也可使用last保留最后一条</span></span><br><span class="line"><span class="built_in">print</span>(df3.drop_duplicates(keep=<span class="literal">False</span>))    <span class="comment"># keep=False,删除所有重复数据</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1   2   3
+0  77  77  99  27
+1  70  38  58  77
+2   0   0   0   0
+3  93  73  10   8
+4  66  45  98  29
+6  14  40  61  81
+7  67  10  92  42
+    0   1   2   3
+0  77  77  99  27
+1  70  38  58  77
+3  93  73  10   8
+4  66  45  98  29
+6  14  40  61  81
+7  67  10  92  42
+</code></pre>
+<h1 id="处理异常数据"><a href="#处理异常数据" class="headerlink" title="处理异常数据"></a>处理异常数据</h1><ul>
+<li>自定义一个1000行3列(A,B,C)取值范围为0-1的数据源，然后将C列中的值大于其两倍标准差的异常值进行清洗</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">df4 = DataFrame(np.random.random(size=(<span class="number">1000</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(df4)</span><br><span class="line"><span class="comment"># 判定异常值的条件</span></span><br><span class="line">twice_std = df4[<span class="string">&#x27;C&#x27;</span>].std() * <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span>(df4[<span class="string">&#x27;C&#x27;</span>] &gt; twice_std)  <span class="comment"># 此时True为异常值</span></span><br><span class="line"><span class="built_in">print</span>(~(df4[<span class="string">&#x27;C&#x27;</span>] &gt; twice_std))   <span class="comment"># 对其取反则False为异常值，使用True作为索引即可保留正常值</span></span><br><span class="line"><span class="built_in">print</span>(df4.loc[~(df4[<span class="string">&#x27;C&#x27;</span>] &gt; twice_std)])</span><br></pre></td></tr></table></figure>
+
+<pre><code>            A         B         C
+0    0.215693  0.959250  0.528953
+1    0.136710  0.114971  0.941449
+2    0.295452  0.295154  0.238188
+3    0.187619  0.066753  0.999018
+4    0.398977  0.446377  0.432628
+..        ...       ...       ...
+995  0.908120  0.968931  0.765458
+996  0.649668  0.783493  0.058060
+997  0.605072  0.751010  0.243683
+998  0.304012  0.571452  0.004855
+999  0.364485  0.937335  0.601111
+
+[1000 rows x 3 columns]
+0      False
+1       True
+2      False
+3       True
+4      False
+       ...  
+995     True
+996    False
+997    False
+998    False
+999     True
+Name: C, Length: 1000, dtype: bool
+0       True
+1      False
+2       True
+3      False
+4       True
+       ...  
+995    False
+996     True
+997     True
+998     True
+999    False
+Name: C, Length: 1000, dtype: bool
+            A         B         C
+0    0.215693  0.959250  0.528953
+2    0.295452  0.295154  0.238188
+4    0.398977  0.446377  0.432628
+5    0.402174  0.704057  0.327663
+6    0.938079  0.919880  0.308305
+..        ...       ...       ...
+992  0.693904  0.050679  0.171809
+994  0.663767  0.883826  0.119215
+996  0.649668  0.783493  0.058060
+997  0.605072  0.751010  0.243683
+998  0.304012  0.571452  0.004855
+
+[574 rows x 3 columns]
+</code></pre>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-test_2"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/05/19/test_2/"
+    >双均线策略制定</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/19/test_2/" class="article-date">
+  <time datetime="2021-05-19T09:31:23.644Z" itemprop="datePublished">2021-05-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="需求：双均线策略制定"><a href="#需求：双均线策略制定" class="headerlink" title="需求：双均线策略制定"></a>需求：双均线策略制定</h1><ul>
+<li>使用tushare包获取某股票的历史行情数据  </li>
+<li>计算该股票历史数据的5日均线和60日均线  <ul>
+<li>什么是均线：  <ul>
+<li>对于每一个交易日，都可以计算出前N天的移动平均值，然后把这些移动平均值连起来，成为一条线，就叫做N日移动平均线。移动平均线常用线有5天、10天、30天、60天、120天和240天的指标。  <ul>
+<li>5天和10天的是短线操作的参照指标，称作日均线指标；  </li>
+<li>30天和60天的是中期均线指标，称作季均线指标；  </li>
+<li>120天和240天的是长期均线指标，称作年均线指标。  </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>均线计算方法：MA=(C1+C2+C3+…+Cn)/N      C:某日收盘价；N:移动平均周期（天数）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">df = ts.get_k_data(code=&#x27;600519&#x27;,start=&#x27;2015-01-01&#x27;)</span></span><br><span class="line"><span class="string">df.to_csv(&#x27;moutai.csv&#x27;)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;moutai.csv&#x27;</span>).drop(labels=<span class="string">&#x27;Unnamed: 0&#x27;</span>,axis=<span class="number">1</span>)</span><br><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>])</span><br><span class="line">df.set_index(<span class="string">&#x27;date&#x27;</span>,inplace=<span class="literal">True</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>open</th>
+      <th>close</th>
+      <th>high</th>
+      <th>low</th>
+      <th>volume</th>
+      <th>code</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2015-01-05</th>
+      <td>161.056</td>
+      <td>172.013</td>
+      <td>173.474</td>
+      <td>160.266</td>
+      <td>94515.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-06</th>
+      <td>169.872</td>
+      <td>168.029</td>
+      <td>172.047</td>
+      <td>166.492</td>
+      <td>55020.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-07</th>
+      <td>166.509</td>
+      <td>163.876</td>
+      <td>169.448</td>
+      <td>161.370</td>
+      <td>54797.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-08</th>
+      <td>164.776</td>
+      <td>162.874</td>
+      <td>165.218</td>
+      <td>161.498</td>
+      <td>40525.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-09</th>
+      <td>161.719</td>
+      <td>161.642</td>
+      <td>166.280</td>
+      <td>161.472</td>
+      <td>53982.0</td>
+      <td>600519</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ma5 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">5</span>).mean()   <span class="comment"># rolling滑动窗口尺寸为5</span></span><br><span class="line">ma10 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">10</span>).mean()</span><br><span class="line">ma30 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">30</span>).mean()</span><br><span class="line">ma60 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">60</span>).mean()</span><br><span class="line">ma120 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">120</span>).mean()</span><br><span class="line">ma240 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">240</span>).mean()</span><br><span class="line">%matplotlib inline</span><br><span class="line">plt.plot(ma5[<span class="number">110</span>:<span class="number">330</span>])</span><br><span class="line">plt.plot(ma30[<span class="number">110</span>:<span class="number">330</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x2a1aa5f9eb8&gt;]
+</code></pre>
+<p><img src="https://wx1.sinaimg.cn/mw690/006nxkHvly1gqnw3cd50rj30af06waac.jpg"></p>
+<ul>
+<li>分析输出所有金叉日期和死叉日期  <ul>
+<li>股票分析技术中的金叉和死叉，可以简单解释为：  <ul>
+<li>1.分析指标中的两根线，一根为短时间内的指标线，另一根为较长时间的指标线。  </li>
+<li>2.如果短时间的指标线方向拐头向上，并且穿过了较长时间的指标线，这种状态叫“金叉”；  </li>
+<li>3.如果短时间的指标线方向拐头向下，并且穿过了较长时间的指标线，这种状态叫“死叉”；  </li>
+<li>4.一般情况下，出现金叉后，操作趋向买入；死叉则趋向卖出。当然，金叉和死叉只是分析指标之一，要和其他很多指标配合使用，才能增加操作的准确性。<br>参考讲解：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Z64y1S7y3?p=15">https://www.bilibili.com/video/BV1Z64y1S7y3?p=15</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ma5 = ma5[<span class="number">30</span>:]</span><br><span class="line">ma30 = ma30[<span class="number">30</span>:]</span><br><span class="line">df = df[<span class="number">30</span>:]</span><br><span class="line">s1 = ma5 &lt; ma30</span><br><span class="line">s2 = ma5 &gt; ma30</span><br><span class="line">death_ex = s1 &amp; s2.shift(<span class="number">1</span>) <span class="comment"># 判定死叉条件</span></span><br><span class="line">death_date = df.loc[death_ex].index   <span class="comment"># death_ex为Boolean型，用作索引直接提取True的对应行数据，再取行索引号即死叉对应日期</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;死叉日期：&#x27;</span>, death_date)</span><br><span class="line">golden_ex = ~(s1|s2.shift(<span class="number">1</span>))</span><br><span class="line">golden_date = df.loc[golden_ex].index</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;金叉日期：&#x27;</span>, golden_date)</span><br></pre></td></tr></table></figure>
+
+<pre><code>死叉日期： DatetimeIndex([&#39;2015-06-17&#39;, &#39;2015-07-17&#39;, &#39;2015-09-28&#39;, &#39;2015-11-26&#39;,
+               &#39;2015-12-10&#39;, &#39;2016-01-05&#39;, &#39;2016-08-05&#39;, &#39;2016-08-18&#39;,
+               &#39;2016-11-21&#39;, &#39;2017-07-06&#39;, &#39;2017-09-08&#39;, &#39;2017-11-29&#39;,
+               &#39;2018-02-05&#39;, &#39;2018-03-27&#39;, &#39;2018-06-28&#39;, &#39;2018-07-23&#39;,
+               &#39;2018-07-31&#39;, &#39;2018-10-15&#39;, &#39;2018-12-25&#39;, &#39;2019-05-10&#39;,
+               &#39;2019-07-19&#39;, &#39;2019-11-28&#39;, &#39;2020-01-03&#39;, &#39;2020-02-28&#39;,
+               &#39;2020-03-18&#39;, &#39;2020-08-10&#39;, &#39;2020-09-21&#39;, &#39;2020-10-27&#39;,
+               &#39;2021-03-01&#39;, &#39;2021-04-15&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
+金叉日期： DatetimeIndex([&#39;2015-02-16&#39;, &#39;2015-07-15&#39;, &#39;2015-09-16&#39;, &#39;2015-10-09&#39;,
+               &#39;2015-12-03&#39;, &#39;2015-12-21&#39;, &#39;2016-02-22&#39;, &#39;2016-08-11&#39;,
+               &#39;2016-10-13&#39;, &#39;2016-11-25&#39;, &#39;2017-07-24&#39;, &#39;2017-09-18&#39;,
+               &#39;2017-12-15&#39;, &#39;2018-03-16&#39;, &#39;2018-05-09&#39;, &#39;2018-07-18&#39;,
+               &#39;2018-07-25&#39;, &#39;2018-09-20&#39;, &#39;2018-12-04&#39;, &#39;2019-01-03&#39;,
+               &#39;2019-06-14&#39;, &#39;2019-08-13&#39;, &#39;2020-01-02&#39;, &#39;2020-02-19&#39;,
+               &#39;2020-03-03&#39;, &#39;2020-04-02&#39;, &#39;2020-08-19&#39;, &#39;2020-10-14&#39;,
+               &#39;2020-11-05&#39;, &#39;2021-04-02&#39;, &#39;2021-04-16&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
+</code></pre>
+<ul>
+<li>如果从2017年1月1日开始，初始资金为10W元，金叉尽量买入，死叉全部卖出，则迄今为止炒股收益率如何？  <ul>
+<li>1.买卖股票的单价使用开盘价  </li>
+<li>2.买卖股票的时机  </li>
+<li>3.最终手里会有剩余的股票没有卖出去（如果最有一次是金叉即买入没有卖出则出现剩余，需估量其价值，剩余股票单价使用最后一天的收盘价计算）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">l1 = pd.Series(<span class="number">1</span>,index=golden_date)    <span class="comment"># 1作为金叉标识</span></span><br><span class="line">l2 = pd.Series(<span class="number">0</span>,index=death_date) <span class="comment"># 0作为死叉标识</span></span><br><span class="line">l = l1.append(l2)</span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
+
+<pre><code>date
+2015-02-16    1
+2015-07-15    1
+2015-09-16    1
+2015-10-09    1
+2015-12-03    1
+             ..
+2020-08-10    0
+2020-09-21    0
+2020-10-27    0
+2021-03-01    0
+2021-04-15    0
+Length: 61, dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">l = l.sort_index()  <span class="comment"># 根据日期排序即出现金叉死叉交错</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br><span class="line">l = l[<span class="string">&#x27;2017&#x27;</span>:<span class="string">&#x27;2021&#x27;</span>]    <span class="comment"># 根据需求切出2017年至今的金叉死叉</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
+
+<pre><code>date
+2015-02-16    1
+2015-06-17    0
+2015-07-15    1
+2015-07-17    0
+2015-09-16    1
+             ..
+2020-11-05    1
+2021-03-01    0
+2021-04-02    1
+2021-04-15    0
+2021-04-16    1
+Length: 61, dtype: int64
+date
+2017-07-06    0
+2017-07-24    1
+2017-09-08    0
+2017-09-18    1
+2017-11-29    0
+2017-12-15    1
+2018-02-05    0
+2018-03-16    1
+2018-03-27    0
+2018-05-09    1
+2018-06-28    0
+2018-07-18    1
+2018-07-23    0
+2018-07-25    1
+2018-07-31    0
+2018-09-20    1
+2018-10-15    0
+2018-12-04    1
+2018-12-25    0
+2019-01-03    1
+2019-05-10    0
+2019-06-14    1
+2019-07-19    0
+2019-08-13    1
+2019-11-28    0
+2020-01-02    1
+2020-01-03    0
+2020-02-19    1
+2020-02-28    0
+2020-03-03    1
+2020-03-18    0
+2020-04-02    1
+2020-08-10    0
+2020-08-19    1
+2020-09-21    0
+2020-10-14    1
+2020-10-27    0
+2020-11-05    1
+2021-03-01    0
+2021-04-02    1
+2021-04-15    0
+2021-04-16    1
+dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">first_money = <span class="number">100000</span>    <span class="comment"># 本金不变</span></span><br><span class="line">money = first_money <span class="comment"># 可变，买股票花的钱和卖股票赚的钱都在该变量中操作</span></span><br><span class="line">hold = <span class="number">0</span>    <span class="comment"># 持有股票的数量（股数：100股=1手）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(l)): </span><br><span class="line">    <span class="keyword">if</span> l[i] == <span class="number">1</span>:  <span class="comment"># 金叉时间，基于10W单价尽多买入</span></span><br><span class="line">        time = l.index[i]   <span class="comment"># 获取金叉时间</span></span><br><span class="line">        p = df.loc[time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 取出该时间对应的开盘价，即当前单价</span></span><br><span class="line">        hand_count = money // (p*<span class="number">100</span>)   <span class="comment"># 10W能买入多少手</span></span><br><span class="line">        hold = hand_count * <span class="number">100</span> <span class="comment"># 股数</span></span><br><span class="line">        money -= (hold*p)   <span class="comment"># 将买股票的钱从money中减去</span></span><br><span class="line">    <span class="keyword">else</span>:   <span class="comment"># 死叉时间，将买入的股票卖出去</span></span><br><span class="line">        death_time = l.index[i]</span><br><span class="line">        p_death = df.loc[death_time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 卖股票的单价</span></span><br><span class="line">        money += (p_death * hold)   <span class="comment"># 卖股票的收入加进money中</span></span><br><span class="line">        hold = <span class="number">0</span>    <span class="comment"># 股票卖出后，注意hold要清空</span></span><br><span class="line"><span class="comment"># 判定最后一次是金叉还是死叉可以判断l[i]最后一位是1还是0，但也可以使用hold判断，hold=0则最后一次为死叉反之金叉。</span></span><br><span class="line">last_money = hold * df[<span class="string">&#x27;close&#x27;</span>][-<span class="number">1</span>] <span class="comment"># 剩余股票的价值，若为金叉有剩余价值若为死叉该值为0，不用再进行判断直接加上即可。</span></span><br><span class="line"><span class="comment"># 总收益</span></span><br><span class="line">final_money = money + last_money - first_money</span><br><span class="line"><span class="built_in">print</span>(final_money)</span><br></pre></td></tr></table></figure>
+
+<pre><code>198082.0
+</code></pre>
+<ul>
+<li>金融量化实用平台：聚宽joinQuant</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-test_5"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/05/19/test_5/"
+    >人口分析案例</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/19/test_5/" class="article-date">
+  <time datetime="2021-05-19T09:25:23.838Z" itemprop="datePublished">2021-05-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="人口分析案例"><a href="#人口分析案例" class="headerlink" title="人口分析案例"></a>人口分析案例</h1><ul>
+<li>需求：<ul>
+<li>导入文件，查看原始数据</li>
+<li>将人口数据和各州的简称数据进行合并</li>
+<li>将合并的数据中重复的abbreviation列进行删除</li>
+<li>查看存在缺失数据的列</li>
+<li>找到有哪些state/region使得state的值为NaN，进行去重操作</li>
+<li>为找到的这些state/region的state项补上正确的值，从而去除掉state这一列的所有NaN</li>
+<li>合并各州面积数据areas</li>
+<li>我们会发现area(sq.mi)这一列有缺失数据，找出是哪些行</li>
+<li>去除含有缺失数据的行</li>
+<li>找出2010年的全民人口数据</li>
+<li>计算各州的人口密度</li>
+<li>排序，并找出人口密度最高的州</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入文件，查看原始数据</span></span><br><span class="line">abb = pd.read_csv(<span class="string">&#x27;data\\state-abbrevs.csv&#x27;</span>)    <span class="comment"># state表示州的全称，abbreviation表示州的简称</span></span><br><span class="line"><span class="built_in">print</span>(abb.head())</span><br><span class="line">area = pd.read_csv(<span class="string">&#x27;data\\state-areas.csv&#x27;</span>) <span class="comment"># state州全称，area(sq.mi)州面积</span></span><br><span class="line"><span class="built_in">print</span>(area.head())</span><br><span class="line">pop = pd.read_csv(<span class="string">&#x27;data\\state-population.csv&#x27;</span>)    <span class="comment"># state/region简称，population人口数量</span></span><br><span class="line"><span class="built_in">print</span>(pop.head())</span><br><span class="line"><span class="comment"># 将人口数据和各州的简称数据进行合并</span></span><br><span class="line">abb_pop = pd.merge(abb,pop,left_on=<span class="string">&#x27;abbreviation&#x27;</span>,right_on=<span class="string">&#x27;state/region&#x27;</span>,how=<span class="string">&#x27;outer&#x27;</span>) <span class="comment"># 默认是内连接inner,为了保证数据完整性此处指定outer</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.head())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<pre><code>        state abbreviation
+0     Alabama           AL
+1      Alaska           AK
+2     Arizona           AZ
+3    Arkansas           AR
+4  California           CA
+        state  area (sq. mi)
+0     Alabama          52423
+1      Alaska         656425
+2     Arizona         114006
+3    Arkansas          53182
+4  California         163707
+  state/region     ages  year  population
+0           AL  under18  2012   1117489.0
+1           AL    total  2012   4817528.0
+2           AL  under18  2010   1130966.0
+3           AL    total  2010   4785570.0
+4           AL  under18  2011   1125763.0
+     state abbreviation state/region     ages  year  population
+0  Alabama           AL           AL  under18  2012   1117489.0
+1  Alabama           AL           AL    total  2012   4817528.0
+2  Alabama           AL           AL  under18  2010   1130966.0
+3  Alabama           AL           AL    total  2010   4785570.0
+4  Alabama           AL           AL  under18  2011   1125763.0
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将合并的数据中重复的abbreviation列进行删除</span></span><br><span class="line">abb_pop.drop(labels=<span class="string">&#x27;abbreviation&#x27;</span>,axis=<span class="number">1</span>,inplace=<span class="literal">True</span>) <span class="comment"># inplace=True将编辑的数据映射入原始数据,故不需要再次使用‘abb_pop=’来重新赋值</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.head())</span><br><span class="line"><span class="comment"># 查看存在缺失数据的列</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.isnull().<span class="built_in">any</span>(axis=<span class="number">0</span>)) <span class="comment"># 存在空值的列为True</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.info())   <span class="comment"># 返回数据基本信息，从数据数量看出哪些列存在空值</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>     state state/region     ages  year  population
+0  Alabama           AL  under18  2012   1117489.0
+1  Alabama           AL    total  2012   4817528.0
+2  Alabama           AL  under18  2010   1130966.0
+3  Alabama           AL    total  2010   4785570.0
+4  Alabama           AL  under18  2011   1125763.0
+state            True
+state/region    False
+ages            False
+year            False
+population       True
+dtype: bool
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 2544 entries, 0 to 2543
+Data columns (total 5 columns):
+ #   Column        Non-Null Count  Dtype  
+---  ------        --------------  -----  
+ 0   state         2448 non-null   object 
+ 1   state/region  2544 non-null   object 
+ 2   ages          2544 non-null   object 
+ 3   year          2544 non-null   int64  
+ 4   population    2524 non-null   float64
+dtypes: float64(1), int64(1), object(3)
+memory usage: 119.2+ KB
+None
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到有哪些state/region使得state的值为NaN，进行去重操作</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state&#x27;</span>].isnull()][<span class="string">&#x27;state/region&#x27;</span>].unique())  <span class="comment"># series的unique方法按顺序返回出现唯一一次的内容</span></span><br><span class="line"><span class="comment"># 为找到的这些state/region的state项补上正确的值，从而去除掉state这一列的所有NaN</span></span><br><span class="line"><span class="comment"># 此处不能使用fillna填充，因为不是使用临近值和固定值填充；使用元素赋值的方式进行填充</span></span><br><span class="line"><span class="comment"># 1.先给USA的全称对应的空值进行批量赋值，首先找到USA对应的行数据。</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state/region&#x27;</span>] == <span class="string">&#x27;USA&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<pre><code>[&#39;PR&#39; &#39;USA&#39;]
+     state state/region     ages  year   population
+2496   NaN          USA  under18  1990   64218512.0
+2497   NaN          USA    total  1990  249622814.0
+2498   NaN          USA    total  1991  252980942.0
+2499   NaN          USA  under18  1991   65313018.0
+2500   NaN          USA  under18  1992   66509177.0
+2501   NaN          USA    total  1992  256514231.0
+2502   NaN          USA    total  1993  259918595.0
+2503   NaN          USA  under18  1993   67594938.0
+2504   NaN          USA  under18  1994   68640936.0
+2505   NaN          USA    total  1994  263125826.0
+2506   NaN          USA  under18  1995   69473140.0
+2507   NaN          USA  under18  1996   70233512.0
+2508   NaN          USA    total  1995  266278403.0
+2509   NaN          USA    total  1996  269394291.0
+2510   NaN          USA    total  1997  272646932.0
+2511   NaN          USA  under18  1997   70920738.0
+2512   NaN          USA  under18  1998   71431406.0
+2513   NaN          USA    total  1998  275854116.0
+2514   NaN          USA  under18  1999   71946051.0
+2515   NaN          USA    total  2000  282162411.0
+2516   NaN          USA  under18  2000   72376189.0
+2517   NaN          USA    total  1999  279040181.0
+2518   NaN          USA    total  2001  284968955.0
+2519   NaN          USA  under18  2001   72671175.0
+2520   NaN          USA    total  2002  287625193.0
+2521   NaN          USA  under18  2002   72936457.0
+2522   NaN          USA    total  2003  290107933.0
+2523   NaN          USA  under18  2003   73100758.0
+2524   NaN          USA    total  2004  292805298.0
+2525   NaN          USA  under18  2004   73297735.0
+2526   NaN          USA    total  2005  295516599.0
+2527   NaN          USA  under18  2005   73523669.0
+2528   NaN          USA    total  2006  298379912.0
+2529   NaN          USA  under18  2006   73757714.0
+2530   NaN          USA    total  2007  301231207.0
+2531   NaN          USA  under18  2007   74019405.0
+2532   NaN          USA    total  2008  304093966.0
+2533   NaN          USA  under18  2008   74104602.0
+2534   NaN          USA  under18  2013   73585872.0
+2535   NaN          USA    total  2013  316128839.0
+2536   NaN          USA    total  2009  306771529.0
+2537   NaN          USA  under18  2009   74134167.0
+2538   NaN          USA  under18  2010   74119556.0
+2539   NaN          USA    total  2010  309326295.0
+2540   NaN          USA  under18  2011   73902222.0
+2541   NaN          USA    total  2011  311582564.0
+2542   NaN          USA  under18  2012   73708179.0
+2543   NaN          USA    total  2012  313873685.0
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 2.获取USA全称为空的数据对应的行索引</span></span><br><span class="line">indexs = abb_pop.loc[abb_pop[<span class="string">&#x27;state/region&#x27;</span>] == <span class="string">&#x27;USA&#x27;</span>].index</span><br><span class="line"><span class="built_in">print</span>(indexs)</span><br><span class="line">abb_pop.loc[indexs,<span class="string">&#x27;state&#x27;</span>] = <span class="string">&#x27;United States&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state&#x27;</span>].isnull()][<span class="string">&#x27;state/region&#x27;</span>].unique())  <span class="comment"># 此处只剩PR</span></span><br><span class="line"><span class="comment"># 对于PR来说过程与USA相同</span></span><br><span class="line">indexs = abb_pop.loc[abb_pop[<span class="string">&#x27;state/region&#x27;</span>] == <span class="string">&#x27;PR&#x27;</span>].index</span><br><span class="line">abb_pop.loc[indexs,<span class="string">&#x27;state&#x27;</span>] = <span class="string">&#x27;Puerto Rico&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state&#x27;</span>].isnull()][<span class="string">&#x27;state/region&#x27;</span>].unique())  <span class="comment"># 此处没有空值了</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>Int64Index([2496, 2497, 2498, 2499, 2500, 2501, 2502, 2503, 2504, 2505, 2506,
+            2507, 2508, 2509, 2510, 2511, 2512, 2513, 2514, 2515, 2516, 2517,
+            2518, 2519, 2520, 2521, 2522, 2523, 2524, 2525, 2526, 2527, 2528,
+            2529, 2530, 2531, 2532, 2533, 2534, 2535, 2536, 2537, 2538, 2539,
+            2540, 2541, 2542, 2543],
+           dtype=&#39;int64&#39;)
+[&#39;PR&#39;]
+[]
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 合并各州面积数据areas</span></span><br><span class="line">abb_pop_area = pd.merge(abb_pop,area,how=<span class="string">&#x27;outer&#x27;</span>)</span><br><span class="line"><span class="comment"># 我们会发现area(sq.mi)这一列有缺失数据，找出是哪些行</span></span><br><span class="line">abb_pop_area.loc[abb_pop_area[<span class="string">&#x27;area (sq. mi)&#x27;</span>].isnull()]    <span class="comment"># 空对应的行数据</span></span><br><span class="line">indexs = abb_pop_area.loc[abb_pop_area[<span class="string">&#x27;area (sq. mi)&#x27;</span>].isnull()].index</span><br><span class="line"><span class="comment"># 去除含有缺失数据的行</span></span><br><span class="line">abb_pop_area.drop(labels=indexs,axis=<span class="number">0</span>,inplace=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>state/region</th>
+      <th>ages</th>
+      <th>year</th>
+      <th>population</th>
+      <th>area (sq. mi)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2496</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1990</td>
+      <td>64218512.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2497</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1990</td>
+      <td>249622814.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2498</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1991</td>
+      <td>252980942.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2499</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1991</td>
+      <td>65313018.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2500</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1992</td>
+      <td>66509177.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2501</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1992</td>
+      <td>256514231.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2502</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1993</td>
+      <td>259918595.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2503</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1993</td>
+      <td>67594938.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2504</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1994</td>
+      <td>68640936.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2505</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1994</td>
+      <td>263125826.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2506</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1995</td>
+      <td>69473140.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2507</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1996</td>
+      <td>70233512.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2508</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1995</td>
+      <td>266278403.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2509</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1996</td>
+      <td>269394291.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2510</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1997</td>
+      <td>272646932.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2511</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1997</td>
+      <td>70920738.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2512</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1998</td>
+      <td>71431406.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2513</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1998</td>
+      <td>275854116.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2514</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1999</td>
+      <td>71946051.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2515</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2000</td>
+      <td>282162411.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2516</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2000</td>
+      <td>72376189.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2517</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1999</td>
+      <td>279040181.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2518</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2001</td>
+      <td>284968955.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2519</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2001</td>
+      <td>72671175.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2520</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2002</td>
+      <td>287625193.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2521</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2002</td>
+      <td>72936457.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2522</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2003</td>
+      <td>290107933.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2523</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2003</td>
+      <td>73100758.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2524</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2004</td>
+      <td>292805298.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2525</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2004</td>
+      <td>73297735.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2526</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2005</td>
+      <td>295516599.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2527</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2005</td>
+      <td>73523669.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2528</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2006</td>
+      <td>298379912.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2529</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2006</td>
+      <td>73757714.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2530</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2007</td>
+      <td>301231207.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2531</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2007</td>
+      <td>74019405.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2532</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2008</td>
+      <td>304093966.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2533</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2008</td>
+      <td>74104602.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2534</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2013</td>
+      <td>73585872.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2535</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2013</td>
+      <td>316128839.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2536</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2009</td>
+      <td>306771529.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2537</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2009</td>
+      <td>74134167.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2538</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2010</td>
+      <td>74119556.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2539</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2010</td>
+      <td>309326295.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2540</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2011</td>
+      <td>73902222.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2541</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2011</td>
+      <td>311582564.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2542</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2012</td>
+      <td>73708179.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2543</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2012</td>
+      <td>313873685.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找出2010年的全民人口数据(基于df做条件查询)</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop_area.query(<span class="string">&#x27;ages == &quot;total&quot; &amp; year == 2010&#x27;</span>))</span><br><span class="line"><span class="comment"># 计算各州的人口密度(人口/面积)</span></span><br><span class="line">abb_pop_area[<span class="string">&#x27;density of population&#x27;</span>] = abb_pop_area[<span class="string">&#x27;population&#x27;</span>] / abb_pop_area[<span class="string">&#x27;area (sq. mi)&#x27;</span>]</span><br><span class="line">abb_pop_area.head()</span><br><span class="line"><span class="comment"># 排序，并找出人口密度最高的州</span></span><br><span class="line">abb_pop_area.sort_values(by=<span class="string">&#x27;density of population&#x27;</span>,axis=<span class="number">0</span>,ascending=<span class="literal">False</span>).iloc[<span class="number">0</span>][<span class="string">&#x27;state&#x27;</span>]    <span class="comment"># ascending是否升序排序，默认升序为True，降序则为False。</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>                     state state/region   ages  year   population  \
+3                  Alabama           AL  total  2010    4785570.0   
+91                  Alaska           AK  total  2010     713868.0   
+101                Arizona           AZ  total  2010    6408790.0   
+189               Arkansas           AR  total  2010    2922280.0   
+197             California           CA  total  2010   37333601.0   
+283               Colorado           CO  total  2010    5048196.0   
+293            Connecticut           CT  total  2010    3579210.0   
+379               Delaware           DE  total  2010     899711.0   
+389   District of Columbia           DC  total  2010     605125.0   
+475                Florida           FL  total  2010   18846054.0   
+485                Georgia           GA  total  2010    9713248.0   
+570                 Hawaii           HI  total  2010    1363731.0   
+581                  Idaho           ID  total  2010    1570718.0   
+666               Illinois           IL  total  2010   12839695.0   
+677                Indiana           IN  total  2010    6489965.0   
+762                   Iowa           IA  total  2010    3050314.0   
+773                 Kansas           KS  total  2010    2858910.0   
+858               Kentucky           KY  total  2010    4347698.0   
+869              Louisiana           LA  total  2010    4545392.0   
+954                  Maine           ME  total  2010    1327366.0   
+965                Montana           MT  total  2010     990527.0   
+1050              Nebraska           NE  total  2010    1829838.0   
+1061                Nevada           NV  total  2010    2703230.0   
+1146         New Hampshire           NH  total  2010    1316614.0   
+1157            New Jersey           NJ  total  2010    8802707.0   
+1242            New Mexico           NM  total  2010    2064982.0   
+1253              New York           NY  total  2010   19398228.0   
+1338        North Carolina           NC  total  2010    9559533.0   
+1349          North Dakota           ND  total  2010     674344.0   
+1434                  Ohio           OH  total  2010   11545435.0   
+1445              Oklahoma           OK  total  2010    3759263.0   
+1530                Oregon           OR  total  2010    3837208.0   
+1541              Maryland           MD  total  2010    5787193.0   
+1626         Massachusetts           MA  total  2010    6563263.0   
+1637              Michigan           MI  total  2010    9876149.0   
+1722             Minnesota           MN  total  2010    5310337.0   
+1733           Mississippi           MS  total  2010    2970047.0   
+1818              Missouri           MO  total  2010    5996063.0   
+1829          Pennsylvania           PA  total  2010   12710472.0   
+1914          Rhode Island           RI  total  2010    1052669.0   
+1925        South Carolina           SC  total  2010    4636361.0   
+2010          South Dakota           SD  total  2010     816211.0   
+2021             Tennessee           TN  total  2010    6356683.0   
+2106                 Texas           TX  total  2010   25245178.0   
+2117                  Utah           UT  total  2010    2774424.0   
+2202               Vermont           VT  total  2010     625793.0   
+2213              Virginia           VA  total  2010    8024417.0   
+2298            Washington           WA  total  2010    6742256.0   
+2309         West Virginia           WV  total  2010    1854146.0   
+2394             Wisconsin           WI  total  2010    5689060.0   
+2405               Wyoming           WY  total  2010     564222.0   
+2490           Puerto Rico           PR  total  2010    3721208.0   
+2539         United States          USA  total  2010  309326295.0   
+
+      area (sq. mi)         midu  density of population  
+3           52423.0    91.287603              91.287603  
+91         656425.0     1.087509               1.087509  
+101        114006.0    56.214497              56.214497  
+189         53182.0    54.948667              54.948667  
+197        163707.0   228.051342             228.051342  
+283        104100.0    48.493718              48.493718  
+293          5544.0   645.600649             645.600649  
+379          1954.0   460.445752             460.445752  
+389            68.0  8898.897059            8898.897059  
+475         65758.0   286.597129             286.597129  
+485         59441.0   163.409902             163.409902  
+570         10932.0   124.746707             124.746707  
+581         83574.0    18.794338              18.794338  
+666         57918.0   221.687472             221.687472  
+677         36420.0   178.197831             178.197831  
+762         56276.0    54.202751              54.202751  
+773         82282.0    34.745266              34.745266  
+858         40411.0   107.586994             107.586994  
+869         51843.0    87.676099              87.676099  
+954         35387.0    37.509990              37.509990  
+965        147046.0     6.736171               6.736171  
+1050        77358.0    23.654153              23.654153  
+1061       110567.0    24.448796              24.448796  
+1146         9351.0   140.799273             140.799273  
+1157         8722.0  1009.253268            1009.253268  
+1242       121593.0    16.982737              16.982737  
+1253        54475.0   356.094135             356.094135  
+1338        53821.0   177.617157             177.617157  
+1349        70704.0     9.537565               9.537565  
+1434        44828.0   257.549634             257.549634  
+1445        69903.0    53.778278              53.778278  
+1530        98386.0    39.001565              39.001565  
+1541        12407.0   466.445797             466.445797  
+1626        10555.0   621.815538             621.815538  
+1637        96810.0   102.015794             102.015794  
+1722        86943.0    61.078373              61.078373  
+1733        48434.0    61.321530              61.321530  
+1818        69709.0    86.015622              86.015622  
+1829        46058.0   275.966651             275.966651  
+1914         1545.0   681.339159             681.339159  
+1925        32007.0   144.854594             144.854594  
+2010        77121.0    10.583512              10.583512  
+2021        42146.0   150.825298             150.825298  
+2106       268601.0    93.987655              93.987655  
+2117        84904.0    32.677188              32.677188  
+2202         9615.0    65.085075              65.085075  
+2213        42769.0   187.622273             187.622273  
+2298        71303.0    94.557817              94.557817  
+2309        24231.0    76.519582              76.519582  
+2394        65503.0    86.851900              86.851900  
+2405        97818.0     5.768079               5.768079  
+2490         3515.0  1058.665149            1058.665149  
+2539            NaN          NaN                    NaN  
+
+
+
+
+
+&#39;District of Columbia&#39;
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+  </article>
+  
+
+  
+</section>
+</div>
+
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Woody
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="Woody"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://woody0819.lofter.com/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+  </div>
+</body>
+
+</html>

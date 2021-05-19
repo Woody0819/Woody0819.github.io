@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>双均线策略制定 |  Woody</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+    <link rel="alternate" href="/atom.xml" title="Woody" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-test_2"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  双均线策略制定
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/19/test_2/" class="article-date">
+  <time datetime="2021-05-19T09:31:23.644Z" itemprop="datePublished">2021-05-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">1.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">9 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="需求：双均线策略制定"><a href="#需求：双均线策略制定" class="headerlink" title="需求：双均线策略制定"></a>需求：双均线策略制定</h1><ul>
+<li>使用tushare包获取某股票的历史行情数据  </li>
+<li>计算该股票历史数据的5日均线和60日均线  <ul>
+<li>什么是均线：  <ul>
+<li>对于每一个交易日，都可以计算出前N天的移动平均值，然后把这些移动平均值连起来，成为一条线，就叫做N日移动平均线。移动平均线常用线有5天、10天、30天、60天、120天和240天的指标。  <ul>
+<li>5天和10天的是短线操作的参照指标，称作日均线指标；  </li>
+<li>30天和60天的是中期均线指标，称作季均线指标；  </li>
+<li>120天和240天的是长期均线指标，称作年均线指标。  </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>均线计算方法：MA=(C1+C2+C3+…+Cn)/N      C:某日收盘价；N:移动平均周期（天数）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">df = ts.get_k_data(code=&#x27;600519&#x27;,start=&#x27;2015-01-01&#x27;)</span></span><br><span class="line"><span class="string">df.to_csv(&#x27;moutai.csv&#x27;)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;moutai.csv&#x27;</span>).drop(labels=<span class="string">&#x27;Unnamed: 0&#x27;</span>,axis=<span class="number">1</span>)</span><br><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>])</span><br><span class="line">df.set_index(<span class="string">&#x27;date&#x27;</span>,inplace=<span class="literal">True</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>open</th>
+      <th>close</th>
+      <th>high</th>
+      <th>low</th>
+      <th>volume</th>
+      <th>code</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2015-01-05</th>
+      <td>161.056</td>
+      <td>172.013</td>
+      <td>173.474</td>
+      <td>160.266</td>
+      <td>94515.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-06</th>
+      <td>169.872</td>
+      <td>168.029</td>
+      <td>172.047</td>
+      <td>166.492</td>
+      <td>55020.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-07</th>
+      <td>166.509</td>
+      <td>163.876</td>
+      <td>169.448</td>
+      <td>161.370</td>
+      <td>54797.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-08</th>
+      <td>164.776</td>
+      <td>162.874</td>
+      <td>165.218</td>
+      <td>161.498</td>
+      <td>40525.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-09</th>
+      <td>161.719</td>
+      <td>161.642</td>
+      <td>166.280</td>
+      <td>161.472</td>
+      <td>53982.0</td>
+      <td>600519</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ma5 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">5</span>).mean()   <span class="comment"># rolling滑动窗口尺寸为5</span></span><br><span class="line">ma10 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">10</span>).mean()</span><br><span class="line">ma30 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">30</span>).mean()</span><br><span class="line">ma60 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">60</span>).mean()</span><br><span class="line">ma120 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">120</span>).mean()</span><br><span class="line">ma240 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">240</span>).mean()</span><br><span class="line">%matplotlib inline</span><br><span class="line">plt.plot(ma5[<span class="number">110</span>:<span class="number">330</span>])</span><br><span class="line">plt.plot(ma30[<span class="number">110</span>:<span class="number">330</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x2a1aa5f9eb8&gt;]
+</code></pre>
+<p><img src="https://wx1.sinaimg.cn/mw690/006nxkHvly1gqnw3cd50rj30af06waac.jpg"></p>
+<ul>
+<li>分析输出所有金叉日期和死叉日期  <ul>
+<li>股票分析技术中的金叉和死叉，可以简单解释为：  <ul>
+<li>1.分析指标中的两根线，一根为短时间内的指标线，另一根为较长时间的指标线。  </li>
+<li>2.如果短时间的指标线方向拐头向上，并且穿过了较长时间的指标线，这种状态叫“金叉”；  </li>
+<li>3.如果短时间的指标线方向拐头向下，并且穿过了较长时间的指标线，这种状态叫“死叉”；  </li>
+<li>4.一般情况下，出现金叉后，操作趋向买入；死叉则趋向卖出。当然，金叉和死叉只是分析指标之一，要和其他很多指标配合使用，才能增加操作的准确性。<br>参考讲解：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Z64y1S7y3?p=15">https://www.bilibili.com/video/BV1Z64y1S7y3?p=15</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ma5 = ma5[<span class="number">30</span>:]</span><br><span class="line">ma30 = ma30[<span class="number">30</span>:]</span><br><span class="line">df = df[<span class="number">30</span>:]</span><br><span class="line">s1 = ma5 &lt; ma30</span><br><span class="line">s2 = ma5 &gt; ma30</span><br><span class="line">death_ex = s1 &amp; s2.shift(<span class="number">1</span>) <span class="comment"># 判定死叉条件</span></span><br><span class="line">death_date = df.loc[death_ex].index   <span class="comment"># death_ex为Boolean型，用作索引直接提取True的对应行数据，再取行索引号即死叉对应日期</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;死叉日期：&#x27;</span>, death_date)</span><br><span class="line">golden_ex = ~(s1|s2.shift(<span class="number">1</span>))</span><br><span class="line">golden_date = df.loc[golden_ex].index</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;金叉日期：&#x27;</span>, golden_date)</span><br></pre></td></tr></table></figure>
+
+<pre><code>死叉日期： DatetimeIndex([&#39;2015-06-17&#39;, &#39;2015-07-17&#39;, &#39;2015-09-28&#39;, &#39;2015-11-26&#39;,
+               &#39;2015-12-10&#39;, &#39;2016-01-05&#39;, &#39;2016-08-05&#39;, &#39;2016-08-18&#39;,
+               &#39;2016-11-21&#39;, &#39;2017-07-06&#39;, &#39;2017-09-08&#39;, &#39;2017-11-29&#39;,
+               &#39;2018-02-05&#39;, &#39;2018-03-27&#39;, &#39;2018-06-28&#39;, &#39;2018-07-23&#39;,
+               &#39;2018-07-31&#39;, &#39;2018-10-15&#39;, &#39;2018-12-25&#39;, &#39;2019-05-10&#39;,
+               &#39;2019-07-19&#39;, &#39;2019-11-28&#39;, &#39;2020-01-03&#39;, &#39;2020-02-28&#39;,
+               &#39;2020-03-18&#39;, &#39;2020-08-10&#39;, &#39;2020-09-21&#39;, &#39;2020-10-27&#39;,
+               &#39;2021-03-01&#39;, &#39;2021-04-15&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
+金叉日期： DatetimeIndex([&#39;2015-02-16&#39;, &#39;2015-07-15&#39;, &#39;2015-09-16&#39;, &#39;2015-10-09&#39;,
+               &#39;2015-12-03&#39;, &#39;2015-12-21&#39;, &#39;2016-02-22&#39;, &#39;2016-08-11&#39;,
+               &#39;2016-10-13&#39;, &#39;2016-11-25&#39;, &#39;2017-07-24&#39;, &#39;2017-09-18&#39;,
+               &#39;2017-12-15&#39;, &#39;2018-03-16&#39;, &#39;2018-05-09&#39;, &#39;2018-07-18&#39;,
+               &#39;2018-07-25&#39;, &#39;2018-09-20&#39;, &#39;2018-12-04&#39;, &#39;2019-01-03&#39;,
+               &#39;2019-06-14&#39;, &#39;2019-08-13&#39;, &#39;2020-01-02&#39;, &#39;2020-02-19&#39;,
+               &#39;2020-03-03&#39;, &#39;2020-04-02&#39;, &#39;2020-08-19&#39;, &#39;2020-10-14&#39;,
+               &#39;2020-11-05&#39;, &#39;2021-04-02&#39;, &#39;2021-04-16&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
+</code></pre>
+<ul>
+<li>如果从2017年1月1日开始，初始资金为10W元，金叉尽量买入，死叉全部卖出，则迄今为止炒股收益率如何？  <ul>
+<li>1.买卖股票的单价使用开盘价  </li>
+<li>2.买卖股票的时机  </li>
+<li>3.最终手里会有剩余的股票没有卖出去（如果最有一次是金叉即买入没有卖出则出现剩余，需估量其价值，剩余股票单价使用最后一天的收盘价计算）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">l1 = pd.Series(<span class="number">1</span>,index=golden_date)    <span class="comment"># 1作为金叉标识</span></span><br><span class="line">l2 = pd.Series(<span class="number">0</span>,index=death_date) <span class="comment"># 0作为死叉标识</span></span><br><span class="line">l = l1.append(l2)</span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
+
+<pre><code>date
+2015-02-16    1
+2015-07-15    1
+2015-09-16    1
+2015-10-09    1
+2015-12-03    1
+             ..
+2020-08-10    0
+2020-09-21    0
+2020-10-27    0
+2021-03-01    0
+2021-04-15    0
+Length: 61, dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">l = l.sort_index()  <span class="comment"># 根据日期排序即出现金叉死叉交错</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br><span class="line">l = l[<span class="string">&#x27;2017&#x27;</span>:<span class="string">&#x27;2021&#x27;</span>]    <span class="comment"># 根据需求切出2017年至今的金叉死叉</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
+
+<pre><code>date
+2015-02-16    1
+2015-06-17    0
+2015-07-15    1
+2015-07-17    0
+2015-09-16    1
+             ..
+2020-11-05    1
+2021-03-01    0
+2021-04-02    1
+2021-04-15    0
+2021-04-16    1
+Length: 61, dtype: int64
+date
+2017-07-06    0
+2017-07-24    1
+2017-09-08    0
+2017-09-18    1
+2017-11-29    0
+2017-12-15    1
+2018-02-05    0
+2018-03-16    1
+2018-03-27    0
+2018-05-09    1
+2018-06-28    0
+2018-07-18    1
+2018-07-23    0
+2018-07-25    1
+2018-07-31    0
+2018-09-20    1
+2018-10-15    0
+2018-12-04    1
+2018-12-25    0
+2019-01-03    1
+2019-05-10    0
+2019-06-14    1
+2019-07-19    0
+2019-08-13    1
+2019-11-28    0
+2020-01-02    1
+2020-01-03    0
+2020-02-19    1
+2020-02-28    0
+2020-03-03    1
+2020-03-18    0
+2020-04-02    1
+2020-08-10    0
+2020-08-19    1
+2020-09-21    0
+2020-10-14    1
+2020-10-27    0
+2020-11-05    1
+2021-03-01    0
+2021-04-02    1
+2021-04-15    0
+2021-04-16    1
+dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">first_money = <span class="number">100000</span>    <span class="comment"># 本金不变</span></span><br><span class="line">money = first_money <span class="comment"># 可变，买股票花的钱和卖股票赚的钱都在该变量中操作</span></span><br><span class="line">hold = <span class="number">0</span>    <span class="comment"># 持有股票的数量（股数：100股=1手）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(l)): </span><br><span class="line">    <span class="keyword">if</span> l[i] == <span class="number">1</span>:  <span class="comment"># 金叉时间，基于10W单价尽多买入</span></span><br><span class="line">        time = l.index[i]   <span class="comment"># 获取金叉时间</span></span><br><span class="line">        p = df.loc[time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 取出该时间对应的开盘价，即当前单价</span></span><br><span class="line">        hand_count = money // (p*<span class="number">100</span>)   <span class="comment"># 10W能买入多少手</span></span><br><span class="line">        hold = hand_count * <span class="number">100</span> <span class="comment"># 股数</span></span><br><span class="line">        money -= (hold*p)   <span class="comment"># 将买股票的钱从money中减去</span></span><br><span class="line">    <span class="keyword">else</span>:   <span class="comment"># 死叉时间，将买入的股票卖出去</span></span><br><span class="line">        death_time = l.index[i]</span><br><span class="line">        p_death = df.loc[death_time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 卖股票的单价</span></span><br><span class="line">        money += (p_death * hold)   <span class="comment"># 卖股票的收入加进money中</span></span><br><span class="line">        hold = <span class="number">0</span>    <span class="comment"># 股票卖出后，注意hold要清空</span></span><br><span class="line"><span class="comment"># 判定最后一次是金叉还是死叉可以判断l[i]最后一位是1还是0，但也可以使用hold判断，hold=0则最后一次为死叉反之金叉。</span></span><br><span class="line">last_money = hold * df[<span class="string">&#x27;close&#x27;</span>][-<span class="number">1</span>] <span class="comment"># 剩余股票的价值，若为金叉有剩余价值若为死叉该值为0，不用再进行判断直接加上即可。</span></span><br><span class="line"><span class="comment"># 总收益</span></span><br><span class="line">final_money = money + last_money - first_money</span><br><span class="line"><span class="built_in">print</span>(final_money)</span><br></pre></td></tr></table></figure>
+
+<pre><code>198082.0
+</code></pre>
+<ul>
+<li>金融量化实用平台：聚宽joinQuant</li>
+</ul>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://woody0819.github.io/2021/05/19/test_2/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/05/19/test_3/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            处理丢失数据
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/05/19/test_5/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">人口分析案例</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Woody
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="Woody"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://woody0819.lofter.com/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+  </div>
+</body>
+
+</html>
