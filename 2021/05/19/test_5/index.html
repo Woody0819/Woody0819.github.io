@@ -146,6 +146,8 @@
 3  Alabama           AL           AL    total  2010   4785570.0
 4  Alabama           AL           AL  under18  2011   1125763.0
 </code></pre>
+<span id="more"></span>
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将合并的数据中重复的abbreviation列进行删除</span></span><br><span class="line">abb_pop.drop(labels=<span class="string">&#x27;abbreviation&#x27;</span>,axis=<span class="number">1</span>,inplace=<span class="literal">True</span>) <span class="comment"># inplace=True将编辑的数据映射入原始数据,故不需要再次使用‘abb_pop=’来重新赋值</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.head())</span><br><span class="line"><span class="comment"># 查看存在缺失数据的列</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.isnull().<span class="built_in">any</span>(axis=<span class="number">0</span>)) <span class="comment"># 存在空值的列为True</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.info())   <span class="comment"># 返回数据基本信息，从数据数量看出哪些列存在空值</span></span><br></pre></td></tr></table></figure>
 
 <pre><code>     state state/region     ages  year  population
