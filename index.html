@@ -243,21 +243,7 @@
 <ul>
 <li>匹配级联</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df1 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line">df2 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;D&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(df1)</span><br><span class="line"><span class="built_in">print</span>(df2)</span><br></pre></td></tr></table></figure>
-
-<pre><code>    A   B   C
-0  79  32  25
-1  25  25  37
-2  10  83  72
-3   0  48   3
-4  59  31  86
-    A   D   C
-0  35  54  59
-1   5   7  76
-2  76  82  89
-3  17  93  46
-4  99  56   8
-</code></pre> 
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df1 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line">df2 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;D&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(df1)</span><br><span class="line"><span class="built_in">print</span>(df2)</span><br></pre></td></tr></table></figure> 
       <a class="article-more-link" href="/2021/05/19/test_4/"
         >阅读更多...</a
       >
@@ -406,10 +392,7 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">df = ts.get_k_data(code=&#x27;600519&#x27;,start=&#x27;2015-01-01&#x27;)</span></span><br><span class="line"><span class="string">df.to_csv(&#x27;moutai.csv&#x27;)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;moutai.csv&#x27;</span>).drop(labels=<span class="string">&#x27;Unnamed: 0&#x27;</span>,axis=<span class="number">1</span>)</span><br><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>])</span><br><span class="line">df.set_index(<span class="string">&#x27;date&#x27;</span>,inplace=<span class="literal">True</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure> 
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure> 
       <a class="article-more-link" href="/2021/05/19/test_2/"
         >阅读更多...</a
       >
@@ -610,6 +593,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/guestbook">留言</a>
     </li>
     
   </ul>

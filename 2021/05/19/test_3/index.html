@@ -640,12 +640,13 @@ Name: C, Length: 1000, dtype: bool
 <script>
   new Valine({
     el: "#vcomments",
-    app_id: "",
-    app_key: "",
+    app_id: "Q0bUd4kz7kv9o8cLXDqyYijd-gzGzoHsz",
+    app_key: "3xet4X44IIsU9kGHHuQiOa4B",
     path: window.location.pathname,
     avatar: "monsterid",
     placeholder: "给我的文章加点评论吧~",
     recordIP: true,
+    enableQQ: true,
   });
   const infoEle = document.querySelector("#vcomments .info");
   if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
@@ -779,6 +780,10 @@ Name: C, Length: 1000, dtype: bool
     
     <li class="nav-item">
       <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/guestbook">留言</a>
     </li>
     
   </ul>

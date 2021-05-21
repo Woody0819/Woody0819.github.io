@@ -1,262 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>双均线策略制定</title>
-    <url>/2021/05/19/test_2/</url>
-    <content><![CDATA[<h1 id="需求：双均线策略制定"><a href="#需求：双均线策略制定" class="headerlink" title="需求：双均线策略制定"></a>需求：双均线策略制定</h1><ul>
-<li>使用tushare包获取某股票的历史行情数据  </li>
-<li>计算该股票历史数据的5日均线和60日均线  <ul>
-<li>什么是均线：  <ul>
-<li>对于每一个交易日，都可以计算出前N天的移动平均值，然后把这些移动平均值连起来，成为一条线，就叫做N日移动平均线。移动平均线常用线有5天、10天、30天、60天、120天和240天的指标。  <ul>
-<li>5天和10天的是短线操作的参照指标，称作日均线指标；  </li>
-<li>30天和60天的是中期均线指标，称作季均线指标；  </li>
-<li>120天和240天的是长期均线指标，称作年均线指标。  </li>
-</ul>
-</li>
-</ul>
-</li>
-<li>均线计算方法：MA=(C1+C2+C3+…+Cn)/N      C:某日收盘价；N:移动平均周期（天数）</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">df = ts.get_k_data(code=&#x27;600519&#x27;,start=&#x27;2015-01-01&#x27;)</span></span><br><span class="line"><span class="string">df.to_csv(&#x27;moutai.csv&#x27;)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;moutai.csv&#x27;</span>).drop(labels=<span class="string">&#x27;Unnamed: 0&#x27;</span>,axis=<span class="number">1</span>)</span><br><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>])</span><br><span class="line">df.set_index(<span class="string">&#x27;date&#x27;</span>,inplace=<span class="literal">True</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-<pre><code>.dataframe tbody tr th &#123;
-    vertical-align: top;
-&#125;
-
-.dataframe thead th &#123;
-    text-align: right;
-&#125;
-</code></pre>
-<p></style></p>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>open</th>
-      <th>close</th>
-      <th>high</th>
-      <th>low</th>
-      <th>volume</th>
-      <th>code</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2015-01-05</th>
-      <td>161.056</td>
-      <td>172.013</td>
-      <td>173.474</td>
-      <td>160.266</td>
-      <td>94515.0</td>
-      <td>600519</td>
-    </tr>
-    <tr>
-      <th>2015-01-06</th>
-      <td>169.872</td>
-      <td>168.029</td>
-      <td>172.047</td>
-      <td>166.492</td>
-      <td>55020.0</td>
-      <td>600519</td>
-    </tr>
-    <tr>
-      <th>2015-01-07</th>
-      <td>166.509</td>
-      <td>163.876</td>
-      <td>169.448</td>
-      <td>161.370</td>
-      <td>54797.0</td>
-      <td>600519</td>
-    </tr>
-    <tr>
-      <th>2015-01-08</th>
-      <td>164.776</td>
-      <td>162.874</td>
-      <td>165.218</td>
-      <td>161.498</td>
-      <td>40525.0</td>
-      <td>600519</td>
-    </tr>
-    <tr>
-      <th>2015-01-09</th>
-      <td>161.719</td>
-      <td>161.642</td>
-      <td>166.280</td>
-      <td>161.472</td>
-      <td>53982.0</td>
-      <td>600519</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ma5 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">5</span>).mean()   <span class="comment"># rolling滑动窗口尺寸为5</span></span><br><span class="line">ma10 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">10</span>).mean()</span><br><span class="line">ma30 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">30</span>).mean()</span><br><span class="line">ma60 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">60</span>).mean()</span><br><span class="line">ma120 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">120</span>).mean()</span><br><span class="line">ma240 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">240</span>).mean()</span><br><span class="line">%matplotlib inline</span><br><span class="line">plt.plot(ma5[<span class="number">110</span>:<span class="number">330</span>])</span><br><span class="line">plt.plot(ma30[<span class="number">110</span>:<span class="number">330</span>])</span><br></pre></td></tr></table></figure>
-
-
-
-
-<pre><code>[&lt;matplotlib.lines.Line2D at 0x2a1aa5f9eb8&gt;]
-</code></pre>
-<p><img src="https://wx1.sinaimg.cn/mw690/006nxkHvly1gqnw3cd50rj30af06waac.jpg"></p>
-<ul>
-<li>分析输出所有金叉日期和死叉日期  <ul>
-<li>股票分析技术中的金叉和死叉，可以简单解释为：  <ul>
-<li>1.分析指标中的两根线，一根为短时间内的指标线，另一根为较长时间的指标线。  </li>
-<li>2.如果短时间的指标线方向拐头向上，并且穿过了较长时间的指标线，这种状态叫“金叉”；  </li>
-<li>3.如果短时间的指标线方向拐头向下，并且穿过了较长时间的指标线，这种状态叫“死叉”；  </li>
-<li>4.一般情况下，出现金叉后，操作趋向买入；死叉则趋向卖出。当然，金叉和死叉只是分析指标之一，要和其他很多指标配合使用，才能增加操作的准确性。<br>参考讲解：<a href="https://www.bilibili.com/video/BV1Z64y1S7y3?p=15">https://www.bilibili.com/video/BV1Z64y1S7y3?p=15</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ma5 = ma5[<span class="number">30</span>:]</span><br><span class="line">ma30 = ma30[<span class="number">30</span>:]</span><br><span class="line">df = df[<span class="number">30</span>:]</span><br><span class="line">s1 = ma5 &lt; ma30</span><br><span class="line">s2 = ma5 &gt; ma30</span><br><span class="line">death_ex = s1 &amp; s2.shift(<span class="number">1</span>) <span class="comment"># 判定死叉条件</span></span><br><span class="line">death_date = df.loc[death_ex].index   <span class="comment"># death_ex为Boolean型，用作索引直接提取True的对应行数据，再取行索引号即死叉对应日期</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;死叉日期：&#x27;</span>, death_date)</span><br><span class="line">golden_ex = ~(s1|s2.shift(<span class="number">1</span>))</span><br><span class="line">golden_date = df.loc[golden_ex].index</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;金叉日期：&#x27;</span>, golden_date)</span><br></pre></td></tr></table></figure>
-
-<pre><code>死叉日期： DatetimeIndex([&#39;2015-06-17&#39;, &#39;2015-07-17&#39;, &#39;2015-09-28&#39;, &#39;2015-11-26&#39;,
-               &#39;2015-12-10&#39;, &#39;2016-01-05&#39;, &#39;2016-08-05&#39;, &#39;2016-08-18&#39;,
-               &#39;2016-11-21&#39;, &#39;2017-07-06&#39;, &#39;2017-09-08&#39;, &#39;2017-11-29&#39;,
-               &#39;2018-02-05&#39;, &#39;2018-03-27&#39;, &#39;2018-06-28&#39;, &#39;2018-07-23&#39;,
-               &#39;2018-07-31&#39;, &#39;2018-10-15&#39;, &#39;2018-12-25&#39;, &#39;2019-05-10&#39;,
-               &#39;2019-07-19&#39;, &#39;2019-11-28&#39;, &#39;2020-01-03&#39;, &#39;2020-02-28&#39;,
-               &#39;2020-03-18&#39;, &#39;2020-08-10&#39;, &#39;2020-09-21&#39;, &#39;2020-10-27&#39;,
-               &#39;2021-03-01&#39;, &#39;2021-04-15&#39;],
-              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
-金叉日期： DatetimeIndex([&#39;2015-02-16&#39;, &#39;2015-07-15&#39;, &#39;2015-09-16&#39;, &#39;2015-10-09&#39;,
-               &#39;2015-12-03&#39;, &#39;2015-12-21&#39;, &#39;2016-02-22&#39;, &#39;2016-08-11&#39;,
-               &#39;2016-10-13&#39;, &#39;2016-11-25&#39;, &#39;2017-07-24&#39;, &#39;2017-09-18&#39;,
-               &#39;2017-12-15&#39;, &#39;2018-03-16&#39;, &#39;2018-05-09&#39;, &#39;2018-07-18&#39;,
-               &#39;2018-07-25&#39;, &#39;2018-09-20&#39;, &#39;2018-12-04&#39;, &#39;2019-01-03&#39;,
-               &#39;2019-06-14&#39;, &#39;2019-08-13&#39;, &#39;2020-01-02&#39;, &#39;2020-02-19&#39;,
-               &#39;2020-03-03&#39;, &#39;2020-04-02&#39;, &#39;2020-08-19&#39;, &#39;2020-10-14&#39;,
-               &#39;2020-11-05&#39;, &#39;2021-04-02&#39;, &#39;2021-04-16&#39;],
-              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
-</code></pre>
-<ul>
-<li>如果从2017年1月1日开始，初始资金为10W元，金叉尽量买入，死叉全部卖出，则迄今为止炒股收益率如何？  <ul>
-<li>1.买卖股票的单价使用开盘价  </li>
-<li>2.买卖股票的时机  </li>
-<li>3.最终手里会有剩余的股票没有卖出去（如果最有一次是金叉即买入没有卖出则出现剩余，需估量其价值，剩余股票单价使用最后一天的收盘价计算）</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">l1 = pd.Series(<span class="number">1</span>,index=golden_date)    <span class="comment"># 1作为金叉标识</span></span><br><span class="line">l2 = pd.Series(<span class="number">0</span>,index=death_date) <span class="comment"># 0作为死叉标识</span></span><br><span class="line">l = l1.append(l2)</span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
-
-<pre><code>date
-2015-02-16    1
-2015-07-15    1
-2015-09-16    1
-2015-10-09    1
-2015-12-03    1
-             ..
-2020-08-10    0
-2020-09-21    0
-2020-10-27    0
-2021-03-01    0
-2021-04-15    0
-Length: 61, dtype: int64
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">l = l.sort_index()  <span class="comment"># 根据日期排序即出现金叉死叉交错</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br><span class="line">l = l[<span class="string">&#x27;2017&#x27;</span>:<span class="string">&#x27;2021&#x27;</span>]    <span class="comment"># 根据需求切出2017年至今的金叉死叉</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
-
-<pre><code>date
-2015-02-16    1
-2015-06-17    0
-2015-07-15    1
-2015-07-17    0
-2015-09-16    1
-             ..
-2020-11-05    1
-2021-03-01    0
-2021-04-02    1
-2021-04-15    0
-2021-04-16    1
-Length: 61, dtype: int64
-date
-2017-07-06    0
-2017-07-24    1
-2017-09-08    0
-2017-09-18    1
-2017-11-29    0
-2017-12-15    1
-2018-02-05    0
-2018-03-16    1
-2018-03-27    0
-2018-05-09    1
-2018-06-28    0
-2018-07-18    1
-2018-07-23    0
-2018-07-25    1
-2018-07-31    0
-2018-09-20    1
-2018-10-15    0
-2018-12-04    1
-2018-12-25    0
-2019-01-03    1
-2019-05-10    0
-2019-06-14    1
-2019-07-19    0
-2019-08-13    1
-2019-11-28    0
-2020-01-02    1
-2020-01-03    0
-2020-02-19    1
-2020-02-28    0
-2020-03-03    1
-2020-03-18    0
-2020-04-02    1
-2020-08-10    0
-2020-08-19    1
-2020-09-21    0
-2020-10-14    1
-2020-10-27    0
-2020-11-05    1
-2021-03-01    0
-2021-04-02    1
-2021-04-15    0
-2021-04-16    1
-dtype: int64
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">first_money = <span class="number">100000</span>    <span class="comment"># 本金不变</span></span><br><span class="line">money = first_money <span class="comment"># 可变，买股票花的钱和卖股票赚的钱都在该变量中操作</span></span><br><span class="line">hold = <span class="number">0</span>    <span class="comment"># 持有股票的数量（股数：100股=1手）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(l)): </span><br><span class="line">    <span class="keyword">if</span> l[i] == <span class="number">1</span>:  <span class="comment"># 金叉时间，基于10W单价尽多买入</span></span><br><span class="line">        time = l.index[i]   <span class="comment"># 获取金叉时间</span></span><br><span class="line">        p = df.loc[time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 取出该时间对应的开盘价，即当前单价</span></span><br><span class="line">        hand_count = money // (p*<span class="number">100</span>)   <span class="comment"># 10W能买入多少手</span></span><br><span class="line">        hold = hand_count * <span class="number">100</span> <span class="comment"># 股数</span></span><br><span class="line">        money -= (hold*p)   <span class="comment"># 将买股票的钱从money中减去</span></span><br><span class="line">    <span class="keyword">else</span>:   <span class="comment"># 死叉时间，将买入的股票卖出去</span></span><br><span class="line">        death_time = l.index[i]</span><br><span class="line">        p_death = df.loc[death_time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 卖股票的单价</span></span><br><span class="line">        money += (p_death * hold)   <span class="comment"># 卖股票的收入加进money中</span></span><br><span class="line">        hold = <span class="number">0</span>    <span class="comment"># 股票卖出后，注意hold要清空</span></span><br><span class="line"><span class="comment"># 判定最后一次是金叉还是死叉可以判断l[i]最后一位是1还是0，但也可以使用hold判断，hold=0则最后一次为死叉反之金叉。</span></span><br><span class="line">last_money = hold * df[<span class="string">&#x27;close&#x27;</span>][-<span class="number">1</span>] <span class="comment"># 剩余股票的价值，若为金叉有剩余价值若为死叉该值为0，不用再进行判断直接加上即可。</span></span><br><span class="line"><span class="comment"># 总收益</span></span><br><span class="line">final_money = money + last_money - first_money</span><br><span class="line"><span class="built_in">print</span>(final_money)</span><br></pre></td></tr></table></figure>
-
-<pre><code>198082.0
-</code></pre>
-<ul>
-<li>金融量化实用平台：聚宽joinQuant</li>
-</ul>
-]]></content>
-      <categories>
-        <category>数据分析</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>处理丢失数据</title>
     <url>/2021/05/19/test_3/</url>
     <content><![CDATA[<h1 id="处理丢失数据"><a href="#处理丢失数据" class="headerlink" title="处理丢失数据"></a>处理丢失数据</h1><p>1、原始数据中会存在缺失值（空值）<br>2、重复值<br>3、异常值  </p>
@@ -699,6 +443,262 @@ Name: C, Length: 1000, dtype: bool
       </tags>
   </entry>
   <entry>
+    <title>双均线策略制定</title>
+    <url>/2021/05/19/test_2/</url>
+    <content><![CDATA[<h1 id="需求：双均线策略制定"><a href="#需求：双均线策略制定" class="headerlink" title="需求：双均线策略制定"></a>需求：双均线策略制定</h1><ul>
+<li>使用tushare包获取某股票的历史行情数据  </li>
+<li>计算该股票历史数据的5日均线和60日均线  <ul>
+<li>什么是均线：  <ul>
+<li>对于每一个交易日，都可以计算出前N天的移动平均值，然后把这些移动平均值连起来，成为一条线，就叫做N日移动平均线。移动平均线常用线有5天、10天、30天、60天、120天和240天的指标。  <ul>
+<li>5天和10天的是短线操作的参照指标，称作日均线指标；  </li>
+<li>30天和60天的是中期均线指标，称作季均线指标；  </li>
+<li>120天和240天的是长期均线指标，称作年均线指标。  </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>均线计算方法：MA=(C1+C2+C3+…+Cn)/N      C:某日收盘价；N:移动平均周期（天数）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">df = ts.get_k_data(code=&#x27;600519&#x27;,start=&#x27;2015-01-01&#x27;)</span></span><br><span class="line"><span class="string">df.to_csv(&#x27;moutai.csv&#x27;)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;moutai.csv&#x27;</span>).drop(labels=<span class="string">&#x27;Unnamed: 0&#x27;</span>,axis=<span class="number">1</span>)</span><br><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>])</span><br><span class="line">df.set_index(<span class="string">&#x27;date&#x27;</span>,inplace=<span class="literal">True</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>open</th>
+      <th>close</th>
+      <th>high</th>
+      <th>low</th>
+      <th>volume</th>
+      <th>code</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2015-01-05</th>
+      <td>161.056</td>
+      <td>172.013</td>
+      <td>173.474</td>
+      <td>160.266</td>
+      <td>94515.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-06</th>
+      <td>169.872</td>
+      <td>168.029</td>
+      <td>172.047</td>
+      <td>166.492</td>
+      <td>55020.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-07</th>
+      <td>166.509</td>
+      <td>163.876</td>
+      <td>169.448</td>
+      <td>161.370</td>
+      <td>54797.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-08</th>
+      <td>164.776</td>
+      <td>162.874</td>
+      <td>165.218</td>
+      <td>161.498</td>
+      <td>40525.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-09</th>
+      <td>161.719</td>
+      <td>161.642</td>
+      <td>166.280</td>
+      <td>161.472</td>
+      <td>53982.0</td>
+      <td>600519</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ma5 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">5</span>).mean()   <span class="comment"># rolling滑动窗口尺寸为5</span></span><br><span class="line">ma10 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">10</span>).mean()</span><br><span class="line">ma30 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">30</span>).mean()</span><br><span class="line">ma60 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">60</span>).mean()</span><br><span class="line">ma120 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">120</span>).mean()</span><br><span class="line">ma240 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">240</span>).mean()</span><br><span class="line">%matplotlib inline</span><br><span class="line">plt.plot(ma5[<span class="number">110</span>:<span class="number">330</span>])</span><br><span class="line">plt.plot(ma30[<span class="number">110</span>:<span class="number">330</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x2a1aa5f9eb8&gt;]
+</code></pre>
+<p><img src="https://wx2.sinaimg.cn/large/006nxkHvgy1gqo5owhnsbj30af06waac.jpg"></p>
+<ul>
+<li>分析输出所有金叉日期和死叉日期  <ul>
+<li>股票分析技术中的金叉和死叉，可以简单解释为：  <ul>
+<li>1.分析指标中的两根线，一根为短时间内的指标线，另一根为较长时间的指标线。  </li>
+<li>2.如果短时间的指标线方向拐头向上，并且穿过了较长时间的指标线，这种状态叫“金叉”；  </li>
+<li>3.如果短时间的指标线方向拐头向下，并且穿过了较长时间的指标线，这种状态叫“死叉”；  </li>
+<li>4.一般情况下，出现金叉后，操作趋向买入；死叉则趋向卖出。当然，金叉和死叉只是分析指标之一，要和其他很多指标配合使用，才能增加操作的准确性。<br>参考讲解：<a href="https://www.bilibili.com/video/BV1Z64y1S7y3?p=15">https://www.bilibili.com/video/BV1Z64y1S7y3?p=15</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ma5 = ma5[<span class="number">30</span>:]</span><br><span class="line">ma30 = ma30[<span class="number">30</span>:]</span><br><span class="line">df = df[<span class="number">30</span>:]</span><br><span class="line">s1 = ma5 &lt; ma30</span><br><span class="line">s2 = ma5 &gt; ma30</span><br><span class="line">death_ex = s1 &amp; s2.shift(<span class="number">1</span>) <span class="comment"># 判定死叉条件</span></span><br><span class="line">death_date = df.loc[death_ex].index   <span class="comment"># death_ex为Boolean型，用作索引直接提取True的对应行数据，再取行索引号即死叉对应日期</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;死叉日期：&#x27;</span>, death_date)</span><br><span class="line">golden_ex = ~(s1|s2.shift(<span class="number">1</span>))</span><br><span class="line">golden_date = df.loc[golden_ex].index</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;金叉日期：&#x27;</span>, golden_date)</span><br></pre></td></tr></table></figure>
+
+<pre><code>死叉日期： DatetimeIndex([&#39;2015-06-17&#39;, &#39;2015-07-17&#39;, &#39;2015-09-28&#39;, &#39;2015-11-26&#39;,
+               &#39;2015-12-10&#39;, &#39;2016-01-05&#39;, &#39;2016-08-05&#39;, &#39;2016-08-18&#39;,
+               &#39;2016-11-21&#39;, &#39;2017-07-06&#39;, &#39;2017-09-08&#39;, &#39;2017-11-29&#39;,
+               &#39;2018-02-05&#39;, &#39;2018-03-27&#39;, &#39;2018-06-28&#39;, &#39;2018-07-23&#39;,
+               &#39;2018-07-31&#39;, &#39;2018-10-15&#39;, &#39;2018-12-25&#39;, &#39;2019-05-10&#39;,
+               &#39;2019-07-19&#39;, &#39;2019-11-28&#39;, &#39;2020-01-03&#39;, &#39;2020-02-28&#39;,
+               &#39;2020-03-18&#39;, &#39;2020-08-10&#39;, &#39;2020-09-21&#39;, &#39;2020-10-27&#39;,
+               &#39;2021-03-01&#39;, &#39;2021-04-15&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
+金叉日期： DatetimeIndex([&#39;2015-02-16&#39;, &#39;2015-07-15&#39;, &#39;2015-09-16&#39;, &#39;2015-10-09&#39;,
+               &#39;2015-12-03&#39;, &#39;2015-12-21&#39;, &#39;2016-02-22&#39;, &#39;2016-08-11&#39;,
+               &#39;2016-10-13&#39;, &#39;2016-11-25&#39;, &#39;2017-07-24&#39;, &#39;2017-09-18&#39;,
+               &#39;2017-12-15&#39;, &#39;2018-03-16&#39;, &#39;2018-05-09&#39;, &#39;2018-07-18&#39;,
+               &#39;2018-07-25&#39;, &#39;2018-09-20&#39;, &#39;2018-12-04&#39;, &#39;2019-01-03&#39;,
+               &#39;2019-06-14&#39;, &#39;2019-08-13&#39;, &#39;2020-01-02&#39;, &#39;2020-02-19&#39;,
+               &#39;2020-03-03&#39;, &#39;2020-04-02&#39;, &#39;2020-08-19&#39;, &#39;2020-10-14&#39;,
+               &#39;2020-11-05&#39;, &#39;2021-04-02&#39;, &#39;2021-04-16&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
+</code></pre>
+<ul>
+<li>如果从2017年1月1日开始，初始资金为10W元，金叉尽量买入，死叉全部卖出，则迄今为止炒股收益率如何？  <ul>
+<li>1.买卖股票的单价使用开盘价  </li>
+<li>2.买卖股票的时机  </li>
+<li>3.最终手里会有剩余的股票没有卖出去（如果最有一次是金叉即买入没有卖出则出现剩余，需估量其价值，剩余股票单价使用最后一天的收盘价计算）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">l1 = pd.Series(<span class="number">1</span>,index=golden_date)    <span class="comment"># 1作为金叉标识</span></span><br><span class="line">l2 = pd.Series(<span class="number">0</span>,index=death_date) <span class="comment"># 0作为死叉标识</span></span><br><span class="line">l = l1.append(l2)</span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
+
+<pre><code>date
+2015-02-16    1
+2015-07-15    1
+2015-09-16    1
+2015-10-09    1
+2015-12-03    1
+             ..
+2020-08-10    0
+2020-09-21    0
+2020-10-27    0
+2021-03-01    0
+2021-04-15    0
+Length: 61, dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">l = l.sort_index()  <span class="comment"># 根据日期排序即出现金叉死叉交错</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br><span class="line">l = l[<span class="string">&#x27;2017&#x27;</span>:<span class="string">&#x27;2021&#x27;</span>]    <span class="comment"># 根据需求切出2017年至今的金叉死叉</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
+
+<pre><code>date
+2015-02-16    1
+2015-06-17    0
+2015-07-15    1
+2015-07-17    0
+2015-09-16    1
+             ..
+2020-11-05    1
+2021-03-01    0
+2021-04-02    1
+2021-04-15    0
+2021-04-16    1
+Length: 61, dtype: int64
+date
+2017-07-06    0
+2017-07-24    1
+2017-09-08    0
+2017-09-18    1
+2017-11-29    0
+2017-12-15    1
+2018-02-05    0
+2018-03-16    1
+2018-03-27    0
+2018-05-09    1
+2018-06-28    0
+2018-07-18    1
+2018-07-23    0
+2018-07-25    1
+2018-07-31    0
+2018-09-20    1
+2018-10-15    0
+2018-12-04    1
+2018-12-25    0
+2019-01-03    1
+2019-05-10    0
+2019-06-14    1
+2019-07-19    0
+2019-08-13    1
+2019-11-28    0
+2020-01-02    1
+2020-01-03    0
+2020-02-19    1
+2020-02-28    0
+2020-03-03    1
+2020-03-18    0
+2020-04-02    1
+2020-08-10    0
+2020-08-19    1
+2020-09-21    0
+2020-10-14    1
+2020-10-27    0
+2020-11-05    1
+2021-03-01    0
+2021-04-02    1
+2021-04-15    0
+2021-04-16    1
+dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">first_money = <span class="number">100000</span>    <span class="comment"># 本金不变</span></span><br><span class="line">money = first_money <span class="comment"># 可变，买股票花的钱和卖股票赚的钱都在该变量中操作</span></span><br><span class="line">hold = <span class="number">0</span>    <span class="comment"># 持有股票的数量（股数：100股=1手）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(l)): </span><br><span class="line">    <span class="keyword">if</span> l[i] == <span class="number">1</span>:  <span class="comment"># 金叉时间，基于10W单价尽多买入</span></span><br><span class="line">        time = l.index[i]   <span class="comment"># 获取金叉时间</span></span><br><span class="line">        p = df.loc[time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 取出该时间对应的开盘价，即当前单价</span></span><br><span class="line">        hand_count = money // (p*<span class="number">100</span>)   <span class="comment"># 10W能买入多少手</span></span><br><span class="line">        hold = hand_count * <span class="number">100</span> <span class="comment"># 股数</span></span><br><span class="line">        money -= (hold*p)   <span class="comment"># 将买股票的钱从money中减去</span></span><br><span class="line">    <span class="keyword">else</span>:   <span class="comment"># 死叉时间，将买入的股票卖出去</span></span><br><span class="line">        death_time = l.index[i]</span><br><span class="line">        p_death = df.loc[death_time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 卖股票的单价</span></span><br><span class="line">        money += (p_death * hold)   <span class="comment"># 卖股票的收入加进money中</span></span><br><span class="line">        hold = <span class="number">0</span>    <span class="comment"># 股票卖出后，注意hold要清空</span></span><br><span class="line"><span class="comment"># 判定最后一次是金叉还是死叉可以判断l[i]最后一位是1还是0，但也可以使用hold判断，hold=0则最后一次为死叉反之金叉。</span></span><br><span class="line">last_money = hold * df[<span class="string">&#x27;close&#x27;</span>][-<span class="number">1</span>] <span class="comment"># 剩余股票的价值，若为金叉有剩余价值若为死叉该值为0，不用再进行判断直接加上即可。</span></span><br><span class="line"><span class="comment"># 总收益</span></span><br><span class="line">final_money = money + last_money - first_money</span><br><span class="line"><span class="built_in">print</span>(final_money)</span><br></pre></td></tr></table></figure>
+
+<pre><code>198082.0
+</code></pre>
+<ul>
+<li>金融量化实用平台：聚宽joinQuant</li>
+</ul>
+]]></content>
+      <categories>
+        <category>数据分析</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>级联操作</title>
     <url>/2021/05/19/test_4/</url>
     <content><![CDATA[<h1 id="级联操作"><a href="#级联操作" class="headerlink" title="级联操作"></a>级联操作</h1><ul>
@@ -710,6 +710,7 @@ Name: C, Length: 1000, dtype: bool
 <li>匹配级联</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df1 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line">df2 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;D&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(df1)</span><br><span class="line"><span class="built_in">print</span>(df2)</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
 
 <pre><code>    A   B   C
 0  79  32  25
@@ -724,8 +725,6 @@ Name: C, Length: 1000, dtype: bool
 3  17  93  46
 4  99  56   8
 </code></pre>
-<span id="more"></span>
-
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(pd.concat((df1,df2),axis=<span class="number">1</span>))  <span class="comment"># 横向级联</span></span><br></pre></td></tr></table></figure>
 
 <pre><code>    A   B   C   A   D   C

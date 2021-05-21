@@ -108,6 +108,7 @@
 <li>匹配级联</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df1 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line">df2 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;D&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(df1)</span><br><span class="line"><span class="built_in">print</span>(df2)</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
 
 <pre><code>    A   B   C
 0  79  32  25
@@ -122,8 +123,6 @@
 3  17  93  46
 4  99  56   8
 </code></pre>
-<span id="more"></span>
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(pd.concat((df1,df2),axis=<span class="number">1</span>))  <span class="comment"># 横向级联</span></span><br></pre></td></tr></table></figure>
 
 <pre><code>    A   B   C   A   D   C
@@ -406,12 +405,13 @@
 <script>
   new Valine({
     el: "#vcomments",
-    app_id: "",
-    app_key: "",
+    app_id: "Q0bUd4kz7kv9o8cLXDqyYijd-gzGzoHsz",
+    app_key: "3xet4X44IIsU9kGHHuQiOa4B",
     path: window.location.pathname,
     avatar: "monsterid",
     placeholder: "给我的文章加点评论吧~",
     recordIP: true,
+    enableQQ: true,
   });
   const infoEle = document.querySelector("#vcomments .info");
   if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
@@ -545,6 +545,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/guestbook">留言</a>
     </li>
     
   </ul>
