@@ -1,0 +1,3604 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>Pandas一些高级操作 |  Woody</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+    <link rel="alternate" href="/atom.xml" title="Woody" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-test_6"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Pandas一些高级操作
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/25/test_6/" class="article-date">
+  <time datetime="2021-05-25T11:14:36.892Z" itemprop="datePublished">2021-05-25</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">4.8k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">25 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Pandas中的一些高级操作</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br></pre></td></tr></table></figure>
+
+<h2 id="替换操作"><a href="#替换操作" class="headerlink" title="替换操作"></a>替换操作</h2><ul>
+<li>替换操作可以同步作用于Series和DataFrame中</li>
+<li>单值替换<ul>
+<li>普通替换：替换所有符合要求的元素：to_replace=15,value=’e’</li>
+<li>按列指定单值替换：to_replace={列标签：替换值},value=’value’</li>
+</ul>
+</li>
+<li>多值替换<ul>
+<li>列表替换：to_replace=[],value=[]</li>
+<li>字典替换（推荐）：to_replace={to_replace:value,to_replace:value}</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = DataFrame(data=np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">6</span>)))</span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1   2   3   4   5
+0  15  45   9   1   2  48
+1  47  74  68  90  84   4
+2  41  30  14  26  22  27
+3   4  64  46  20   8  63
+4  48  80  95  58   0  90
+</code></pre>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.replace(to_replace=<span class="number">2</span>,value=<span class="string">&#x27;Two&#x27;</span>)    <span class="comment"># 对指定元素进行替换</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>15</td>
+      <td>45</td>
+      <td>9</td>
+      <td>1</td>
+      <td>Two</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>47</td>
+      <td>74</td>
+      <td>68</td>
+      <td>90</td>
+      <td>84</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>41</td>
+      <td>30</td>
+      <td>14</td>
+      <td>26</td>
+      <td>22</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>64</td>
+      <td>46</td>
+      <td>20</td>
+      <td>8</td>
+      <td>63</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>48</td>
+      <td>80</td>
+      <td>95</td>
+      <td>58</td>
+      <td>0</td>
+      <td>90</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.replace(to_replace=&#123;<span class="number">1</span>:<span class="string">&#x27;One&#x27;</span>&#125;)    <span class="comment"># 使用字典形式做替换</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>15</td>
+      <td>45</td>
+      <td>9</td>
+      <td>One</td>
+      <td>2</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>47</td>
+      <td>74</td>
+      <td>68</td>
+      <td>90</td>
+      <td>84</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>41</td>
+      <td>30</td>
+      <td>14</td>
+      <td>26</td>
+      <td>22</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>64</td>
+      <td>46</td>
+      <td>20</td>
+      <td>8</td>
+      <td>63</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>48</td>
+      <td>80</td>
+      <td>95</td>
+      <td>58</td>
+      <td>0</td>
+      <td>90</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将指定列的元素进行替换：to_replace=&#123;列索引：被替换的值&#125;,value=&#x27;value&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(df.replace(to_replace=&#123;<span class="number">5</span>:<span class="number">4</span>&#125;,value=<span class="string">&#x27;Four&#x27;</span>))    <span class="comment"># 将第5列的4替换为‘Four’</span></span><br><span class="line">df.replace(to_replace=&#123;<span class="number">0</span>:<span class="number">4</span>&#125;,value=<span class="string">&#x27;Four&#x27;</span>)   <span class="comment"># 将第0列的4替换为‘Four’</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1   2   3   4     5
+0  15  45   9   1   2    48
+1  47  74  68  90  84  Four
+2  41  30  14  26  22    27
+3   4  64  46  20   8    63
+4  48  80  95  58   0    90
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>15</td>
+      <td>45</td>
+      <td>9</td>
+      <td>1</td>
+      <td>2</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>47</td>
+      <td>74</td>
+      <td>68</td>
+      <td>90</td>
+      <td>84</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>41</td>
+      <td>30</td>
+      <td>14</td>
+      <td>26</td>
+      <td>22</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Four</td>
+      <td>64</td>
+      <td>46</td>
+      <td>20</td>
+      <td>8</td>
+      <td>63</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>48</td>
+      <td>80</td>
+      <td>95</td>
+      <td>58</td>
+      <td>0</td>
+      <td>90</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h2 id="映射操作"><a href="#映射操作" class="headerlink" title="映射操作"></a>映射操作</h2><ul>
+<li>概念：创建一个映射关系列表，把values元素和一个特定的标签或者字符串绑定（给一个元素值提供不同的表现形式）</li>
+<li>创建一个df，两列分别是姓名和薪资，然后给其名字起对应的英文名</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;</span><br><span class="line">    <span class="string">&#x27;name&#x27;</span>:[<span class="string">&#x27;张三&#x27;</span>,<span class="string">&#x27;李四&#x27;</span>,<span class="string">&#x27;张三&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;salary&#x27;</span>:[<span class="number">15000</span>,<span class="number">20000</span>,<span class="number">15000</span>]</span><br><span class="line">&#125;</span><br><span class="line">df = DataFrame(data=dic)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>salary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>张三</td>
+      <td>15000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>李四</td>
+      <td>20000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>张三</td>
+      <td>15000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 映射关系表</span></span><br><span class="line">dic = &#123;</span><br><span class="line">    <span class="string">&#x27;张三&#x27;</span>:<span class="string">&#x27;Tom&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;李四&#x27;</span>:<span class="string">&#x27;Jack&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(df[<span class="string">&#x27;name&#x27;</span>].<span class="built_in">map</span>(dic))  <span class="comment"># map()属于Series的映射函数只能通过Series去调</span></span><br><span class="line">df[<span class="string">&#x27;e_name&#x27;</span>] = df[<span class="string">&#x27;name&#x27;</span>].<span class="built_in">map</span>(dic)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre><code>0     Tom
+1    Jack
+2     Tom
+Name: name, dtype: object
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>salary</th>
+      <th>e_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>张三</td>
+      <td>15000</td>
+      <td>Tom</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>李四</td>
+      <td>20000</td>
+      <td>Jack</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>张三</td>
+      <td>15000</td>
+      <td>Tom</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h2 id="运算工具"><a href="#运算工具" class="headerlink" title="运算工具"></a>运算工具</h2><ul>
+<li>超过3000部分的钱缴纳50%的税，计算每个人的税后薪资</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">after_sal</span>(<span class="params">s</span>):</span>   <span class="comment">#计算s对应的税后薪资</span></span><br><span class="line">    <span class="keyword">return</span> s - (s-<span class="number">3000</span>)*<span class="number">0.5</span></span><br><span class="line">df[<span class="string">&#x27;after_sal&#x27;</span>] = df[<span class="string">&#x27;salary&#x27;</span>].<span class="built_in">map</span>(after_sal) <span class="comment"># 可以将df[&#x27;salary&#x27;]这个Series中每一个元素（薪资）作为参数传递给s</span></span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>salary</th>
+      <th>e_name</th>
+      <th>after_sal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>张三</td>
+      <td>15000</td>
+      <td>Tom</td>
+      <td>9000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>李四</td>
+      <td>20000</td>
+      <td>Jack</td>
+      <td>11500.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>张三</td>
+      <td>15000</td>
+      <td>Tom</td>
+      <td>9000.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 排序实现的随机抽样</span></span><br><span class="line">- take()</span><br><span class="line">- np.random.permutation()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = DataFrame(data=np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">100</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>55</td>
+      <td>52</td>
+      <td>52</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>95</td>
+      <td>33</td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>31</td>
+      <td>72</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>49</td>
+      <td>79</td>
+      <td>65</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>53</td>
+      <td>88</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>38</td>
+      <td>30</td>
+      <td>99</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>83</td>
+      <td>47</td>
+      <td>98</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>61</td>
+      <td>37</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>51</td>
+      <td>97</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>61</td>
+      <td>92</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 3 columns</p>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成乱序的随机序列</span></span><br><span class="line">np.random.permutation(<span class="number">10</span>)   <span class="comment"># 生成0-9的乱序随机序列</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将原始数据打乱</span></span><br><span class="line"><span class="built_in">print</span>(df.take([<span class="number">2</span>,<span class="number">0</span>,<span class="number">1</span>],axis=<span class="number">1</span>))   <span class="comment"># take与drop类似，0表示行，1表示列。并且take不能使用显示索引，只能使用“0，1，2...”隐式索引</span></span><br><span class="line">df.take(np.random.permutation(<span class="number">3</span>),axis=<span class="number">1</span>)    <span class="comment"># 将np.random.permutation()函数引入，按列打乱</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>     C   A   B
+0   52  55  52
+1   80  95  33
+2   31  31  72
+3   65  49  79
+4   23  53  88
+..  ..  ..  ..
+95  99  38  30
+96  98  83  47
+97  37  61  37
+98  48  51  97
+99   7  61  92
+
+[100 rows x 3 columns]
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>C</th>
+      <th>B</th>
+      <th>A</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>52</td>
+      <td>52</td>
+      <td>55</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>80</td>
+      <td>33</td>
+      <td>95</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>31</td>
+      <td>72</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>65</td>
+      <td>79</td>
+      <td>49</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>23</td>
+      <td>88</td>
+      <td>53</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>99</td>
+      <td>30</td>
+      <td>38</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>98</td>
+      <td>47</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>37</td>
+      <td>37</td>
+      <td>61</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>48</td>
+      <td>97</td>
+      <td>51</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>7</td>
+      <td>92</td>
+      <td>61</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 3 columns</p>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.take(np.random.permutation(<span class="number">3</span>),axis=<span class="number">1</span>).take(np.random.permutation(<span class="number">100</span>),axis=<span class="number">0</span>)    <span class="comment"># 行列全部打乱</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>C</th>
+      <th>A</th>
+      <th>B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>25</th>
+      <td>54</td>
+      <td>23</td>
+      <td>65</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>56</td>
+      <td>89</td>
+      <td>46</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>19</td>
+      <td>83</td>
+      <td>61</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>46</td>
+      <td>25</td>
+      <td>65</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>5</td>
+      <td>41</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>4</td>
+      <td>84</td>
+      <td>77</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>48</td>
+      <td>51</td>
+      <td>97</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>92</td>
+      <td>78</td>
+      <td>51</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>60</td>
+      <td>67</td>
+      <td>41</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>90</td>
+      <td>45</td>
+      <td>90</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 3 columns</p>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.take(np.random.permutation(<span class="number">3</span>),axis=<span class="number">1</span>).take(np.random.permutation(<span class="number">100</span>),axis=<span class="number">0</span>)[<span class="number">0</span>:<span class="number">50</span>]  <span class="comment"># 取前50行</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>B</th>
+      <th>C</th>
+      <th>A</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5</th>
+      <td>97</td>
+      <td>33</td>
+      <td>69</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>38</td>
+      <td>89</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>86</td>
+      <td>75</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>72</td>
+      <td>31</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>95</td>
+      <td>95</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>85</td>
+      <td>25</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>80</th>
+      <td>1</td>
+      <td>82</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>51</td>
+      <td>92</td>
+      <td>78</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>58</td>
+      <td>88</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>8</td>
+      <td>83</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>47</td>
+      <td>98</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>77</td>
+      <td>4</td>
+      <td>84</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>90</td>
+      <td>90</td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>79</td>
+      <td>65</td>
+      <td>49</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>56</td>
+      <td>77</td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>99</td>
+      <td>9</td>
+      <td>47</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>92</td>
+      <td>7</td>
+      <td>61</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>79</td>
+      <td>75</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>9</td>
+      <td>15</td>
+      <td>82</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>88</td>
+      <td>23</td>
+      <td>53</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>63</td>
+      <td>43</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>40</td>
+      <td>31</td>
+      <td>91</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>65</td>
+      <td>64</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>97</td>
+      <td>48</td>
+      <td>51</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>50</td>
+      <td>62</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>33</td>
+      <td>23</td>
+      <td>86</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>17</td>
+      <td>79</td>
+      <td>78</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>39</td>
+      <td>64</td>
+      <td>62</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>78</td>
+      <td>39</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>21</td>
+      <td>17</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>93</th>
+      <td>13</td>
+      <td>57</td>
+      <td>43</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>48</td>
+      <td>33</td>
+      <td>87</td>
+    </tr>
+    <tr>
+      <th>74</th>
+      <td>20</td>
+      <td>66</td>
+      <td>49</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>16</td>
+      <td>90</td>
+      <td>64</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>41</td>
+      <td>60</td>
+      <td>67</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>28</td>
+      <td>36</td>
+      <td>59</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>74</td>
+      <td>81</td>
+      <td>76</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>51</td>
+      <td>54</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>6</td>
+      <td>20</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>97</td>
+      <td>56</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>12</td>
+      <td>87</td>
+      <td>69</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>18</td>
+      <td>90</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>23</td>
+      <td>53</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>56</td>
+      <td>82</td>
+      <td>61</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>23</td>
+      <td>61</td>
+      <td>73</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>48</td>
+      <td>99</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>64</td>
+      <td>14</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>64</td>
+      <td>75</td>
+      <td>53</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>3</td>
+      <td>86</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <th>92</th>
+      <td>96</td>
+      <td>45</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h2 id="数据的分类处理"><a href="#数据的分类处理" class="headerlink" title="数据的分类处理"></a>数据的分类处理</h2><ul>
+<li>数据分类处理的核心：<ul>
+<li>groupby()函数</li>
+<li>groups属性查看分组情况</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df = DataFrame(&#123;<span class="string">&#x27;item&#x27;</span>:[<span class="string">&#x27;Apple&#x27;</span>,<span class="string">&#x27;Banana&#x27;</span>,<span class="string">&#x27;Orange&#x27;</span>,<span class="string">&#x27;Banana&#x27;</span>,<span class="string">&#x27;Orange&#x27;</span>,<span class="string">&#x27;Apple&#x27;</span>],</span><br><span class="line">                <span class="string">&#x27;price&#x27;</span>:[<span class="number">4</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">2.5</span>,<span class="number">4</span>,<span class="number">2</span>],</span><br><span class="line">                <span class="string">&#x27;color&#x27;</span>:[<span class="string">&#x27;red&#x27;</span>,<span class="string">&#x27;yellow&#x27;</span>,<span class="string">&#x27;yellow&#x27;</span>,<span class="string">&#x27;green&#x27;</span>,<span class="string">&#x27;green&#x27;</span>,<span class="string">&#x27;green&#x27;</span>],</span><br><span class="line">                <span class="string">&#x27;weight&#x27;</span>:[<span class="number">12</span>,<span class="number">20</span>,<span class="number">50</span>,<span class="number">30</span>,<span class="number">20</span>,<span class="number">44</span>]</span><br><span class="line">&#125;)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>item</th>
+      <th>price</th>
+      <th>color</th>
+      <th>weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Apple</td>
+      <td>4.0</td>
+      <td>red</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Banana</td>
+      <td>3.0</td>
+      <td>yellow</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Orange</td>
+      <td>3.0</td>
+      <td>yellow</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Banana</td>
+      <td>2.5</td>
+      <td>green</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Orange</td>
+      <td>4.0</td>
+      <td>green</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Apple</td>
+      <td>2.0</td>
+      <td>green</td>
+      <td>44</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 水果的种类进行分析</span></span><br><span class="line">df.groupby(by=<span class="string">&#x27;item&#x27;</span>)   <span class="comment"># 三个分组情况在该对象当中</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x000001DBA1507E48&gt;
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看详细的分组情况</span></span><br><span class="line">df.groupby(by=<span class="string">&#x27;item&#x27;</span>).groups</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&#123;&#39;Apple&#39;: [0, 5], &#39;Banana&#39;: [1, 3], &#39;Orange&#39;: [2, 4]&#125;
+</code></pre>
+<ul>
+<li>分组聚合</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 计算出每一种水果的平均价格</span></span><br><span class="line"><span class="built_in">print</span>(df.groupby(<span class="string">&#x27;item&#x27;</span>).mean())    <span class="comment"># 对所有数值型数据取了平均</span></span><br><span class="line">df.groupby(<span class="string">&#x27;item&#x27;</span>)[<span class="string">&#x27;price&#x27;</span>].mean()  <span class="comment"># 只选择价钱做平均</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>        price  weight
+item                 
+Apple    3.00      28
+Banana   2.75      25
+Orange   3.50      35
+
+
+
+
+
+item
+Apple     3.00
+Banana    2.75
+Orange    3.50
+Name: price, dtype: float64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 计算每种颜色对应水果的平均重量</span></span><br><span class="line">df.groupby(<span class="string">&#x27;color&#x27;</span>)[<span class="string">&#x27;weight&#x27;</span>].mean()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>color
+green     31.333333
+red       12.000000
+yellow    35.000000
+Name: weight, dtype: float64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dic = df.groupby(<span class="string">&#x27;color&#x27;</span>)[<span class="string">&#x27;weight&#x27;</span>].mean().to_dict()</span><br><span class="line"><span class="comment"># 将计算出的平均重量汇总到源数据</span></span><br><span class="line"><span class="built_in">print</span>(df[<span class="string">&#x27;color&#x27;</span>].<span class="built_in">map</span>(dic))    <span class="comment"># 此处使用映射将所有颜色对应的数值填充满</span></span><br><span class="line">df[<span class="string">&#x27;mean_w&#x27;</span>] = df[<span class="string">&#x27;color&#x27;</span>].<span class="built_in">map</span>(dic)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre><code>0    12.000000
+1    35.000000
+2    35.000000
+3    31.333333
+4    31.333333
+5    31.333333
+Name: color, dtype: float64
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>item</th>
+      <th>price</th>
+      <th>color</th>
+      <th>weight</th>
+      <th>mean_w</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Apple</td>
+      <td>4.0</td>
+      <td>red</td>
+      <td>12</td>
+      <td>12.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Banana</td>
+      <td>3.0</td>
+      <td>yellow</td>
+      <td>20</td>
+      <td>35.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Orange</td>
+      <td>3.0</td>
+      <td>yellow</td>
+      <td>50</td>
+      <td>35.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Banana</td>
+      <td>2.5</td>
+      <td>green</td>
+      <td>30</td>
+      <td>31.333333</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Orange</td>
+      <td>4.0</td>
+      <td>green</td>
+      <td>20</td>
+      <td>31.333333</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Apple</td>
+      <td>2.0</td>
+      <td>green</td>
+      <td>44</td>
+      <td>31.333333</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h2 id="高级数据聚合"><a href="#高级数据聚合" class="headerlink" title="高级数据聚合"></a>高级数据聚合</h2><ul>
+<li>使用groupby()分组后，也可以使用transform和apply提供自定义函数实现更多的运算</li>
+<li>df.groupby(‘item’)[‘price’].sum() &lt;==&gt; df.groupby(‘item’)[‘price’].apply(sum)</li>
+<li>transform和apply都会进行运算，在transform或者apply中传入函数即可</li>
+<li>transform和apply也可以传入一个lambda表达式</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_mean</span>(<span class="params">s</span>):</span></span><br><span class="line">    m_sum = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">        m_sum += i</span><br><span class="line">    <span class="keyword">return</span> m_sum / <span class="built_in">len</span>(s)</span><br><span class="line">df.groupby(<span class="string">&#x27;item&#x27;</span>)[<span class="string">&#x27;price&#x27;</span>].transform(my_mean)  <span class="comment"># transform返回的经过映射的结果</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>0    3.00
+1    2.75
+2    3.50
+3    2.75
+4    3.50
+5    3.00
+Name: price, dtype: float64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.groupby(<span class="string">&#x27;item&#x27;</span>)[<span class="string">&#x27;price&#x27;</span>].apply(my_mean)  <span class="comment"># apply返回的没有经过映射</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>item
+Apple     3.00
+Banana    2.75
+Orange    3.50
+Name: price, dtype: float64
+</code></pre>
+<h2 id="数据加载"><a href="#数据加载" class="headerlink" title="数据加载"></a>数据加载</h2><ul>
+<li>读取type-.txt文件数据</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = pd.read_csv(<span class="string">&#x27;./data/type-.txt&#x27;</span>)</span><br><span class="line">df  <span class="comment"># 可以看到此处将文件内容当成了索引</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>你好-我好-他也好</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>也许-大概-有可能</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>然而-未必-不见得</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df = pd.read_csv(<span class="string">&#x27;./data/type-.txt&#x27;</span>,header=<span class="literal">None</span>)</span><br><span class="line"><span class="built_in">print</span>(df)  <span class="comment"># 通过header=None读取文件没有索引</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;./data/type-.txt&#x27;</span>,header=<span class="literal">None</span>,sep=<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">df  <span class="comment"># sep为指定分隔符，借此将数据拆分</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>           0
+0  你好-我好-他也好
+1  也许-大概-有可能
+2  然而-未必-不见得
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>你好</td>
+      <td>我好</td>
+      <td>他也好</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>也许</td>
+      <td>大概</td>
+      <td>有可能</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>然而</td>
+      <td>未必</td>
+      <td>不见得</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<ul>
+<li>读取数据库中的数据</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 连接数据库，获取连接对象</span></span><br><span class="line"><span class="keyword">import</span> sqlite3 <span class="keyword">as</span> sqlite3</span><br><span class="line">conn = sqlite3.connect(<span class="string">&#x27;./data/weather_2012.sqlite&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取库表中的数据值</span></span><br><span class="line">sql_df = pd.read_sql(<span class="string">&#x27;select * from weather_2012&#x27;</span>, conn)</span><br><span class="line">sql_df</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>Date/Time</th>
+      <th>Temp (C)</th>
+      <th>Dew Point Temp (C)</th>
+      <th>Rel Hum (%)</th>
+      <th>Wind Spd (km/h)</th>
+      <th>Visibility (km)</th>
+      <th>Stn Press (kPa)</th>
+      <th>Weather</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>2012-01-01 00:00:00</td>
+      <td>-1.8</td>
+      <td>-3.9</td>
+      <td>86.0</td>
+      <td>4.0</td>
+      <td>8.0</td>
+      <td>101.24</td>
+      <td>Fog</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>2012-01-01 01:00:00</td>
+      <td>-1.8</td>
+      <td>-3.7</td>
+      <td>87.0</td>
+      <td>4.0</td>
+      <td>8.0</td>
+      <td>101.24</td>
+      <td>Fog</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.0</td>
+      <td>2012-01-01 02:00:00</td>
+      <td>-1.8</td>
+      <td>-3.4</td>
+      <td>89.0</td>
+      <td>7.0</td>
+      <td>4.0</td>
+      <td>101.26</td>
+      <td>Freezing Drizzle,Fog</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3.0</td>
+      <td>2012-01-01 03:00:00</td>
+      <td>-1.5</td>
+      <td>-3.2</td>
+      <td>88.0</td>
+      <td>6.0</td>
+      <td>4.0</td>
+      <td>101.27</td>
+      <td>Freezing Drizzle,Fog</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4.0</td>
+      <td>2012-01-01 04:00:00</td>
+      <td>-1.5</td>
+      <td>-3.3</td>
+      <td>88.0</td>
+      <td>7.0</td>
+      <td>4.8</td>
+      <td>101.23</td>
+      <td>Fog</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>8781</th>
+      <td>8781.0</td>
+      <td>2012-12-31 21:00:00</td>
+      <td>-0.5</td>
+      <td>-1.5</td>
+      <td>93.0</td>
+      <td>28.0</td>
+      <td>4.8</td>
+      <td>99.95</td>
+      <td>Snow</td>
+    </tr>
+    <tr>
+      <th>8782</th>
+      <td>8782.0</td>
+      <td>2012-12-31 22:00:00</td>
+      <td>-0.2</td>
+      <td>-1.8</td>
+      <td>89.0</td>
+      <td>28.0</td>
+      <td>9.7</td>
+      <td>99.91</td>
+      <td>Snow</td>
+    </tr>
+    <tr>
+      <th>8783</th>
+      <td>8783.0</td>
+      <td>2012-12-31 23:00:00</td>
+      <td>0.0</td>
+      <td>-2.1</td>
+      <td>86.0</td>
+      <td>30.0</td>
+      <td>11.3</td>
+      <td>99.89</td>
+      <td>Snow</td>
+    </tr>
+    <tr>
+      <th>8784</th>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Fog</td>
+    </tr>
+    <tr>
+      <th>8785</th>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Fog</td>
+    </tr>
+  </tbody>
+</table>
+<p>8786 rows × 9 columns</p>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将一个df中的数据值写入存储到db</span></span><br><span class="line">df.to_sql(<span class="string">&#x27;sql_data666&#x27;</span>, conn)</span><br><span class="line">sql_df = pd.read_sql(<span class="string">&#x27;select * from sql_data666&#x27;</span>, conn)</span><br><span class="line">sql_df  <span class="comment"># 写入数据库后进行读取，读取成功</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>你好</td>
+      <td>我好</td>
+      <td>他也好</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>也许</td>
+      <td>大概</td>
+      <td>有可能</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>然而</td>
+      <td>未必</td>
+      <td>不见得</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h2 id="透视表"><a href="#透视表" class="headerlink" title="透视表"></a>透视表</h2><ul>
+<li>透视表是一种可以对数据动态排布并且分类汇总的表格格式。或许大多数人都在Excel使用过数据透视表，也体会到它的强大功能，而在pandas中它被称作pivot_table。</li>
+<li>透视表的优点：<ul>
+<li>灵活性高，可以随意定制你的分析计算要求</li>
+<li>脉络清晰易于理解数据</li>
+<li>操作性强，报表神器</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = pd.read_csv(<span class="string">&#x27;./data/透视表-篮球赛.csv&#x27;</span>,encoding=<span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>对手</th>
+      <th>胜负</th>
+      <th>主客场</th>
+      <th>命中</th>
+      <th>投篮数</th>
+      <th>投篮命中率</th>
+      <th>3分命中率</th>
+      <th>篮板</th>
+      <th>助攻</th>
+      <th>得分</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>勇士</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>10</td>
+      <td>23</td>
+      <td>0.435</td>
+      <td>0.444</td>
+      <td>6</td>
+      <td>11</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>国王</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>8</td>
+      <td>21</td>
+      <td>0.381</td>
+      <td>0.286</td>
+      <td>3</td>
+      <td>9</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>小牛</td>
+      <td>胜</td>
+      <td>主</td>
+      <td>10</td>
+      <td>19</td>
+      <td>0.526</td>
+      <td>0.462</td>
+      <td>3</td>
+      <td>7</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>灰熊</td>
+      <td>负</td>
+      <td>主</td>
+      <td>8</td>
+      <td>20</td>
+      <td>0.400</td>
+      <td>0.250</td>
+      <td>5</td>
+      <td>8</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>76人</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>10</td>
+      <td>20</td>
+      <td>0.500</td>
+      <td>0.250</td>
+      <td>3</td>
+      <td>13</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>黄蜂</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>8</td>
+      <td>18</td>
+      <td>0.444</td>
+      <td>0.400</td>
+      <td>10</td>
+      <td>11</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>灰熊</td>
+      <td>负</td>
+      <td>客</td>
+      <td>6</td>
+      <td>19</td>
+      <td>0.316</td>
+      <td>0.222</td>
+      <td>4</td>
+      <td>8</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>76人</td>
+      <td>负</td>
+      <td>主</td>
+      <td>8</td>
+      <td>21</td>
+      <td>0.381</td>
+      <td>0.429</td>
+      <td>4</td>
+      <td>7</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>尼克斯</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>9</td>
+      <td>23</td>
+      <td>0.391</td>
+      <td>0.353</td>
+      <td>5</td>
+      <td>9</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>老鹰</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>8</td>
+      <td>15</td>
+      <td>0.533</td>
+      <td>0.545</td>
+      <td>3</td>
+      <td>11</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>爵士</td>
+      <td>胜</td>
+      <td>主</td>
+      <td>19</td>
+      <td>25</td>
+      <td>0.760</td>
+      <td>0.875</td>
+      <td>2</td>
+      <td>13</td>
+      <td>56</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>骑士</td>
+      <td>胜</td>
+      <td>主</td>
+      <td>8</td>
+      <td>21</td>
+      <td>0.381</td>
+      <td>0.429</td>
+      <td>11</td>
+      <td>13</td>
+      <td>35</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>灰熊</td>
+      <td>胜</td>
+      <td>主</td>
+      <td>11</td>
+      <td>25</td>
+      <td>0.440</td>
+      <td>0.429</td>
+      <td>4</td>
+      <td>8</td>
+      <td>38</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>步行者</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>9</td>
+      <td>21</td>
+      <td>0.429</td>
+      <td>0.250</td>
+      <td>5</td>
+      <td>15</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>猛龙</td>
+      <td>负</td>
+      <td>主</td>
+      <td>8</td>
+      <td>25</td>
+      <td>0.320</td>
+      <td>0.273</td>
+      <td>6</td>
+      <td>11</td>
+      <td>38</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>太阳</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>12</td>
+      <td>22</td>
+      <td>0.545</td>
+      <td>0.545</td>
+      <td>2</td>
+      <td>7</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>灰熊</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>9</td>
+      <td>20</td>
+      <td>0.450</td>
+      <td>0.500</td>
+      <td>5</td>
+      <td>7</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>掘金</td>
+      <td>胜</td>
+      <td>主</td>
+      <td>6</td>
+      <td>16</td>
+      <td>0.375</td>
+      <td>0.143</td>
+      <td>8</td>
+      <td>9</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>尼克斯</td>
+      <td>胜</td>
+      <td>主</td>
+      <td>12</td>
+      <td>27</td>
+      <td>0.444</td>
+      <td>0.385</td>
+      <td>2</td>
+      <td>10</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>篮网</td>
+      <td>胜</td>
+      <td>主</td>
+      <td>13</td>
+      <td>20</td>
+      <td>0.650</td>
+      <td>0.615</td>
+      <td>10</td>
+      <td>8</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>步行者</td>
+      <td>胜</td>
+      <td>主</td>
+      <td>8</td>
+      <td>22</td>
+      <td>0.364</td>
+      <td>0.333</td>
+      <td>8</td>
+      <td>10</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>湖人</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>13</td>
+      <td>22</td>
+      <td>0.591</td>
+      <td>0.444</td>
+      <td>4</td>
+      <td>9</td>
+      <td>36</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>爵士</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>8</td>
+      <td>19</td>
+      <td>0.421</td>
+      <td>0.333</td>
+      <td>5</td>
+      <td>3</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>开拓者</td>
+      <td>胜</td>
+      <td>客</td>
+      <td>16</td>
+      <td>29</td>
+      <td>0.552</td>
+      <td>0.571</td>
+      <td>8</td>
+      <td>3</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>鹈鹕</td>
+      <td>胜</td>
+      <td>主</td>
+      <td>8</td>
+      <td>16</td>
+      <td>0.500</td>
+      <td>0.400</td>
+      <td>1</td>
+      <td>17</td>
+      <td>26</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h3 id="pivot-table有四个最重要的参数index、values、columns、aggfunc"><a href="#pivot-table有四个最重要的参数index、values、columns、aggfunc" class="headerlink" title="pivot_table有四个最重要的参数index、values、columns、aggfunc"></a>pivot_table有四个最重要的参数index、values、columns、aggfunc</h3><ul>
+<li>index参数：分类汇总的分类条件<ul>
+<li>每个pivot_table必须拥有一个index。如果想查看哈登对阵每个队伍的得分则需要对每一个队进行分类并计算其各类得分的平均值</li>
+</ul>
+</li>
+<li>想看哈登对阵同一对手在不同主客场下的数据，分类条件为对手和主客场</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.pivot_table(index=[<span class="string">&#x27;对手&#x27;</span>,<span class="string">&#x27;主客场&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>3分命中率</th>
+      <th>助攻</th>
+      <th>命中</th>
+      <th>得分</th>
+      <th>投篮命中率</th>
+      <th>投篮数</th>
+      <th>篮板</th>
+    </tr>
+    <tr>
+      <th>对手</th>
+      <th>主客场</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">76人</th>
+      <th>主</th>
+      <td>0.4290</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>29.0</td>
+      <td>0.381</td>
+      <td>21.0</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>客</th>
+      <td>0.2500</td>
+      <td>13.0</td>
+      <td>10.0</td>
+      <td>27.0</td>
+      <td>0.500</td>
+      <td>20.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>勇士</th>
+      <th>客</th>
+      <td>0.4440</td>
+      <td>11.0</td>
+      <td>10.0</td>
+      <td>27.0</td>
+      <td>0.435</td>
+      <td>23.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>国王</th>
+      <th>客</th>
+      <td>0.2860</td>
+      <td>9.0</td>
+      <td>8.0</td>
+      <td>27.0</td>
+      <td>0.381</td>
+      <td>21.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>太阳</th>
+      <th>客</th>
+      <td>0.5450</td>
+      <td>7.0</td>
+      <td>12.0</td>
+      <td>48.0</td>
+      <td>0.545</td>
+      <td>22.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>小牛</th>
+      <th>主</th>
+      <td>0.4620</td>
+      <td>7.0</td>
+      <td>10.0</td>
+      <td>29.0</td>
+      <td>0.526</td>
+      <td>19.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">尼克斯</th>
+      <th>主</th>
+      <td>0.3850</td>
+      <td>10.0</td>
+      <td>12.0</td>
+      <td>37.0</td>
+      <td>0.444</td>
+      <td>27.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>客</th>
+      <td>0.3530</td>
+      <td>9.0</td>
+      <td>9.0</td>
+      <td>31.0</td>
+      <td>0.391</td>
+      <td>23.0</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>开拓者</th>
+      <th>客</th>
+      <td>0.5710</td>
+      <td>3.0</td>
+      <td>16.0</td>
+      <td>48.0</td>
+      <td>0.552</td>
+      <td>29.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>掘金</th>
+      <th>主</th>
+      <td>0.1430</td>
+      <td>9.0</td>
+      <td>6.0</td>
+      <td>21.0</td>
+      <td>0.375</td>
+      <td>16.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">步行者</th>
+      <th>主</th>
+      <td>0.3330</td>
+      <td>10.0</td>
+      <td>8.0</td>
+      <td>29.0</td>
+      <td>0.364</td>
+      <td>22.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>客</th>
+      <td>0.2500</td>
+      <td>15.0</td>
+      <td>9.0</td>
+      <td>26.0</td>
+      <td>0.429</td>
+      <td>21.0</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>湖人</th>
+      <th>客</th>
+      <td>0.4440</td>
+      <td>9.0</td>
+      <td>13.0</td>
+      <td>36.0</td>
+      <td>0.591</td>
+      <td>22.0</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">灰熊</th>
+      <th>主</th>
+      <td>0.3395</td>
+      <td>8.0</td>
+      <td>9.5</td>
+      <td>30.0</td>
+      <td>0.420</td>
+      <td>22.5</td>
+      <td>4.5</td>
+    </tr>
+    <tr>
+      <th>客</th>
+      <td>0.3610</td>
+      <td>7.5</td>
+      <td>7.5</td>
+      <td>24.5</td>
+      <td>0.383</td>
+      <td>19.5</td>
+      <td>4.5</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">爵士</th>
+      <th>主</th>
+      <td>0.8750</td>
+      <td>13.0</td>
+      <td>19.0</td>
+      <td>56.0</td>
+      <td>0.760</td>
+      <td>25.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>客</th>
+      <td>0.3330</td>
+      <td>3.0</td>
+      <td>8.0</td>
+      <td>29.0</td>
+      <td>0.421</td>
+      <td>19.0</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>猛龙</th>
+      <th>主</th>
+      <td>0.2730</td>
+      <td>11.0</td>
+      <td>8.0</td>
+      <td>38.0</td>
+      <td>0.320</td>
+      <td>25.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>篮网</th>
+      <th>主</th>
+      <td>0.6150</td>
+      <td>8.0</td>
+      <td>13.0</td>
+      <td>37.0</td>
+      <td>0.650</td>
+      <td>20.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>老鹰</th>
+      <th>客</th>
+      <td>0.5450</td>
+      <td>11.0</td>
+      <td>8.0</td>
+      <td>29.0</td>
+      <td>0.533</td>
+      <td>15.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>骑士</th>
+      <th>主</th>
+      <td>0.4290</td>
+      <td>13.0</td>
+      <td>8.0</td>
+      <td>35.0</td>
+      <td>0.381</td>
+      <td>21.0</td>
+      <td>11.0</td>
+    </tr>
+    <tr>
+      <th>鹈鹕</th>
+      <th>主</th>
+      <td>0.4000</td>
+      <td>17.0</td>
+      <td>8.0</td>
+      <td>26.0</td>
+      <td>0.500</td>
+      <td>16.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>黄蜂</th>
+      <th>客</th>
+      <td>0.4000</td>
+      <td>11.0</td>
+      <td>8.0</td>
+      <td>27.0</td>
+      <td>0.444</td>
+      <td>18.0</td>
+      <td>10.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<ul>
+<li>values参数：需要对计算的数据进行筛选<ul>
+<li>如果我们只需要哈登在主客场和不同胜负情况下的得分、篮板与助攻三项数据：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.pivot_table(index=[<span class="string">&#x27;主客场&#x27;</span>,<span class="string">&#x27;胜负&#x27;</span>],values=[<span class="string">&#x27;得分&#x27;</span>,<span class="string">&#x27;篮板&#x27;</span>,<span class="string">&#x27;助攻&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>助攻</th>
+      <th>得分</th>
+      <th>篮板</th>
+    </tr>
+    <tr>
+      <th>主客场</th>
+      <th>胜负</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">主</th>
+      <th>胜</th>
+      <td>10.555556</td>
+      <td>34.222222</td>
+      <td>5.444444</td>
+    </tr>
+    <tr>
+      <th>负</th>
+      <td>8.666667</td>
+      <td>29.666667</td>
+      <td>5.000000</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">客</th>
+      <th>胜</th>
+      <td>9.000000</td>
+      <td>32.000000</td>
+      <td>4.916667</td>
+    </tr>
+    <tr>
+      <th>负</th>
+      <td>8.000000</td>
+      <td>20.000000</td>
+      <td>4.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<ul>
+<li>Aggfunc参数：设置我们对数据聚合时进行的函数操作<ul>
+<li>当我们未设置aggfunc时，它默认aggfunc=’mean’计算均值。</li>
+</ul>
+</li>
+<li>还想获得james harden在主客场和不同胜负情况下的总得分、总篮板、总助攻时：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.pivot_table(index=[<span class="string">&#x27;主客场&#x27;</span>,<span class="string">&#x27;胜负&#x27;</span>],values=[<span class="string">&#x27;得分&#x27;</span>,<span class="string">&#x27;篮板&#x27;</span>,<span class="string">&#x27;助攻&#x27;</span>],aggfunc=<span class="string">&#x27;sum&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>助攻</th>
+      <th>得分</th>
+      <th>篮板</th>
+    </tr>
+    <tr>
+      <th>主客场</th>
+      <th>胜负</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">主</th>
+      <th>胜</th>
+      <td>95</td>
+      <td>308</td>
+      <td>49</td>
+    </tr>
+    <tr>
+      <th>负</th>
+      <td>26</td>
+      <td>89</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">客</th>
+      <th>胜</th>
+      <td>108</td>
+      <td>384</td>
+      <td>59</td>
+    </tr>
+    <tr>
+      <th>负</th>
+      <td>8</td>
+      <td>20</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<ul>
+<li>Columns:可以设置列层次字段<ul>
+<li>对values字段进行分类</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取所有队主客场的总得分</span></span><br><span class="line">df.pivot_table(index=[<span class="string">&#x27;主客场&#x27;</span>],values=[<span class="string">&#x27;得分&#x27;</span>],aggfunc=<span class="string">&#x27;sum&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>得分</th>
+    </tr>
+    <tr>
+      <th>主客场</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>主</th>
+      <td>397</td>
+    </tr>
+    <tr>
+      <th>客</th>
+      <td>404</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取每个队主客场的总得分（在总得分的基础上又进行了对手的分类）</span></span><br><span class="line">df.pivot_table(index=[<span class="string">&#x27;主客场&#x27;</span>],values=[<span class="string">&#x27;得分&#x27;</span>],columns=<span class="string">&#x27;对手&#x27;</span>,aggfunc=<span class="string">&#x27;sum&#x27;</span>,fill_value=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead tr th &#123;
+    text-align: left;
+&#125;
+
+.dataframe thead tr:last-of-type th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="18" halign="left">得分</th>
+    </tr>
+    <tr>
+      <th>对手</th>
+      <th>76人</th>
+      <th>勇士</th>
+      <th>国王</th>
+      <th>太阳</th>
+      <th>小牛</th>
+      <th>尼克斯</th>
+      <th>开拓者</th>
+      <th>掘金</th>
+      <th>步行者</th>
+      <th>湖人</th>
+      <th>灰熊</th>
+      <th>爵士</th>
+      <th>猛龙</th>
+      <th>篮网</th>
+      <th>老鹰</th>
+      <th>骑士</th>
+      <th>鹈鹕</th>
+      <th>黄蜂</th>
+    </tr>
+    <tr>
+      <th>主客场</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>主</th>
+      <td>29</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>29</td>
+      <td>37</td>
+      <td>0</td>
+      <td>21</td>
+      <td>29</td>
+      <td>0</td>
+      <td>60</td>
+      <td>56</td>
+      <td>38</td>
+      <td>37</td>
+      <td>0</td>
+      <td>35</td>
+      <td>26</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>客</th>
+      <td>27</td>
+      <td>27</td>
+      <td>27</td>
+      <td>48</td>
+      <td>0</td>
+      <td>31</td>
+      <td>48</td>
+      <td>0</td>
+      <td>26</td>
+      <td>36</td>
+      <td>49</td>
+      <td>29</td>
+      <td>0</td>
+      <td>0</td>
+      <td>29</td>
+      <td>0</td>
+      <td>0</td>
+      <td>27</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h2 id="交叉表"><a href="#交叉表" class="headerlink" title="交叉表"></a>交叉表</h2><ul>
+<li>是一种用于计算分组的特殊透视图，对数据进行汇总</li>
+<li>pd.crosstab(index,columns)<ul>
+<li>index:分组数据，交叉表的行索引</li>
+<li>columns:交叉表的列索引</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df = DataFrame(&#123;<span class="string">&#x27;sex&#x27;</span>:[<span class="string">&#x27;man&#x27;</span>,<span class="string">&#x27;man&#x27;</span>,<span class="string">&#x27;women&#x27;</span>,<span class="string">&#x27;women&#x27;</span>,<span class="string">&#x27;man&#x27;</span>,<span class="string">&#x27;women&#x27;</span>,<span class="string">&#x27;man&#x27;</span>,<span class="string">&#x27;women&#x27;</span>,<span class="string">&#x27;women&#x27;</span>],</span><br><span class="line">                <span class="string">&#x27;age&#x27;</span>:[<span class="number">15</span>,<span class="number">23</span>,<span class="number">25</span>,<span class="number">17</span>,<span class="number">35</span>,<span class="number">57</span>,<span class="number">24</span>,<span class="number">31</span>,<span class="number">22</span>],</span><br><span class="line">                <span class="string">&#x27;smoke&#x27;</span>:[<span class="literal">True</span>,<span class="literal">False</span>,<span class="literal">False</span>,<span class="literal">True</span>,<span class="literal">True</span>,<span class="literal">False</span>,<span class="literal">False</span>,<span class="literal">True</span>,<span class="literal">False</span>],</span><br><span class="line">                <span class="string">&#x27;height&#x27;</span>:[<span class="number">168</span>,<span class="number">179</span>,<span class="number">181</span>,<span class="number">166</span>,<span class="number">173</span>,<span class="number">178</span>,<span class="number">188</span>,<span class="number">190</span>,<span class="number">160</span>]</span><br><span class="line">&#125;)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sex</th>
+      <th>age</th>
+      <th>smoke</th>
+      <th>height</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>man</td>
+      <td>15</td>
+      <td>True</td>
+      <td>168</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>man</td>
+      <td>23</td>
+      <td>False</td>
+      <td>179</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>women</td>
+      <td>25</td>
+      <td>False</td>
+      <td>181</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>women</td>
+      <td>17</td>
+      <td>True</td>
+      <td>166</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>man</td>
+      <td>35</td>
+      <td>True</td>
+      <td>173</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>women</td>
+      <td>57</td>
+      <td>False</td>
+      <td>178</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>man</td>
+      <td>24</td>
+      <td>False</td>
+      <td>188</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>women</td>
+      <td>31</td>
+      <td>True</td>
+      <td>190</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>women</td>
+      <td>22</td>
+      <td>False</td>
+      <td>160</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<ul>
+<li>求出各个性别抽烟的人数</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.crosstab(df.smoke,df.sex)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>sex</th>
+      <th>man</th>
+      <th>women</th>
+    </tr>
+    <tr>
+      <th>smoke</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>False</th>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>True</th>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<ul>
+<li>求出各个年龄段抽烟人情况</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.crosstab(df.age,df.smoke)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>smoke</th>
+      <th>False</th>
+      <th>True</th>
+    </tr>
+    <tr>
+      <th>age</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>15</th>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://woody0819.github.io/2021/05/25/test_6/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2021/05/19/test_1/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">股票分析</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "Q0bUd4kz7kv9o8cLXDqyYijd-gzGzoHsz",
+    app_key: "3xet4X44IIsU9kGHHuQiOa4B",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+    enableQQ: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Woody
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="Woody"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://woody0819.lofter.com/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/guestbook">留言</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+  </div>
+</body>
+
+</html>

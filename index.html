@@ -140,6 +140,89 @@
     
     
     <article
+  id="post-test_6"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/05/25/test_6/"
+    >Pandas一些高级操作</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/25/test_6/" class="article-date">
+  <time datetime="2021-05-25T11:14:36.892Z" itemprop="datePublished">2021-05-25</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Pandas中的一些高级操作</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br></pre></td></tr></table></figure>
+
+<h2 id="替换操作"><a href="#替换操作" class="headerlink" title="替换操作"></a>替换操作</h2><ul>
+<li>替换操作可以同步作用于Series和DataFrame中</li>
+<li>单值替换<ul>
+<li>普通替换：替换所有符合要求的元素：to_replace=15,value=’e’</li>
+<li>按列指定单值替换：to_replace={列标签：替换值},value=’value’</li>
+</ul>
+</li>
+<li>多值替换<ul>
+<li>列表替换：to_replace=[],value=[]</li>
+<li>字典替换（推荐）：to_replace={to_replace:value,to_replace:value}</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = DataFrame(data=np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">5</span>,<span class="number">6</span>)))</span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1   2   3   4   5
+0  15  45   9   1   2  48
+1  47  74  68  90  84   4
+2  41  30  14  26  22  27
+3   4  64  46  20   8  63
+4  48  80  95  58   0  90
+</code></pre> 
+      <a class="article-more-link" href="/2021/05/25/test_6/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-test_1"
   class="article article-type-post"
   itemscope
