@@ -101,7 +101,7 @@
        
   <h1 id="需求：股票分析"><a href="#需求：股票分析" class="headerlink" title="需求：股票分析"></a>需求：股票分析</h1><p>1.使用tushare包获取某股票的历史行情数据<br>2.输出该股票所有收盘比开盘上涨3%以上的日期<br>3.输出该股票所有开盘比前日收盘跌幅超2%的日期<br>4.假如从2017年1月1日开始，每月第一个交易日买入1手股票，每年最后一个交易日卖出所有股票，迄今为止收益如何？</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
-
+<span id="more"></span>
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df = ts.get_k_data(code=<span class="string">&#x27;600519&#x27;</span>,start=<span class="string">&#x27;2015-01-01&#x27;</span>)</span><br><span class="line">df.to_csv(<span class="string">&#x27;moutai.csv&#x27;</span>)</span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;moutai.csv&#x27;</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
 
