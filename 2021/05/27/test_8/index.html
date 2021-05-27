@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>绘图 matplotlib |  Woody</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+    <link rel="alternate" href="/atom.xml" title="Woody" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-test_8"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  绘图 matplotlib
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/27/test_8/" class="article-date">
+  <time datetime="2021-05-27T03:58:27.836Z" itemprop="datePublished">2021-05-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">1.2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">6 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="plt-plot-绘制线性图"><a href="#plt-plot-绘制线性图" class="headerlink" title="plt.plot()绘制线性图"></a>plt.plot()绘制线性图</h2><ul>
+<li>绘制单条线形图</li>
+<li>绘制多条线形图</li>
+<li>设置坐标系的比例</li>
+<li>设置图例legend()</li>
+<li>设置轴的标识</li>
+<li>图例保存</li>
+<li>曲线的样式和风格</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># 绘制单条线形图</span></span><br><span class="line">x = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</span><br><span class="line">y = x + <span class="number">3</span></span><br><span class="line">plt.plot(x,y)</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x1d441b225f8&gt;]
+</code></pre>
+<p><img src="https://wx3.sinaimg.cn/large/006nxkHvly1gqwv7alh4qj30ac06waa1.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 绘制多条线形图</span></span><br><span class="line">plt.plot(x,y)</span><br><span class="line">plt.plot(x+<span class="number">1</span>,y-<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x1d4419feb38&gt;]
+</code></pre>
+<p><img src="https://wx1.sinaimg.cn/large/006nxkHvly1gqwv7aju1rj30a206wdft.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x,y,x+<span class="number">1</span>,y-<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x1d441abb2b0&gt;,
+ &lt;matplotlib.lines.Line2D at 0x1d441abb3c8&gt;]
+</code></pre>
+<p><img src="https://wx2.sinaimg.cn/mw1024/006nxkHvly1gqwv7ak3j3j60a206wdft02.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置坐标系的比例plt.figure(figsize=(a,b))</span></span><br><span class="line">plt.figure(figsize=(<span class="number">5</span>,<span class="number">9</span>))   <span class="comment"># 放置在绘图的plot方法之前</span></span><br><span class="line">plt.plot(x,y)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x1d441beef98&gt;]
+</code></pre>
+<p><img src="https://wx2.sinaimg.cn/mw1024/006nxkHvly1gqwv7ajs7xj308s0egglo.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置图例legend()</span></span><br><span class="line">plt.plot(x,y,label=<span class="string">&#x27;x,y&#x27;</span>)</span><br><span class="line">plt.plot(x+<span class="number">1</span>,y-<span class="number">2</span>,label=<span class="string">&#x27;x+1,y-2&#x27;</span>)</span><br><span class="line">plt.legend()    <span class="comment"># 图例生效</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;matplotlib.legend.Legend at 0x1d441c6f780&gt;
+</code></pre>
+<p><img src="https://wx3.sinaimg.cn/mw1024/006nxkHvly1gqwv7ajyhrj30a206wdfu.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置轴的标识</span></span><br><span class="line">plt.plot(x,y)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;temp&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;dist&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;dist&amp;temp&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>Text(0.5, 1.0, &#39;dist&amp;temp&#39;)
+</code></pre>
+<p><img src="https://wx2.sinaimg.cn/mw1024/006nxkHvly1gqwv7ajvjvj30aq07qwei.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 图例保存</span></span><br><span class="line">fig = plt.figure()  <span class="comment"># 该对象的创建一定要放置在plot绘图之前</span></span><br><span class="line">plt.plot(x,y,label=<span class="string">&#x27;x,y&#x27;</span>)</span><br><span class="line">fig.savefig(<span class="string">&#x27;./123.png&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://wx3.sinaimg.cn/mw1024/006nxkHvly1gqwv7altruj30ac06waa1.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 曲线的样式和风格资料很多，相关参数设置可自行查询按需更改</span></span><br><span class="line">plt.plot(x,y,c=<span class="string">&#x27;red&#x27;</span>,alpha=<span class="number">0.5</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x1d441dc6eb8&gt;]
+</code></pre>
+<p><img src="https://wx4.sinaimg.cn/mw1024/006nxkHvly1gqwv7an46bj30ac06w0so.jpg"></p>
+<h2 id="柱状图：plt-bar"><a href="#柱状图：plt-bar" class="headerlink" title="柱状图：plt.bar()"></a>柱状图：plt.bar()</h2><ul>
+<li>参数：第一个参数是索引。第二个参数是数据值。第三个参数是条形的宽度</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.bar(x,y)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;BarContainer object of 5 artists&gt;
+</code></pre>
+<p><img src="https://wx3.sinaimg.cn/mw1024/006nxkHvly1gqwv7ap9zxj30a206w3yb.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.barh(x,y)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;BarContainer object of 5 artists&gt;
+</code></pre>
+<p><img src="https://wx2.sinaimg.cn/mw690/006nxkHvly1gqwv7ky9fhj30a206w0sj.jpg"></p>
+<h2 id="直方图"><a href="#直方图" class="headerlink" title="直方图"></a>直方图</h2><ul>
+<li>是一个特殊的柱状图，又叫做密度图</li>
+<li>plt.hist()的参数<ul>
+<li>bins<br>可以是一个bin数量的整数值，也可以是表示bin的一个序列。默认值为10</li>
+<li>normed<br>如果值为True，直方图的值将进行归一化处理，形成概率密度，默认值为False</li>
+<li>color<br>指定直方图的颜色。可以是单一颜色值或颜色的序列。如果指定了多个数据集合,例如DataFrame对象，颜色序列将会设置为相同的顺序。如果未指定，将会使用一个默认的线条颜色</li>
+<li>orientation<br>通过设置orientation为horizontal创建水平直方图。默认值为vertical</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">6</span>,<span class="number">6</span>,<span class="number">6</span>,<span class="number">6</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>]</span><br><span class="line">plt.hist(data,bins=<span class="number">20</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(array([1., 0., 2., 0., 3., 0., 1., 0., 1., 0., 0., 1., 0., 6., 0., 1., 0.,
+        1., 0., 1.]),
+ array([0.  , 0.45, 0.9 , 1.35, 1.8 , 2.25, 2.7 , 3.15, 3.6 , 4.05, 4.5 ,
+        4.95, 5.4 , 5.85, 6.3 , 6.75, 7.2 , 7.65, 8.1 , 8.55, 9.  ]),
+ &lt;a list of 20 Patch objects&gt;)
+</code></pre>
+<p><img src="https://wx4.sinaimg.cn/mw690/006nxkHvly1gqwv7kxaxzj30a206wt8i.jpg"></p>
+<h2 id="饼图"><a href="#饼图" class="headerlink" title="饼图"></a>饼图</h2><ul>
+<li>pie()，饼图也只有一个参数x</li>
+<li>饼图适合展示各部分占总体的比例，条形图适合比较各部分的大小</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr=[<span class="number">11</span>,<span class="number">22</span>,<span class="number">31</span>,<span class="number">15</span>]</span><br><span class="line">plt.pie(arr)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>([&lt;matplotlib.patches.Wedge at 0x1d441a7bb00&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441aefef0&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441aef8d0&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441abbdd8&gt;],
+ [Text(0.9964244374501308, 0.46598105160209097, &#39;&#39;),
+  Text(-0.19579764419425466, 1.0824339622018426, &#39;&#39;),
+  Text(-0.830021124093439, -0.7218482759961848, &#39;&#39;),
+  Text(0.9100343885615038, -0.617929940717789, &#39;&#39;)])
+</code></pre>
+<p><img src="https://wx1.sinaimg.cn/mw690/006nxkHvly1gqwv7kxnp0j306f06f746.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr=[<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.1</span>]</span><br><span class="line">plt.pie(arr)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>([&lt;matplotlib.patches.Wedge at 0x1d441b6fdd8&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441a72630&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441c0e5c0&gt;],
+ [Text(0.8899186877588753, 0.6465637858537406, &#39;&#39;),
+  Text(-0.64656382751384, 0.8899186574910392, &#39;&#39;),
+  Text(-1.0461621345079049, -0.3399187966586502, &#39;&#39;)])
+</code></pre>
+<p><img src="https://wx1.sinaimg.cn/mw690/006nxkHvly1gqwv7ky8nyj306f06fweb.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr=[<span class="number">11</span>,<span class="number">22</span>,<span class="number">31</span>,<span class="number">15</span>]</span><br><span class="line">plt.pie(arr,labels=[<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>,<span class="string">&#x27;d&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>([&lt;matplotlib.patches.Wedge at 0x1d441d3a4a8&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441cd02e8&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441d24748&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441d24b00&gt;],
+ [Text(0.9964244374501308, 0.46598105160209097, &#39;a&#39;),
+  Text(-0.19579764419425466, 1.0824339622018426, &#39;b&#39;),
+  Text(-0.830021124093439, -0.7218482759961848, &#39;c&#39;),
+  Text(0.9100343885615038, -0.617929940717789, &#39;d&#39;)])
+</code></pre>
+<p><img src="https://wx3.sinaimg.cn/mw690/006nxkHvly1gqwv7kykdxj306f06fgli.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr=[<span class="number">11</span>,<span class="number">22</span>,<span class="number">31</span>,<span class="number">15</span>]</span><br><span class="line">plt.pie(arr,labels=[<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>,<span class="string">&#x27;d&#x27;</span>],labeldistance=<span class="number">0.3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>([&lt;matplotlib.patches.Wedge at 0x1d441e3ebe0&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441f0a588&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441f0aa90&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d441e782e8&gt;],
+ [Text(0.2717521193045811, 0.1270857413460248, &#39;a&#39;),
+  Text(-0.05339935750752399, 0.29520926241868434, &#39;b&#39;),
+  Text(-0.2263693974800288, -0.1968677116353231, &#39;c&#39;),
+  Text(0.24819119688041008, -0.16852634746848788, &#39;d&#39;)])
+</code></pre>
+<p><img src="https://wx3.sinaimg.cn/mw690/006nxkHvly1gqwv7ky77nj306f06fq2u.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr=[<span class="number">11</span>,<span class="number">22</span>,<span class="number">31</span>,<span class="number">15</span>]</span><br><span class="line">plt.pie(arr,labels=[<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>,<span class="string">&#x27;d&#x27;</span>],labeldistance=<span class="number">0.3</span>,autopct=<span class="string">&#x27;%.6f%%&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>([&lt;matplotlib.patches.Wedge at 0x1d44201f908&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d44202f0b8&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d44202f7f0&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d44202ff28&gt;],
+ [Text(0.2717521193045811, 0.1270857413460248, &#39;a&#39;),
+  Text(-0.05339935750752399, 0.29520926241868434, &#39;b&#39;),
+  Text(-0.2263693974800288, -0.1968677116353231, &#39;c&#39;),
+  Text(0.24819119688041008, -0.16852634746848788, &#39;d&#39;)],
+ [Text(0.5435042386091622, 0.2541714826920496, &#39;13.924050%&#39;),
+  Text(-0.10679871501504798, 0.5904185248373687, &#39;27.848101%&#39;),
+  Text(-0.4527387949600576, -0.3937354232706462, &#39;39.240506%&#39;),
+  Text(0.49638239376082016, -0.33705269493697576, &#39;18.987341%&#39;)])
+</code></pre>
+<p><img src="https://wx2.sinaimg.cn/mw690/006nxkHvly1gqwv7l5ghxj306f06faa3.jpg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr=[<span class="number">11</span>,<span class="number">22</span>,<span class="number">31</span>,<span class="number">15</span>]</span><br><span class="line">plt.pie(arr,labels=[<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>,<span class="string">&#x27;d&#x27;</span>],labeldistance=<span class="number">0.3</span>,shadow=<span class="literal">True</span>,explode=[<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.2</span>,<span class="number">0.4</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>([&lt;matplotlib.patches.Wedge at 0x1d44207b278&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d44207ba58&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d442089240&gt;,
+  &lt;matplotlib.patches.Wedge at 0x1d4420899e8&gt;],
+ [Text(0.4529201988409685, 0.21180956891004132, &#39;a&#39;),
+  Text(-0.10679871501504798, 0.5904185248373687, &#39;b&#39;),
+  Text(-0.37728232913338133, -0.32811285272553853, &#39;c&#39;),
+  Text(0.579112792720957, -0.3932281440931384, &#39;d&#39;)])
+</code></pre>
+<p><img src="https://wx1.sinaimg.cn/mw690/006nxkHvly1gqwv7l0dqhj306m06k0ss.jpg"></p>
+<h2 id="散点图scatter"><a href="#散点图scatter" class="headerlink" title="散点图scatter()"></a>散点图scatter()</h2><ul>
+<li>因变量随自变量而变化的大致趋势</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = np.array([<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span>])</span><br><span class="line">y = x ** <span class="number">2</span> - <span class="number">3</span></span><br><span class="line">plt.scatter(x,y)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;matplotlib.collections.PathCollection at 0x1d4420c7ba8&gt;
+</code></pre>
+<p><img src="https://wx1.sinaimg.cn/mw690/006nxkHvly1gqwv7l16z4j30a806wmx0.jpg"></p>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://woody0819.github.io/2021/05/27/test_8/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/05/27/test_9/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            用户消费记录数据分析案例
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/05/27/test_7/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">2012美国大选献金项目数据分析案例</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "Q0bUd4kz7kv9o8cLXDqyYijd-gzGzoHsz",
+    app_key: "3xet4X44IIsU9kGHHuQiOa4B",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+    enableQQ: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Woody
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="Woody"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://woody0819.lofter.com/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/guestbook">留言</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+  </div>
+</body>
+
+</html>

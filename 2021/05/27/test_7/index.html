@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>2012美国大选献金项目数据分析案例 |  Woody</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+    <link rel="alternate" href="/atom.xml" title="Woody" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-test_7"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  2012美国大选献金项目数据分析案例
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/27/test_7/" class="article-date">
+  <time datetime="2021-05-27T03:58:00.508Z" itemprop="datePublished">2021-05-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">2.7k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">14 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ul>
+<li>加载数据</li>
+<li>查看数据的基本信息</li>
+<li>指定数据截取，将如下字段的数据进行提取，其他数据舍弃<ul>
+<li>cand_nm ：候选人姓名</li>
+<li>contbr_nm ： 捐赠人姓名</li>
+<li>contbr_st ：捐赠人所在州</li>
+<li>contbr_employer ： 捐赠人所在公司</li>
+<li>contbr_occupation ： 捐赠人职业</li>
+<li>contb_receipt_amt ：捐赠数额（美元）</li>
+<li>contb_receipt_dt ： 捐款的日期</li>
+</ul>
+</li>
+<li>对新数据进行总览,查看是否存在缺失数据</li>
+<li>用统计学指标快速描述数值型属性的概要</li>
+<li>空值处理，可能因为忘记填写或者保密等等原因，相关字段出现了空值，将其填充为NOT PROVIDE</li>
+<li>异常值处理，将捐款金额&lt;=0的数据删除</li>
+<li>新建一列为各个候选人所在党派party</li>
+<li>查看party这一列中有哪些不同的元素</li>
+<li>统计party列中各个元素出现次数</li>
+<li>查看各个党派收到的政治献金总数contb_receipt_amt</li>
+<li>查看具体每天各个党派收到的政治献金总数contb_receipt_amt</li>
+<li>将表中日期格式转换为’yyyy-mm-dd’</li>
+<li>查看老兵(捐献者职业)DISABLED VETERAN主要支持谁</li>
+</ul>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;./data/usa_election.txt&#x27;</span>)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre><code>C:\Users\86156\.conda\envs\DL\lib\site-packages\IPython\core\interactiveshell.py:2714: DtypeWarning: Columns (6) have mixed types.Specify dtype option on import or set low_memory=False.
+  interactivity=interactivity, compiler=compiler, result=result)
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cmte_id</th>
+      <th>cand_id</th>
+      <th>cand_nm</th>
+      <th>contbr_nm</th>
+      <th>contbr_city</th>
+      <th>contbr_st</th>
+      <th>contbr_zip</th>
+      <th>contbr_employer</th>
+      <th>contbr_occupation</th>
+      <th>contb_receipt_amt</th>
+      <th>contb_receipt_dt</th>
+      <th>receipt_desc</th>
+      <th>memo_cd</th>
+      <th>memo_text</th>
+      <th>form_tp</th>
+      <th>file_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>HARVEY, WILLIAM</td>
+      <td>MOBILE</td>
+      <td>AL</td>
+      <td>3.6601e+08</td>
+      <td>RETIRED</td>
+      <td>RETIRED</td>
+      <td>250.0</td>
+      <td>20-JUN-11</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>SA17A</td>
+      <td>736166</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>HARVEY, WILLIAM</td>
+      <td>MOBILE</td>
+      <td>AL</td>
+      <td>3.6601e+08</td>
+      <td>RETIRED</td>
+      <td>RETIRED</td>
+      <td>50.0</td>
+      <td>23-JUN-11</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>SA17A</td>
+      <td>736166</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>SMITH, LANIER</td>
+      <td>LANETT</td>
+      <td>AL</td>
+      <td>3.68633e+08</td>
+      <td>INFORMATION REQUESTED</td>
+      <td>INFORMATION REQUESTED</td>
+      <td>250.0</td>
+      <td>05-JUL-11</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>SA17A</td>
+      <td>749073</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>BLEVINS, DARONDA</td>
+      <td>PIGGOTT</td>
+      <td>AR</td>
+      <td>7.24548e+08</td>
+      <td>NONE</td>
+      <td>RETIRED</td>
+      <td>250.0</td>
+      <td>01-AUG-11</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>SA17A</td>
+      <td>749073</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>WARDENBURG, HAROLD</td>
+      <td>HOT SPRINGS NATION</td>
+      <td>AR</td>
+      <td>7.19016e+08</td>
+      <td>NONE</td>
+      <td>RETIRED</td>
+      <td>300.0</td>
+      <td>20-JUN-11</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>SA17A</td>
+      <td>736166</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>536036</th>
+      <td>C00500587</td>
+      <td>P20003281</td>
+      <td>Perry, Rick</td>
+      <td>ANDERSON, MARILEE MRS.</td>
+      <td>INFO REQUESTED</td>
+      <td>XX</td>
+      <td>99999</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>2500.0</td>
+      <td>31-AUG-11</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>SA17A</td>
+      <td>751678</td>
+    </tr>
+    <tr>
+      <th>536037</th>
+      <td>C00500587</td>
+      <td>P20003281</td>
+      <td>Perry, Rick</td>
+      <td>TOLBERT, DARYL MR.</td>
+      <td>INFO REQUESTED</td>
+      <td>XX</td>
+      <td>99999</td>
+      <td>T.A.C.C.</td>
+      <td>LONGWALL MAINTENANCE FOREMAN</td>
+      <td>500.0</td>
+      <td>30-SEP-11</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>SA17A</td>
+      <td>751678</td>
+    </tr>
+    <tr>
+      <th>536038</th>
+      <td>C00500587</td>
+      <td>P20003281</td>
+      <td>Perry, Rick</td>
+      <td>GRANE, BRYAN F. MR.</td>
+      <td>INFO REQUESTED</td>
+      <td>XX</td>
+      <td>99999</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>500.0</td>
+      <td>29-SEP-11</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>SA17A</td>
+      <td>751678</td>
+    </tr>
+    <tr>
+      <th>536039</th>
+      <td>C00500587</td>
+      <td>P20003281</td>
+      <td>Perry, Rick</td>
+      <td>DUFFY, DAVID A. MR.</td>
+      <td>INFO REQUESTED</td>
+      <td>XX</td>
+      <td>99999</td>
+      <td>DUFFY EQUIPMENT COMPANY INC.</td>
+      <td>BUSINESS OWNER</td>
+      <td>2500.0</td>
+      <td>30-SEP-11</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>SA17A</td>
+      <td>751678</td>
+    </tr>
+    <tr>
+      <th>536040</th>
+      <td>C00500587</td>
+      <td>P20003281</td>
+      <td>Perry, Rick</td>
+      <td>GORMAN, CHRIS D. MR.</td>
+      <td>INFO REQUESTED</td>
+      <td>XX</td>
+      <td>99999</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>5000.0</td>
+      <td>29-SEP-11</td>
+      <td>REATTRIBUTION / REDESIGNATION REQUESTED (AUTOM...</td>
+      <td>NaN</td>
+      <td>REATTRIBUTION / REDESIGNATION REQUESTED (AUTOM...</td>
+      <td>SA17A</td>
+      <td>751678</td>
+    </tr>
+  </tbody>
+</table>
+<p>536041 rows × 16 columns</p>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定数据截取</span></span><br><span class="line">df[<span class="string">&#x27;cand_nm&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>0         Bachmann, Michelle
+1         Bachmann, Michelle
+2         Bachmann, Michelle
+3         Bachmann, Michelle
+4         Bachmann, Michelle
+                 ...        
+536036           Perry, Rick
+536037           Perry, Rick
+536038           Perry, Rick
+536039           Perry, Rick
+536040           Perry, Rick
+Name: cand_nm, Length: 536041, dtype: object
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看数据的基本信息，是否存在缺失数据</span></span><br><span class="line">df.info()   <span class="comment"># 可以看到并非所有列都是536041，即这些列有空值</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 536041 entries, 0 to 536040
+Data columns (total 16 columns):
+ #   Column             Non-Null Count   Dtype  
+---  ------             --------------   -----  
+ 0   cmte_id            536041 non-null  object 
+ 1   cand_id            536041 non-null  object 
+ 2   cand_nm            536041 non-null  object 
+ 3   contbr_nm          536041 non-null  object 
+ 4   contbr_city        536026 non-null  object 
+ 5   contbr_st          536040 non-null  object 
+ 6   contbr_zip         535973 non-null  object 
+ 7   contbr_employer    525088 non-null  object 
+ 8   contbr_occupation  530520 non-null  object 
+ 9   contb_receipt_amt  536041 non-null  float64
+ 10  contb_receipt_dt   536041 non-null  object 
+ 11  receipt_desc       8479 non-null    object 
+ 12  memo_cd            49718 non-null   object 
+ 13  memo_text          52740 non-null   object 
+ 14  form_tp            536041 non-null  object 
+ 15  file_num           536041 non-null  int64  
+dtypes: float64(1), int64(1), object(14)
+memory usage: 65.4+ MB
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用统计学指标快速描述数值型属性的概要</span></span><br><span class="line">df.describe()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>contb_receipt_amt</th>
+      <th>file_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>5.360410e+05</td>
+      <td>536041.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>3.750373e+02</td>
+      <td>761472.107800</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>3.564436e+03</td>
+      <td>5148.893508</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-3.080000e+04</td>
+      <td>723511.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>5.000000e+01</td>
+      <td>756218.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>1.000000e+02</td>
+      <td>763233.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2.500000e+02</td>
+      <td>763621.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.944042e+06</td>
+      <td>767394.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 空值处理。可能因为忘记填写或者保密等等原因，相关字段出现了空值，将其填充为NOT PROVIDE</span></span><br><span class="line">df.fillna(value=<span class="string">&#x27;NOT PROVIDE&#x27;</span>,inplace=<span class="literal">True</span>)</span><br><span class="line">df.info()   <span class="comment"># 可以观察到已经没有空值</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 536041 entries, 0 to 536040
+Data columns (total 16 columns):
+ #   Column             Non-Null Count   Dtype  
+---  ------             --------------   -----  
+ 0   cmte_id            536041 non-null  object 
+ 1   cand_id            536041 non-null  object 
+ 2   cand_nm            536041 non-null  object 
+ 3   contbr_nm          536041 non-null  object 
+ 4   contbr_city        536041 non-null  object 
+ 5   contbr_st          536041 non-null  object 
+ 6   contbr_zip         536041 non-null  object 
+ 7   contbr_employer    536041 non-null  object 
+ 8   contbr_occupation  536041 non-null  object 
+ 9   contb_receipt_amt  536041 non-null  float64
+ 10  contb_receipt_dt   536041 non-null  object 
+ 11  receipt_desc       536041 non-null  object 
+ 12  memo_cd            536041 non-null  object 
+ 13  memo_text          536041 non-null  object 
+ 14  form_tp            536041 non-null  object 
+ 15  file_num           536041 non-null  int64  
+dtypes: float64(1), int64(1), object(14)
+memory usage: 65.4+ MB
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 异常值处理，将捐款金额&lt;=0的数据删除</span></span><br><span class="line">df[<span class="string">&#x27;contb_receipt_amt&#x27;</span>] &lt;= <span class="number">0</span> <span class="comment">#判断哪些值为小于等于0</span></span><br><span class="line">df.loc[df[<span class="string">&#x27;contb_receipt_amt&#x27;</span>] &lt;= <span class="number">0</span>]    <span class="comment"># 获得捐赠金额小于等于0的行数据</span></span><br><span class="line">drop_indexs = df.loc[df[<span class="string">&#x27;contb_receipt_amt&#x27;</span>] &lt;= <span class="number">0</span>].index    <span class="comment"># 获取相应数据行索引</span></span><br><span class="line">df.drop(labels=drop_indexs,axis=<span class="number">0</span>,inplace=<span class="literal">True</span>) <span class="comment"># 此处加入drop和dropna的区别，dropna针对空值进行处理，与any连用存在空值即删相应行列，与all连用全是空值才删相应行列</span></span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cmte_id</th>
+      <th>cand_id</th>
+      <th>cand_nm</th>
+      <th>contbr_nm</th>
+      <th>contbr_city</th>
+      <th>contbr_st</th>
+      <th>contbr_zip</th>
+      <th>contbr_employer</th>
+      <th>contbr_occupation</th>
+      <th>contb_receipt_amt</th>
+      <th>contb_receipt_dt</th>
+      <th>receipt_desc</th>
+      <th>memo_cd</th>
+      <th>memo_text</th>
+      <th>form_tp</th>
+      <th>file_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>HARVEY, WILLIAM</td>
+      <td>MOBILE</td>
+      <td>AL</td>
+      <td>3.6601e+08</td>
+      <td>RETIRED</td>
+      <td>RETIRED</td>
+      <td>250.0</td>
+      <td>20-JUN-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>736166</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>HARVEY, WILLIAM</td>
+      <td>MOBILE</td>
+      <td>AL</td>
+      <td>3.6601e+08</td>
+      <td>RETIRED</td>
+      <td>RETIRED</td>
+      <td>50.0</td>
+      <td>23-JUN-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>736166</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>SMITH, LANIER</td>
+      <td>LANETT</td>
+      <td>AL</td>
+      <td>3.68633e+08</td>
+      <td>INFORMATION REQUESTED</td>
+      <td>INFORMATION REQUESTED</td>
+      <td>250.0</td>
+      <td>05-JUL-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>749073</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>BLEVINS, DARONDA</td>
+      <td>PIGGOTT</td>
+      <td>AR</td>
+      <td>7.24548e+08</td>
+      <td>NONE</td>
+      <td>RETIRED</td>
+      <td>250.0</td>
+      <td>01-AUG-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>749073</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>WARDENBURG, HAROLD</td>
+      <td>HOT SPRINGS NATION</td>
+      <td>AR</td>
+      <td>7.19016e+08</td>
+      <td>NONE</td>
+      <td>RETIRED</td>
+      <td>300.0</td>
+      <td>20-JUN-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>736166</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>536036</th>
+      <td>C00500587</td>
+      <td>P20003281</td>
+      <td>Perry, Rick</td>
+      <td>ANDERSON, MARILEE MRS.</td>
+      <td>INFO REQUESTED</td>
+      <td>XX</td>
+      <td>99999</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>2500.0</td>
+      <td>31-AUG-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>751678</td>
+    </tr>
+    <tr>
+      <th>536037</th>
+      <td>C00500587</td>
+      <td>P20003281</td>
+      <td>Perry, Rick</td>
+      <td>TOLBERT, DARYL MR.</td>
+      <td>INFO REQUESTED</td>
+      <td>XX</td>
+      <td>99999</td>
+      <td>T.A.C.C.</td>
+      <td>LONGWALL MAINTENANCE FOREMAN</td>
+      <td>500.0</td>
+      <td>30-SEP-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>751678</td>
+    </tr>
+    <tr>
+      <th>536038</th>
+      <td>C00500587</td>
+      <td>P20003281</td>
+      <td>Perry, Rick</td>
+      <td>GRANE, BRYAN F. MR.</td>
+      <td>INFO REQUESTED</td>
+      <td>XX</td>
+      <td>99999</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>500.0</td>
+      <td>29-SEP-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>751678</td>
+    </tr>
+    <tr>
+      <th>536039</th>
+      <td>C00500587</td>
+      <td>P20003281</td>
+      <td>Perry, Rick</td>
+      <td>DUFFY, DAVID A. MR.</td>
+      <td>INFO REQUESTED</td>
+      <td>XX</td>
+      <td>99999</td>
+      <td>DUFFY EQUIPMENT COMPANY INC.</td>
+      <td>BUSINESS OWNER</td>
+      <td>2500.0</td>
+      <td>30-SEP-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>751678</td>
+    </tr>
+    <tr>
+      <th>536040</th>
+      <td>C00500587</td>
+      <td>P20003281</td>
+      <td>Perry, Rick</td>
+      <td>GORMAN, CHRIS D. MR.</td>
+      <td>INFO REQUESTED</td>
+      <td>XX</td>
+      <td>99999</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>INFORMATION REQUESTED PER BEST EFFORTS</td>
+      <td>5000.0</td>
+      <td>29-SEP-11</td>
+      <td>REATTRIBUTION / REDESIGNATION REQUESTED (AUTOM...</td>
+      <td>NOT PROVIDE</td>
+      <td>REATTRIBUTION / REDESIGNATION REQUESTED (AUTOM...</td>
+      <td>SA17A</td>
+      <td>751678</td>
+    </tr>
+  </tbody>
+</table>
+<p>530314 rows × 16 columns</p>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建一列为各个候选人所在党派party</span></span><br><span class="line">parties = &#123;</span><br><span class="line">  <span class="string">&#x27;Bachmann, Michelle&#x27;</span>: <span class="string">&#x27;Republican&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Romney, Mitt&#x27;</span>: <span class="string">&#x27;Republican&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Obama, Barack&#x27;</span>: <span class="string">&#x27;Democrat&#x27;</span>,</span><br><span class="line">  <span class="string">&quot;Roemer, Charles E. &#x27;Buddy&#x27; III&quot;</span>: <span class="string">&#x27;Reform&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Pawlenty, Timothy&#x27;</span>: <span class="string">&#x27;Republican&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Johnson, Gary Earl&#x27;</span>: <span class="string">&#x27;Libertarian&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Paul, Ron&#x27;</span>: <span class="string">&#x27;Republican&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Santorum, Rick&#x27;</span>: <span class="string">&#x27;Republican&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Cain, Herman&#x27;</span>: <span class="string">&#x27;Republican&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Gingrich, Newt&#x27;</span>: <span class="string">&#x27;Republican&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;McCotter, Thaddeus G&#x27;</span>: <span class="string">&#x27;Republican&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Huntsman, Jon&#x27;</span>: <span class="string">&#x27;Republican&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Perry, Rick&#x27;</span>: <span class="string">&#x27;Republican&#x27;</span>           </span><br><span class="line"> &#125;  <span class="comment"># 此处利用字典新建了相应候选人对应的党派信息</span></span><br><span class="line">df[<span class="string">&#x27;cand_nm&#x27;</span>].<span class="built_in">map</span>(parties)  <span class="comment"># 此处需要映射</span></span><br><span class="line">df[<span class="string">&#x27;party&#x27;</span>] = df[<span class="string">&#x27;cand_nm&#x27;</span>].<span class="built_in">map</span>(parties)   <span class="comment"># 将映射结果加入列表新建的party列</span></span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cmte_id</th>
+      <th>cand_id</th>
+      <th>cand_nm</th>
+      <th>contbr_nm</th>
+      <th>contbr_city</th>
+      <th>contbr_st</th>
+      <th>contbr_zip</th>
+      <th>contbr_employer</th>
+      <th>contbr_occupation</th>
+      <th>contb_receipt_amt</th>
+      <th>contb_receipt_dt</th>
+      <th>receipt_desc</th>
+      <th>memo_cd</th>
+      <th>memo_text</th>
+      <th>form_tp</th>
+      <th>file_num</th>
+      <th>party</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>HARVEY, WILLIAM</td>
+      <td>MOBILE</td>
+      <td>AL</td>
+      <td>3.6601e+08</td>
+      <td>RETIRED</td>
+      <td>RETIRED</td>
+      <td>250.0</td>
+      <td>20-JUN-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>736166</td>
+      <td>Republican</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>HARVEY, WILLIAM</td>
+      <td>MOBILE</td>
+      <td>AL</td>
+      <td>3.6601e+08</td>
+      <td>RETIRED</td>
+      <td>RETIRED</td>
+      <td>50.0</td>
+      <td>23-JUN-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>736166</td>
+      <td>Republican</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>SMITH, LANIER</td>
+      <td>LANETT</td>
+      <td>AL</td>
+      <td>3.68633e+08</td>
+      <td>INFORMATION REQUESTED</td>
+      <td>INFORMATION REQUESTED</td>
+      <td>250.0</td>
+      <td>05-JUL-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>749073</td>
+      <td>Republican</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>BLEVINS, DARONDA</td>
+      <td>PIGGOTT</td>
+      <td>AR</td>
+      <td>7.24548e+08</td>
+      <td>NONE</td>
+      <td>RETIRED</td>
+      <td>250.0</td>
+      <td>01-AUG-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>749073</td>
+      <td>Republican</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>WARDENBURG, HAROLD</td>
+      <td>HOT SPRINGS NATION</td>
+      <td>AR</td>
+      <td>7.19016e+08</td>
+      <td>NONE</td>
+      <td>RETIRED</td>
+      <td>300.0</td>
+      <td>20-JUN-11</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>736166</td>
+      <td>Republican</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看party这一列中有哪些不同的元素</span></span><br><span class="line">df[<span class="string">&#x27;party&#x27;</span>].unique()    <span class="comment"># unique以列表形式返回Series中出现的数据有哪些，即不重复数据直接返回，重复相同数据只返回一个</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([&#39;Republican&#39;, &#39;Democrat&#39;, &#39;Reform&#39;, &#39;Libertarian&#39;], dtype=object)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 统计party列中各个元素出现次数</span></span><br><span class="line">df[<span class="string">&#x27;party&#x27;</span>].value_counts()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>Democrat       289999
+Republican     234300
+Reform           5313
+Libertarian       702
+Name: party, dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看各个党派收到的政治献金总数contb_receipt_amt</span></span><br><span class="line">df.groupby(<span class="string">&#x27;party&#x27;</span>)[<span class="string">&#x27;contb_receipt_amt&#x27;</span>].<span class="built_in">sum</span>()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>party
+Democrat       8.259441e+07
+Libertarian    4.132769e+05
+Reform         3.429658e+05
+Republican     1.251181e+08
+Name: contb_receipt_amt, dtype: float64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看具体每天各个党派收到的政治献金总数contb_receipt_amt</span></span><br><span class="line">df.groupby([<span class="string">&#x27;contb_receipt_dt&#x27;</span>,<span class="string">&#x27;party&#x27;</span>])[<span class="string">&#x27;contb_receipt_amt&#x27;</span>].<span class="built_in">sum</span>()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>contb_receipt_dt  party      
+01-APR-11         Reform             50.00
+                  Republican      12635.00
+01-AUG-11         Democrat       182198.00
+                  Libertarian      1000.00
+                  Reform           1847.00
+                                   ...    
+31-MAY-11         Republican     313839.80
+31-OCT-11         Democrat       216971.87
+                  Libertarian      4250.00
+                  Reform           3205.00
+                  Republican     751542.36
+Name: contb_receipt_amt, Length: 1183, dtype: float64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将表中日期格式转换为&#x27;yyyy-mm-dd&#x27;</span></span><br><span class="line">months = &#123;<span class="string">&#x27;JAN&#x27;</span> : <span class="number">1</span>, <span class="string">&#x27;FEB&#x27;</span> : <span class="number">2</span>, <span class="string">&#x27;MAR&#x27;</span> : <span class="number">3</span>, <span class="string">&#x27;APR&#x27;</span> : <span class="number">4</span>, <span class="string">&#x27;MAY&#x27;</span> : <span class="number">5</span>, <span class="string">&#x27;JUN&#x27;</span> : <span class="number">6</span>,</span><br><span class="line">          <span class="string">&#x27;JUL&#x27;</span> : <span class="number">7</span>, <span class="string">&#x27;AUG&#x27;</span> : <span class="number">8</span>, <span class="string">&#x27;SEP&#x27;</span> : <span class="number">9</span>, <span class="string">&#x27;OCT&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;NOV&#x27;</span>: <span class="number">11</span>, <span class="string">&#x27;DEC&#x27;</span> : <span class="number">12</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">transformDate</span>(<span class="params">d</span>):</span></span><br><span class="line">    day,month,year = d.split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    month = months[month]   <span class="comment"># 字典取值，将英文形式的月份转换为数字形式的月份</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;20&#x27;</span>+year+<span class="string">&#x27;-&#x27;</span>+<span class="built_in">str</span>(month)+<span class="string">&#x27;-&#x27;</span>+day</span><br><span class="line">df[<span class="string">&#x27;contb_receipt_dt&#x27;</span>] = df[<span class="string">&#x27;contb_receipt_dt&#x27;</span>].<span class="built_in">map</span>(transformDate)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cmte_id</th>
+      <th>cand_id</th>
+      <th>cand_nm</th>
+      <th>contbr_nm</th>
+      <th>contbr_city</th>
+      <th>contbr_st</th>
+      <th>contbr_zip</th>
+      <th>contbr_employer</th>
+      <th>contbr_occupation</th>
+      <th>contb_receipt_amt</th>
+      <th>contb_receipt_dt</th>
+      <th>receipt_desc</th>
+      <th>memo_cd</th>
+      <th>memo_text</th>
+      <th>form_tp</th>
+      <th>file_num</th>
+      <th>party</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>HARVEY, WILLIAM</td>
+      <td>MOBILE</td>
+      <td>AL</td>
+      <td>3.6601e+08</td>
+      <td>RETIRED</td>
+      <td>RETIRED</td>
+      <td>250.0</td>
+      <td>2011-6-20</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>736166</td>
+      <td>Republican</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>HARVEY, WILLIAM</td>
+      <td>MOBILE</td>
+      <td>AL</td>
+      <td>3.6601e+08</td>
+      <td>RETIRED</td>
+      <td>RETIRED</td>
+      <td>50.0</td>
+      <td>2011-6-23</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>736166</td>
+      <td>Republican</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>SMITH, LANIER</td>
+      <td>LANETT</td>
+      <td>AL</td>
+      <td>3.68633e+08</td>
+      <td>INFORMATION REQUESTED</td>
+      <td>INFORMATION REQUESTED</td>
+      <td>250.0</td>
+      <td>2011-7-05</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>749073</td>
+      <td>Republican</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>BLEVINS, DARONDA</td>
+      <td>PIGGOTT</td>
+      <td>AR</td>
+      <td>7.24548e+08</td>
+      <td>NONE</td>
+      <td>RETIRED</td>
+      <td>250.0</td>
+      <td>2011-8-01</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>749073</td>
+      <td>Republican</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>C00410118</td>
+      <td>P20002978</td>
+      <td>Bachmann, Michelle</td>
+      <td>WARDENBURG, HAROLD</td>
+      <td>HOT SPRINGS NATION</td>
+      <td>AR</td>
+      <td>7.19016e+08</td>
+      <td>NONE</td>
+      <td>RETIRED</td>
+      <td>300.0</td>
+      <td>2011-6-20</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>NOT PROVIDE</td>
+      <td>SA17A</td>
+      <td>736166</td>
+      <td>Republican</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看老兵(捐献者职业)DISABLED VETERAN主要支持谁，给谁捐赠的钱越多表示越支持谁</span></span><br><span class="line">df[<span class="string">&#x27;contbr_occupation&#x27;</span>] == <span class="string">&#x27;DISABLED VETERAN&#x27;</span>    <span class="comment"># 找到职业中老兵数据</span></span><br><span class="line">df_old = df.loc[df[<span class="string">&#x27;contbr_occupation&#x27;</span>] == <span class="string">&#x27;DISABLED VETERAN&#x27;</span>]    <span class="comment"># 取出</span></span><br><span class="line">df_old.groupby(<span class="string">&#x27;cand_nm&#x27;</span>)[<span class="string">&#x27;contb_receipt_amt&#x27;</span>].<span class="built_in">sum</span>()    <span class="comment"># 按候选人分组，对金额求和</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>cand_nm
+Cain, Herman       300.00
+Obama, Barack     4205.00
+Paul, Ron         2425.49
+Santorum, Rick     250.00
+Name: contb_receipt_amt, dtype: float64
+</code></pre>
+<hr>
+<p>本文提及的数据集下载地址：<br>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg">https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg</a><br>提取码：1111 </p>
+<hr>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://woody0819.github.io/2021/05/27/test_7/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/05/27/test_8/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            绘图 matplotlib
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/05/25/test_6/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Pandas中的一些高级操作</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "Q0bUd4kz7kv9o8cLXDqyYijd-gzGzoHsz",
+    app_key: "3xet4X44IIsU9kGHHuQiOa4B",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+    enableQQ: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Woody
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="Woody"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://woody0819.lofter.com/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/guestbook">留言</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+  </div>
+</body>
+
+</html>
