@@ -533,7 +533,7 @@ Name: order_amount, dtype: float64
 
 <pre><code>[&lt;matplotlib.lines.Line2D at 0x16f5d926e48&gt;]
 </code></pre>
-<p><img src="https://wx4.sinaimg.cn/mw690/006nxkHvly1gqwvtgzkk4j30ay06w74c.jpg"></p>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/eb044aacfkf41d5103d988583be650ec?fid=856262239-250528-265858316379589&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-a0n4BQkgp04sW5AsH7ZqxqvuMY8=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 所有用户每月的产品购买量</span></span><br><span class="line">df.groupby(<span class="string">&#x27;month&#x27;</span>)[<span class="string">&#x27;order_product&#x27;</span>].<span class="built_in">sum</span>()</span><br></pre></td></tr></table></figure>
 
 
@@ -767,7 +767,7 @@ Name: order_amount, Length: 23570, dtype: float64
 
 <pre><code>&lt;matplotlib.collections.PathCollection at 0x16f5d83d6d8&gt;
 </code></pre>
-<p><img src="https://wx3.sinaimg.cn/mw690/006nxkHvly1gqwvtgzim1j30as06w3yf.jpg"></p>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/6851c1802m69f14fde52a9758110c557?fid=856262239-250528-834032372106704&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-TUONAYdmWXQMFI205Zz7neOAcsU=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 各个用户消费总金额的直方分布图(消费金额在1000之内的分布)</span></span><br><span class="line">df.groupby(<span class="string">&#x27;user_id&#x27;</span>).<span class="built_in">sum</span>().query(<span class="string">&#x27;order_amount &lt;= 1000&#x27;</span>)[<span class="string">&#x27;order_amount&#x27;</span>]   <span class="comment"># 取相应的数据</span></span><br><span class="line">df.groupby(<span class="string">&#x27;user_id&#x27;</span>).<span class="built_in">sum</span>().query(<span class="string">&#x27;order_amount &lt;= 1000&#x27;</span>)[<span class="string">&#x27;order_amount&#x27;</span>].hist()    <span class="comment"># 作图</span></span><br></pre></td></tr></table></figure>
 
 
@@ -775,7 +775,7 @@ Name: order_amount, Length: 23570, dtype: float64
 
 <pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x16f5da9b240&gt;
 </code></pre>
-<p><img src="https://wx4.sinaimg.cn/mw690/006nxkHvly1gqwvtgzlf6j30as06wmx1.jpg"></p>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/2ef2527acr6bf037e4c6ddcac47d5d72?fid=856262239-250528-802396910650899&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-13a4EYXIeZj98xDfKqgki1D6FDo=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 各个用户消费的总数量的直方分布图(消费商品的数量在100次之内的分布)</span></span><br><span class="line">df.groupby(<span class="string">&#x27;user_id&#x27;</span>).<span class="built_in">sum</span>().query(<span class="string">&#x27;order_product &lt;= 100&#x27;</span>)[<span class="string">&#x27;order_product&#x27;</span>].hist()</span><br></pre></td></tr></table></figure>
 
 
@@ -783,7 +783,7 @@ Name: order_amount, Length: 23570, dtype: float64
 
 <pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x16f5db37208&gt;
 </code></pre>
-<p><img src="https://wx1.sinaimg.cn/mw690/006nxkHvly1gqwvtgzpvfj30as06w746.jpg"></p>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/9e3031c0el13bfb8bfb71250c1fb64e5?fid=856262239-250528-808930977538417&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-cGynzjOML0l2xzZB/68Zf/xQJyk=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
 <h2 id="第四部分：用户消费行为分析"><a href="#第四部分：用户消费行为分析" class="headerlink" title="第四部分：用户消费行为分析"></a>第四部分：用户消费行为分析</h2><ul>
 <li>用户第一次消费的月份分布，和人数统计<ul>
 <li>绘制线形图</li>
@@ -860,7 +860,7 @@ Name: month, Length: 23570, dtype: datetime64[ns]
 
 <pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x16f5ecd5c88&gt;
 </code></pre>
-<p><img src="https://wx4.sinaimg.cn/mw690/006nxkHvly1gqwvtgzj9mj30at073glo.jpg"></p>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/83e6e26c2rc1e9f9026338f4a46271ef?fid=856262239-250528-583158684500844&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-Hrqvh7rfwIjfiXnGOc8l+7VllwI=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用户最后一次消费的时间分布，和人数统计</span></span><br><span class="line"><span class="comment"># 用户消费月份的最大值就是用户最后一次消费的月份</span></span><br><span class="line">df.groupby(<span class="string">&#x27;user_id&#x27;</span>)[<span class="string">&#x27;month&#x27;</span>].<span class="built_in">max</span>().value_counts().plot()</span><br></pre></td></tr></table></figure>
 
 
@@ -868,7 +868,7 @@ Name: month, Length: 23570, dtype: datetime64[ns]
 
 <pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x16f5db224e0&gt;
 </code></pre>
-<p><img src="https://wx2.sinaimg.cn/mw690/006nxkHvly1gqwvtgzp2ej30al06u0sq.jpg"></p>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/db4364d4dh41f3060a331fffa3b3b2de?fid=856262239-250528-846445913309375&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-2SSHUY29NBljG0vfScGQtrn9Ip8=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新老客户的占比</span></span><br><span class="line"><span class="comment"># 消费一次为新用户，消费多次为老用户</span></span><br><span class="line"><span class="comment"># 如何获知用户是否为第一次消费？可以根据用户的消费时间进行判定？</span></span><br><span class="line">    <span class="comment"># 如果用户的第一次消费时间和最后一次消费时间一样，则该用户只消费了一次为新用户，否则为老用户</span></span><br><span class="line">new_old_user_df = df.groupby(<span class="string">&#x27;user_id&#x27;</span>)[<span class="string">&#x27;order_dt&#x27;</span>].agg([<span class="string">&#x27;min&#x27;</span>,<span class="string">&#x27;max&#x27;</span>])   <span class="comment"># agg对分组后的结果进行多种指定聚合</span></span><br><span class="line">new_old_user_df[<span class="string">&#x27;min&#x27;</span>] == new_old_user_df[<span class="string">&#x27;max&#x27;</span>] <span class="comment"># True新用户，False老用户</span></span><br><span class="line"><span class="comment"># 统计True和False的个数</span></span><br><span class="line">(new_old_user_df[<span class="string">&#x27;min&#x27;</span>] == new_old_user_df[<span class="string">&#x27;max&#x27;</span>]).value_counts()</span><br></pre></td></tr></table></figure>
 
 
