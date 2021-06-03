@@ -16,14 +16,14 @@
       
       <link rel="shortcut icon" href="/favicon.ico" />
        
-<link rel="stylesheet" href="/dist/main.css">
+<link rel="stylesheet" href="../../../../dist/main.css">
 
       <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
       />
       
-<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="../../../../css/custom.css">
  
       <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
        
@@ -31,7 +31,9 @@
 
       <!-- mermaid -->
       
-    <link rel="alternate" href="/atom.xml" title="Woody" type="application/atom+xml">
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
+      
+    <link rel="alternate" href="atom.xml" title="Woody" type="application/atom+xml">
 </head>
   </html>
 </html>
@@ -63,11 +65,11 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2021/05/27/test_9/" class="article-date">
+      <a href="" class="article-date">
   <time datetime="2021-05-27T03:58:56.970Z" itemprop="datePublished">2021-05-27</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+    <a class="article-category-link" href="../../../../categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
   </div>
   
 <div class="word_count">
@@ -533,7 +535,7 @@ Name: order_amount, dtype: float64
 
 <pre><code>[&lt;matplotlib.lines.Line2D at 0x16f5d926e48&gt;]
 </code></pre>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/eb044aacfkf41d5103d988583be650ec?fid=856262239-250528-265858316379589&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-a0n4BQkgp04sW5AsH7ZqxqvuMY8=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/23WL3F"><img src="https://z3.ax1x.com/2021/06/03/23WL3F.jpg" alt="23WL3F.jpg"></a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 所有用户每月的产品购买量</span></span><br><span class="line">df.groupby(<span class="string">&#x27;month&#x27;</span>)[<span class="string">&#x27;order_product&#x27;</span>].<span class="built_in">sum</span>()</span><br></pre></td></tr></table></figure>
 
 
@@ -767,7 +769,7 @@ Name: order_amount, Length: 23570, dtype: float64
 
 <pre><code>&lt;matplotlib.collections.PathCollection at 0x16f5d83d6d8&gt;
 </code></pre>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/6851c1802m69f14fde52a9758110c557?fid=856262239-250528-834032372106704&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-TUONAYdmWXQMFI205Zz7neOAcsU=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/23WOc4"><img src="https://z3.ax1x.com/2021/06/03/23WOc4.jpg" alt="23WOc4.jpg"></a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 各个用户消费总金额的直方分布图(消费金额在1000之内的分布)</span></span><br><span class="line">df.groupby(<span class="string">&#x27;user_id&#x27;</span>).<span class="built_in">sum</span>().query(<span class="string">&#x27;order_amount &lt;= 1000&#x27;</span>)[<span class="string">&#x27;order_amount&#x27;</span>]   <span class="comment"># 取相应的数据</span></span><br><span class="line">df.groupby(<span class="string">&#x27;user_id&#x27;</span>).<span class="built_in">sum</span>().query(<span class="string">&#x27;order_amount &lt;= 1000&#x27;</span>)[<span class="string">&#x27;order_amount&#x27;</span>].hist()    <span class="comment"># 作图</span></span><br></pre></td></tr></table></figure>
 
 
@@ -775,7 +777,7 @@ Name: order_amount, Length: 23570, dtype: float64
 
 <pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x16f5da9b240&gt;
 </code></pre>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/2ef2527acr6bf037e4c6ddcac47d5d72?fid=856262239-250528-802396910650899&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-13a4EYXIeZj98xDfKqgki1D6FDo=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/23WxBR"><img src="https://z3.ax1x.com/2021/06/03/23WxBR.jpg" alt="23WxBR.jpg"></a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 各个用户消费的总数量的直方分布图(消费商品的数量在100次之内的分布)</span></span><br><span class="line">df.groupby(<span class="string">&#x27;user_id&#x27;</span>).<span class="built_in">sum</span>().query(<span class="string">&#x27;order_product &lt;= 100&#x27;</span>)[<span class="string">&#x27;order_product&#x27;</span>].hist()</span><br></pre></td></tr></table></figure>
 
 
@@ -783,7 +785,7 @@ Name: order_amount, Length: 23570, dtype: float64
 
 <pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x16f5db37208&gt;
 </code></pre>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/9e3031c0el13bfb8bfb71250c1fb64e5?fid=856262239-250528-808930977538417&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-cGynzjOML0l2xzZB/68Zf/xQJyk=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/23WXjJ"><img src="https://z3.ax1x.com/2021/06/03/23WXjJ.jpg" alt="23WXjJ.jpg"></a></p>
 <h2 id="第四部分：用户消费行为分析"><a href="#第四部分：用户消费行为分析" class="headerlink" title="第四部分：用户消费行为分析"></a>第四部分：用户消费行为分析</h2><ul>
 <li>用户第一次消费的月份分布，和人数统计<ul>
 <li>绘制线形图</li>
@@ -860,7 +862,7 @@ Name: month, Length: 23570, dtype: datetime64[ns]
 
 <pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x16f5ecd5c88&gt;
 </code></pre>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/83e6e26c2rc1e9f9026338f4a46271ef?fid=856262239-250528-583158684500844&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-Hrqvh7rfwIjfiXnGOc8l+7VllwI=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/23Wvu9"><img src="https://z3.ax1x.com/2021/06/03/23Wvu9.jpg" alt="23Wvu9.jpg"></a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用户最后一次消费的时间分布，和人数统计</span></span><br><span class="line"><span class="comment"># 用户消费月份的最大值就是用户最后一次消费的月份</span></span><br><span class="line">df.groupby(<span class="string">&#x27;user_id&#x27;</span>)[<span class="string">&#x27;month&#x27;</span>].<span class="built_in">max</span>().value_counts().plot()</span><br></pre></td></tr></table></figure>
 
 
@@ -868,7 +870,7 @@ Name: month, Length: 23570, dtype: datetime64[ns]
 
 <pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x16f5db224e0&gt;
 </code></pre>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/db4364d4dh41f3060a331fffa3b3b2de?fid=856262239-250528-846445913309375&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-2SSHUY29NBljG0vfScGQtrn9Ip8=&expires=8h&chkbd=0&chkv=0&dp-logid=81303906057432477&dp-callid=0&time=1622617200&size=c10000_u10000&quality=90&vuk=856262239&ft=image"></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/23WzH1"><img src="https://z3.ax1x.com/2021/06/03/23WzH1.jpg" alt="23WzH1.jpg"></a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新老客户的占比</span></span><br><span class="line"><span class="comment"># 消费一次为新用户，消费多次为老用户</span></span><br><span class="line"><span class="comment"># 如何获知用户是否为第一次消费？可以根据用户的消费时间进行判定？</span></span><br><span class="line">    <span class="comment"># 如果用户的第一次消费时间和最后一次消费时间一样，则该用户只消费了一次为新用户，否则为老用户</span></span><br><span class="line">new_old_user_df = df.groupby(<span class="string">&#x27;user_id&#x27;</span>)[<span class="string">&#x27;order_dt&#x27;</span>].agg([<span class="string">&#x27;min&#x27;</span>,<span class="string">&#x27;max&#x27;</span>])   <span class="comment"># agg对分组后的结果进行多种指定聚合</span></span><br><span class="line">new_old_user_df[<span class="string">&#x27;min&#x27;</span>] == new_old_user_df[<span class="string">&#x27;max&#x27;</span>] <span class="comment"># True新用户，False老用户</span></span><br><span class="line"><span class="comment"># 统计True和False的个数</span></span><br><span class="line">(new_old_user_df[<span class="string">&#x27;min&#x27;</span>] == new_old_user_df[<span class="string">&#x27;max&#x27;</span>]).value_counts()</span><br></pre></td></tr></table></figure>
 
 
@@ -2465,7 +2467,7 @@ dtype: object
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li></ul>
 
     </footer>
   </div>
@@ -2474,7 +2476,7 @@ dtype: object
   <nav class="article-nav">
     
     
-      <a href="/2021/05/27/test_8/" class="article-nav-link">
+      <a href="../test_8/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
         <div class="article-nav-title">绘图 matplotlib</div>
       </a>
@@ -2600,41 +2602,41 @@ dtype: object
 <nav class="navbar">
   
   <div class="logo">
-    <a href="/"><img src="/images/ayer-side.svg" alt="Woody"></a>
+    <a href="../../../../index.html"><img src="/images/ayer-side.svg" alt="Woody"></a>
   </div>
   
   <ul class="nav nav-main">
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/">主页</a>
+      <a class="nav-item-link" href="../../../../index.html">主页</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/archives">归档</a>
+      <a class="nav-item-link" href="../../../../archives">归档</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/categories">分类</a>
+      <a class="nav-item-link" href="../../../../categories">分类</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/tags">标签</a>
+      <a class="nav-item-link" href="../../../../tags">标签</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" target="_blank" rel="noopener" href="https://woody0819.lofter.com/">旅行</a>
+      <a class="nav-item-link" href="../../../../https:/woody0819.lofter.com/">旅途</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/friends">友链</a>
+      <a class="nav-item-link" href="../../../../friends">友链</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/about">关于</a>
+      <a class="nav-item-link" href="../../../../about">关于</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/guestbook">留言</a>
+      <a class="nav-item-link" href="../../../../guestbook">留言</a>
     </li>
     
   </ul>
@@ -2648,7 +2650,7 @@ dtype: object
       </a>
       
       
-      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+      <a class="nav-item-link" target="_blank" href="../../../../atom.xml" title="RSS Feed">
         <i class="ri-rss-line"></i>
       </a>
       
@@ -2671,26 +2673,26 @@ dtype: object
   <div class="reward-box">
     
     <div class="reward-item">
-      <img class="reward-img" src="/images/alipay.png">
+      <img class="reward-img" src="../../../../images/alipay.png">
       <span class="reward-type">支付宝</span>
     </div>
     
     
     <div class="reward-item">
-      <img class="reward-img" src="/images/wechat.png">
+      <img class="reward-img" src="../../../../images/wechat.png">
       <span class="reward-type">微信</span>
     </div>
     
   </div>
 </div>
     
-<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="../../../../js/jquery-2.0.3.min.js"></script>
  
-<script src="/js/lazyload.min.js"></script>
+<script src="../../../../js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
  
-<script src="/js/tocbot.min.js"></script>
+<script src="../../../../js/tocbot.min.js"></script>
 
 <script>
   tocbot.init({
@@ -2713,7 +2715,7 @@ dtype: object
 />
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
 
-<script src="/dist/main.js"></script>
+<script src="../../../../dist/main.js"></script>
 
 <!-- ImageViewer -->
  <!-- Root element of PhotoSwipe. Must have class pswp. -->
@@ -2828,7 +2830,7 @@ dtype: object
 
 <!-- busuanzi  -->
  
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
+<script src="../../../../js/busuanzi-2.3.pure.min.js"></script>
  
 <!-- ClickLove -->
 
@@ -2838,7 +2840,7 @@ dtype: object
 
 <!-- CodeCopy -->
  
-<link rel="stylesheet" href="/css/clipboard.css">
+<link rel="stylesheet" href="../../../../css/clipboard.css">
  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
   function wait(callback, seconds) {
