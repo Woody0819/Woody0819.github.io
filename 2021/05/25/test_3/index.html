@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">2.9k</span>
+            <span class="post-count">2.7k</span>
         </span>
     </span>
 
@@ -86,7 +86,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">15 min</span>
+            <span class="post-count">14 min</span>
         </span>
     </span>
 </div>
@@ -289,32 +289,13 @@ dtype: bool
 5  97   7   2.0  37.0  26.0  90
 6  52  79   2.0  46.0   1.0  21
 7   7  58  29.0  87.0   7.0  49
-
-
-
-
-
-&#39;\n但无论如何覆盖都不是最合理的，故一般选择删除而不选择覆盖，假如删除的成本太高（删除数据太多），才选择覆盖\n&#39;
 </code></pre>
-<h1 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h1><ul>
-<li>数据说明：<ul>
-<li>数据是一个冷库的温度数据，1-7对应7个温度采集设备，1分钟采集一次。</li>
+<ul>
+<li>实例<ul>
+<li>处理丢失数据和空值</li>
+<li>此处所用数据集在文章末尾给出</li>
 </ul>
 </li>
-<li>数据处理目标：<ul>
-<li>用1-4对应的4个必须设备，通过建立冷库的温度场关系模型，预估出5-7对应的数据。</li>
-<li>最后每个冷库中仅需放置4个设备，取代放置7个设备。</li>
-<li>f(1-4) –&gt; y(5-7)</li>
-</ul>
-</li>
-<li>数据处理过程：<ul>
-<li>1.原始数据中有丢帧现象，需要做预处理；</li>
-<li>2.matplotlib绘图；</li>
-<li>3.建立逻辑回归模型。</li>
-</ul>
-</li>
-<li>无标准答案，按个人理解操作即可，请把自己的操作过程以文字形式简单描述。</li>
-<li>测试数据为testData.xlsx</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df2 = pd.read_excel(<span class="string">&#x27;testData.xlsx&#x27;</span>,engine=<span class="string">&#x27;openpyxl&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(df2.head())</span><br><span class="line">df2 = df2[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line">df2.head()</span><br></pre></td></tr></table></figure>
 

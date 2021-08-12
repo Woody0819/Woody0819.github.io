@@ -1,6 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>双均线策略制定</title>
+    <url>/2021/05/25/test_2/</url>
+    <content><![CDATA[<h1 id="需求：双均线策略制定"><a href="#需求：双均线策略制定" class="headerlink" title="需求：双均线策略制定"></a>需求：双均线策略制定</h1><ul>
+<li>使用tushare包获取某股票的历史行情数据  </li>
+<li>计算该股票历史数据的5日均线和60日均线  <ul>
+<li>什么是均线：  <ul>
+<li>对于每一个交易日，都可以计算出前N天的移动平均值，然后把这些移动平均值连起来，成为一条线，就叫做N日移动平均线。移动平均线常用线有5天、10天、30天、60天、120天和240天的指标。  </li>
+<li>5天和10天的是短线操作的参照指标，称作日均线指标；  </li>
+<li>30天和60天的是中期均线指标，称作季均线指标；  </li>
+<li>120天和240天的是长期均线指标，称作年均线指标。  </li>
+</ul>
+</li>
+<li>均线计算方法：MA=(C1+C2+C3+…+Cn)/N    C:某日收盘价；N:移动平均周期（天数）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">df = ts.get_k_data(code=&#x27;600519&#x27;,start=&#x27;2015-01-01&#x27;)</span></span><br><span class="line"><span class="string">df.to_csv(&#x27;moutai.csv&#x27;)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;moutai.csv&#x27;</span>).drop(labels=<span class="string">&#x27;Unnamed: 0&#x27;</span>,axis=<span class="number">1</span>)</span><br><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>])</span><br><span class="line">df.set_index(<span class="string">&#x27;date&#x27;</span>,inplace=<span class="literal">True</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>open</th>
+      <th>close</th>
+      <th>high</th>
+      <th>low</th>
+      <th>volume</th>
+      <th>code</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2015-01-05</th>
+      <td>161.056</td>
+      <td>172.013</td>
+      <td>173.474</td>
+      <td>160.266</td>
+      <td>94515.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-06</th>
+      <td>169.872</td>
+      <td>168.029</td>
+      <td>172.047</td>
+      <td>166.492</td>
+      <td>55020.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-07</th>
+      <td>166.509</td>
+      <td>163.876</td>
+      <td>169.448</td>
+      <td>161.370</td>
+      <td>54797.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-08</th>
+      <td>164.776</td>
+      <td>162.874</td>
+      <td>165.218</td>
+      <td>161.498</td>
+      <td>40525.0</td>
+      <td>600519</td>
+    </tr>
+    <tr>
+      <th>2015-01-09</th>
+      <td>161.719</td>
+      <td>161.642</td>
+      <td>166.280</td>
+      <td>161.472</td>
+      <td>53982.0</td>
+      <td>600519</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ma5 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">5</span>).mean()   <span class="comment"># rolling滑动窗口尺寸为5</span></span><br><span class="line">ma10 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">10</span>).mean()</span><br><span class="line">ma30 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">30</span>).mean()</span><br><span class="line">ma60 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">60</span>).mean()</span><br><span class="line">ma120 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">120</span>).mean()</span><br><span class="line">ma240 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">240</span>).mean()</span><br><span class="line">%matplotlib inline</span><br><span class="line">plt.plot(ma5[<span class="number">110</span>:<span class="number">330</span>])</span><br><span class="line">plt.plot(ma30[<span class="number">110</span>:<span class="number">330</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x2a1aa5f9eb8&gt;]
+</code></pre>
+<p><a href="https://imgtu.com/i/2325vj"><img src="https://z3.ax1x.com/2021/06/03/2325vj.jpg" alt="2325vj.jpg"></a></p>
+<ul>
+<li>分析输出所有金叉日期和死叉日期  <ul>
+<li>股票分析技术中的金叉和死叉，可以简单解释为：  <ul>
+<li>1.分析指标中的两根线，一根为短时间内的指标线，另一根为较长时间的指标线。  </li>
+<li>2.如果短时间的指标线方向拐头向上，并且穿过了较长时间的指标线，这种状态叫“金叉”；  </li>
+<li>3.如果短时间的指标线方向拐头向下，并且穿过了较长时间的指标线，这种状态叫“死叉”；  </li>
+<li>4.一般情况下，出现金叉后，操作趋向买入；死叉则趋向卖出。当然，金叉和死叉只是分析指标之一，要和其他很多指标配合使用，才能增加操作的准确性。<br>参考讲解：<a href="https://www.bilibili.com/video/BV1Z64y1S7y3?p=15">https://www.bilibili.com/video/BV1Z64y1S7y3?p=15</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ma5 = ma5[<span class="number">30</span>:]</span><br><span class="line">ma30 = ma30[<span class="number">30</span>:]</span><br><span class="line">df = df[<span class="number">30</span>:]</span><br><span class="line">s1 = ma5 &lt; ma30</span><br><span class="line">s2 = ma5 &gt; ma30</span><br><span class="line">death_ex = s1 &amp; s2.shift(<span class="number">1</span>) <span class="comment"># 判定死叉条件</span></span><br><span class="line">death_date = df.loc[death_ex].index   <span class="comment"># death_ex为Boolean型，用作索引直接提取True的对应行数据，再取行索引号即死叉对应日期</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;死叉日期：&#x27;</span>, death_date)</span><br><span class="line">golden_ex = ~(s1|s2.shift(<span class="number">1</span>))</span><br><span class="line">golden_date = df.loc[golden_ex].index</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;金叉日期：&#x27;</span>, golden_date)</span><br></pre></td></tr></table></figure>
+
+<pre><code>死叉日期： DatetimeIndex([&#39;2015-06-17&#39;, &#39;2015-07-17&#39;, &#39;2015-09-28&#39;, &#39;2015-11-26&#39;,
+               &#39;2015-12-10&#39;, &#39;2016-01-05&#39;, &#39;2016-08-05&#39;, &#39;2016-08-18&#39;,
+               &#39;2016-11-21&#39;, &#39;2017-07-06&#39;, &#39;2017-09-08&#39;, &#39;2017-11-29&#39;,
+               &#39;2018-02-05&#39;, &#39;2018-03-27&#39;, &#39;2018-06-28&#39;, &#39;2018-07-23&#39;,
+               &#39;2018-07-31&#39;, &#39;2018-10-15&#39;, &#39;2018-12-25&#39;, &#39;2019-05-10&#39;,
+               &#39;2019-07-19&#39;, &#39;2019-11-28&#39;, &#39;2020-01-03&#39;, &#39;2020-02-28&#39;,
+               &#39;2020-03-18&#39;, &#39;2020-08-10&#39;, &#39;2020-09-21&#39;, &#39;2020-10-27&#39;,
+               &#39;2021-03-01&#39;, &#39;2021-04-15&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
+金叉日期： DatetimeIndex([&#39;2015-02-16&#39;, &#39;2015-07-15&#39;, &#39;2015-09-16&#39;, &#39;2015-10-09&#39;,
+               &#39;2015-12-03&#39;, &#39;2015-12-21&#39;, &#39;2016-02-22&#39;, &#39;2016-08-11&#39;,
+               &#39;2016-10-13&#39;, &#39;2016-11-25&#39;, &#39;2017-07-24&#39;, &#39;2017-09-18&#39;,
+               &#39;2017-12-15&#39;, &#39;2018-03-16&#39;, &#39;2018-05-09&#39;, &#39;2018-07-18&#39;,
+               &#39;2018-07-25&#39;, &#39;2018-09-20&#39;, &#39;2018-12-04&#39;, &#39;2019-01-03&#39;,
+               &#39;2019-06-14&#39;, &#39;2019-08-13&#39;, &#39;2020-01-02&#39;, &#39;2020-02-19&#39;,
+               &#39;2020-03-03&#39;, &#39;2020-04-02&#39;, &#39;2020-08-19&#39;, &#39;2020-10-14&#39;,
+               &#39;2020-11-05&#39;, &#39;2021-04-02&#39;, &#39;2021-04-16&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
+</code></pre>
+<ul>
+<li>如果从2017年1月1日开始，初始资金为10W元，金叉尽量买入，死叉全部卖出，则迄今为止炒股收益率如何？  <ul>
+<li>1.买卖股票的单价使用开盘价  </li>
+<li>2.买卖股票的时机  </li>
+<li>3.最终手里会有剩余的股票没有卖出去（如果最有一次是金叉即买入没有卖出则出现剩余，需估量其价值，剩余股票单价使用最后一天的收盘价计算）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">l1 = pd.Series(<span class="number">1</span>,index=golden_date)    <span class="comment"># 1作为金叉标识</span></span><br><span class="line">l2 = pd.Series(<span class="number">0</span>,index=death_date) <span class="comment"># 0作为死叉标识</span></span><br><span class="line">l = l1.append(l2)</span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
+
+<pre><code>date
+2015-02-16    1
+2015-07-15    1
+2015-09-16    1
+2015-10-09    1
+2015-12-03    1
+             ..
+2020-08-10    0
+2020-09-21    0
+2020-10-27    0
+2021-03-01    0
+2021-04-15    0
+Length: 61, dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">l = l.sort_index()  <span class="comment"># 根据日期排序即出现金叉死叉交错</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br><span class="line">l = l[<span class="string">&#x27;2017&#x27;</span>:<span class="string">&#x27;2021&#x27;</span>]    <span class="comment"># 根据需求切出2017年至今的金叉死叉</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
+
+<pre><code>date
+2015-02-16    1
+2015-06-17    0
+2015-07-15    1
+2015-07-17    0
+2015-09-16    1
+             ..
+2020-11-05    1
+2021-03-01    0
+2021-04-02    1
+2021-04-15    0
+2021-04-16    1
+Length: 61, dtype: int64
+date
+2017-07-06    0
+2017-07-24    1
+2017-09-08    0
+2017-09-18    1
+2017-11-29    0
+2017-12-15    1
+2018-02-05    0
+2018-03-16    1
+2018-03-27    0
+2018-05-09    1
+2018-06-28    0
+2018-07-18    1
+2018-07-23    0
+2018-07-25    1
+2018-07-31    0
+2018-09-20    1
+2018-10-15    0
+2018-12-04    1
+2018-12-25    0
+2019-01-03    1
+2019-05-10    0
+2019-06-14    1
+2019-07-19    0
+2019-08-13    1
+2019-11-28    0
+2020-01-02    1
+2020-01-03    0
+2020-02-19    1
+2020-02-28    0
+2020-03-03    1
+2020-03-18    0
+2020-04-02    1
+2020-08-10    0
+2020-08-19    1
+2020-09-21    0
+2020-10-14    1
+2020-10-27    0
+2020-11-05    1
+2021-03-01    0
+2021-04-02    1
+2021-04-15    0
+2021-04-16    1
+dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">first_money = <span class="number">100000</span>    <span class="comment"># 本金不变</span></span><br><span class="line">money = first_money <span class="comment"># 可变，买股票花的钱和卖股票赚的钱都在该变量中操作</span></span><br><span class="line">hold = <span class="number">0</span>    <span class="comment"># 持有股票的数量（股数：100股=1手）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(l)): </span><br><span class="line">    <span class="keyword">if</span> l[i] == <span class="number">1</span>:  <span class="comment"># 金叉时间，基于10W单价尽多买入</span></span><br><span class="line">        time = l.index[i]   <span class="comment"># 获取金叉时间</span></span><br><span class="line">        p = df.loc[time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 取出该时间对应的开盘价，即当前单价</span></span><br><span class="line">        hand_count = money // (p*<span class="number">100</span>)   <span class="comment"># 10W能买入多少手</span></span><br><span class="line">        hold = hand_count * <span class="number">100</span> <span class="comment"># 股数</span></span><br><span class="line">        money -= (hold*p)   <span class="comment"># 将买股票的钱从money中减去</span></span><br><span class="line">    <span class="keyword">else</span>:   <span class="comment"># 死叉时间，将买入的股票卖出去</span></span><br><span class="line">        death_time = l.index[i]</span><br><span class="line">        p_death = df.loc[death_time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 卖股票的单价</span></span><br><span class="line">        money += (p_death * hold)   <span class="comment"># 卖股票的收入加进money中</span></span><br><span class="line">        hold = <span class="number">0</span>    <span class="comment"># 股票卖出后，注意hold要清空</span></span><br><span class="line"><span class="comment"># 判定最后一次是金叉还是死叉可以判断l[i]最后一位是1还是0，但也可以使用hold判断，hold=0则最后一次为死叉反之金叉。</span></span><br><span class="line">last_money = hold * df[<span class="string">&#x27;close&#x27;</span>][-<span class="number">1</span>] <span class="comment"># 剩余股票的价值，若为金叉有剩余价值若为死叉该值为0，不用再进行判断直接加上即可。</span></span><br><span class="line"><span class="comment"># 总收益</span></span><br><span class="line">final_money = money + last_money - first_money</span><br><span class="line"><span class="built_in">print</span>(final_money)</span><br></pre></td></tr></table></figure>
+
+<pre><code>198082.0
+</code></pre>
+<ul>
+<li>金融量化实用平台：聚宽joinQuant</li>
+</ul>
+]]></content>
+      <categories>
+        <category>数据分析</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>股票分析</title>
     <url>/2021/05/25/test_1/</url>
     <content><![CDATA[<h1 id="需求：股票分析"><a href="#需求：股票分析" class="headerlink" title="需求：股票分析"></a>需求：股票分析</h1><p>1.使用tushare包获取某股票的历史行情数据<br>2.输出该股票所有收盘比开盘上涨3%以上的日期<br>3.输出该股票所有开盘比前日收盘跌幅超2%的日期<br>4.假如从2017年1月1日开始，每月第一个交易日买入1手股票，每年最后一个交易日卖出所有股票，迄今为止收益如何？</p>
@@ -515,260 +769,6 @@ date
       </tags>
   </entry>
   <entry>
-    <title>双均线策略制定</title>
-    <url>/2021/05/25/test_2/</url>
-    <content><![CDATA[<h1 id="需求：双均线策略制定"><a href="#需求：双均线策略制定" class="headerlink" title="需求：双均线策略制定"></a>需求：双均线策略制定</h1><ul>
-<li>使用tushare包获取某股票的历史行情数据  </li>
-<li>计算该股票历史数据的5日均线和60日均线  <ul>
-<li>什么是均线：  <ul>
-<li>对于每一个交易日，都可以计算出前N天的移动平均值，然后把这些移动平均值连起来，成为一条线，就叫做N日移动平均线。移动平均线常用线有5天、10天、30天、60天、120天和240天的指标。  </li>
-<li>5天和10天的是短线操作的参照指标，称作日均线指标；  </li>
-<li>30天和60天的是中期均线指标，称作季均线指标；  </li>
-<li>120天和240天的是长期均线指标，称作年均线指标。  </li>
-</ul>
-</li>
-<li>均线计算方法：MA=(C1+C2+C3+…+Cn)/N    C:某日收盘价；N:移动平均周期（天数）</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">df = ts.get_k_data(code=&#x27;600519&#x27;,start=&#x27;2015-01-01&#x27;)</span></span><br><span class="line"><span class="string">df.to_csv(&#x27;moutai.csv&#x27;)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;moutai.csv&#x27;</span>).drop(labels=<span class="string">&#x27;Unnamed: 0&#x27;</span>,axis=<span class="number">1</span>)</span><br><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>])</span><br><span class="line">df.set_index(<span class="string">&#x27;date&#x27;</span>,inplace=<span class="literal">True</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-<pre><code>.dataframe tbody tr th &#123;
-    vertical-align: top;
-&#125;
-
-.dataframe thead th &#123;
-    text-align: right;
-&#125;
-</code></pre>
-<p></style></p>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>open</th>
-      <th>close</th>
-      <th>high</th>
-      <th>low</th>
-      <th>volume</th>
-      <th>code</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2015-01-05</th>
-      <td>161.056</td>
-      <td>172.013</td>
-      <td>173.474</td>
-      <td>160.266</td>
-      <td>94515.0</td>
-      <td>600519</td>
-    </tr>
-    <tr>
-      <th>2015-01-06</th>
-      <td>169.872</td>
-      <td>168.029</td>
-      <td>172.047</td>
-      <td>166.492</td>
-      <td>55020.0</td>
-      <td>600519</td>
-    </tr>
-    <tr>
-      <th>2015-01-07</th>
-      <td>166.509</td>
-      <td>163.876</td>
-      <td>169.448</td>
-      <td>161.370</td>
-      <td>54797.0</td>
-      <td>600519</td>
-    </tr>
-    <tr>
-      <th>2015-01-08</th>
-      <td>164.776</td>
-      <td>162.874</td>
-      <td>165.218</td>
-      <td>161.498</td>
-      <td>40525.0</td>
-      <td>600519</td>
-    </tr>
-    <tr>
-      <th>2015-01-09</th>
-      <td>161.719</td>
-      <td>161.642</td>
-      <td>166.280</td>
-      <td>161.472</td>
-      <td>53982.0</td>
-      <td>600519</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ma5 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">5</span>).mean()   <span class="comment"># rolling滑动窗口尺寸为5</span></span><br><span class="line">ma10 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">10</span>).mean()</span><br><span class="line">ma30 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">30</span>).mean()</span><br><span class="line">ma60 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">60</span>).mean()</span><br><span class="line">ma120 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">120</span>).mean()</span><br><span class="line">ma240 = df[<span class="string">&#x27;close&#x27;</span>].rolling(<span class="number">240</span>).mean()</span><br><span class="line">%matplotlib inline</span><br><span class="line">plt.plot(ma5[<span class="number">110</span>:<span class="number">330</span>])</span><br><span class="line">plt.plot(ma30[<span class="number">110</span>:<span class="number">330</span>])</span><br></pre></td></tr></table></figure>
-
-
-
-
-<pre><code>[&lt;matplotlib.lines.Line2D at 0x2a1aa5f9eb8&gt;]
-</code></pre>
-<p><a href="https://imgtu.com/i/2325vj"><img src="https://z3.ax1x.com/2021/06/03/2325vj.jpg" alt="2325vj.jpg"></a></p>
-<ul>
-<li>分析输出所有金叉日期和死叉日期  <ul>
-<li>股票分析技术中的金叉和死叉，可以简单解释为：  <ul>
-<li>1.分析指标中的两根线，一根为短时间内的指标线，另一根为较长时间的指标线。  </li>
-<li>2.如果短时间的指标线方向拐头向上，并且穿过了较长时间的指标线，这种状态叫“金叉”；  </li>
-<li>3.如果短时间的指标线方向拐头向下，并且穿过了较长时间的指标线，这种状态叫“死叉”；  </li>
-<li>4.一般情况下，出现金叉后，操作趋向买入；死叉则趋向卖出。当然，金叉和死叉只是分析指标之一，要和其他很多指标配合使用，才能增加操作的准确性。<br>参考讲解：<a href="https://www.bilibili.com/video/BV1Z64y1S7y3?p=15">https://www.bilibili.com/video/BV1Z64y1S7y3?p=15</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ma5 = ma5[<span class="number">30</span>:]</span><br><span class="line">ma30 = ma30[<span class="number">30</span>:]</span><br><span class="line">df = df[<span class="number">30</span>:]</span><br><span class="line">s1 = ma5 &lt; ma30</span><br><span class="line">s2 = ma5 &gt; ma30</span><br><span class="line">death_ex = s1 &amp; s2.shift(<span class="number">1</span>) <span class="comment"># 判定死叉条件</span></span><br><span class="line">death_date = df.loc[death_ex].index   <span class="comment"># death_ex为Boolean型，用作索引直接提取True的对应行数据，再取行索引号即死叉对应日期</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;死叉日期：&#x27;</span>, death_date)</span><br><span class="line">golden_ex = ~(s1|s2.shift(<span class="number">1</span>))</span><br><span class="line">golden_date = df.loc[golden_ex].index</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;金叉日期：&#x27;</span>, golden_date)</span><br></pre></td></tr></table></figure>
-
-<pre><code>死叉日期： DatetimeIndex([&#39;2015-06-17&#39;, &#39;2015-07-17&#39;, &#39;2015-09-28&#39;, &#39;2015-11-26&#39;,
-               &#39;2015-12-10&#39;, &#39;2016-01-05&#39;, &#39;2016-08-05&#39;, &#39;2016-08-18&#39;,
-               &#39;2016-11-21&#39;, &#39;2017-07-06&#39;, &#39;2017-09-08&#39;, &#39;2017-11-29&#39;,
-               &#39;2018-02-05&#39;, &#39;2018-03-27&#39;, &#39;2018-06-28&#39;, &#39;2018-07-23&#39;,
-               &#39;2018-07-31&#39;, &#39;2018-10-15&#39;, &#39;2018-12-25&#39;, &#39;2019-05-10&#39;,
-               &#39;2019-07-19&#39;, &#39;2019-11-28&#39;, &#39;2020-01-03&#39;, &#39;2020-02-28&#39;,
-               &#39;2020-03-18&#39;, &#39;2020-08-10&#39;, &#39;2020-09-21&#39;, &#39;2020-10-27&#39;,
-               &#39;2021-03-01&#39;, &#39;2021-04-15&#39;],
-              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
-金叉日期： DatetimeIndex([&#39;2015-02-16&#39;, &#39;2015-07-15&#39;, &#39;2015-09-16&#39;, &#39;2015-10-09&#39;,
-               &#39;2015-12-03&#39;, &#39;2015-12-21&#39;, &#39;2016-02-22&#39;, &#39;2016-08-11&#39;,
-               &#39;2016-10-13&#39;, &#39;2016-11-25&#39;, &#39;2017-07-24&#39;, &#39;2017-09-18&#39;,
-               &#39;2017-12-15&#39;, &#39;2018-03-16&#39;, &#39;2018-05-09&#39;, &#39;2018-07-18&#39;,
-               &#39;2018-07-25&#39;, &#39;2018-09-20&#39;, &#39;2018-12-04&#39;, &#39;2019-01-03&#39;,
-               &#39;2019-06-14&#39;, &#39;2019-08-13&#39;, &#39;2020-01-02&#39;, &#39;2020-02-19&#39;,
-               &#39;2020-03-03&#39;, &#39;2020-04-02&#39;, &#39;2020-08-19&#39;, &#39;2020-10-14&#39;,
-               &#39;2020-11-05&#39;, &#39;2021-04-02&#39;, &#39;2021-04-16&#39;],
-              dtype=&#39;datetime64[ns]&#39;, name=&#39;date&#39;, freq=None)
-</code></pre>
-<ul>
-<li>如果从2017年1月1日开始，初始资金为10W元，金叉尽量买入，死叉全部卖出，则迄今为止炒股收益率如何？  <ul>
-<li>1.买卖股票的单价使用开盘价  </li>
-<li>2.买卖股票的时机  </li>
-<li>3.最终手里会有剩余的股票没有卖出去（如果最有一次是金叉即买入没有卖出则出现剩余，需估量其价值，剩余股票单价使用最后一天的收盘价计算）</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">l1 = pd.Series(<span class="number">1</span>,index=golden_date)    <span class="comment"># 1作为金叉标识</span></span><br><span class="line">l2 = pd.Series(<span class="number">0</span>,index=death_date) <span class="comment"># 0作为死叉标识</span></span><br><span class="line">l = l1.append(l2)</span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
-
-<pre><code>date
-2015-02-16    1
-2015-07-15    1
-2015-09-16    1
-2015-10-09    1
-2015-12-03    1
-             ..
-2020-08-10    0
-2020-09-21    0
-2020-10-27    0
-2021-03-01    0
-2021-04-15    0
-Length: 61, dtype: int64
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">l = l.sort_index()  <span class="comment"># 根据日期排序即出现金叉死叉交错</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br><span class="line">l = l[<span class="string">&#x27;2017&#x27;</span>:<span class="string">&#x27;2021&#x27;</span>]    <span class="comment"># 根据需求切出2017年至今的金叉死叉</span></span><br><span class="line"><span class="built_in">print</span>(l)</span><br></pre></td></tr></table></figure>
-
-<pre><code>date
-2015-02-16    1
-2015-06-17    0
-2015-07-15    1
-2015-07-17    0
-2015-09-16    1
-             ..
-2020-11-05    1
-2021-03-01    0
-2021-04-02    1
-2021-04-15    0
-2021-04-16    1
-Length: 61, dtype: int64
-date
-2017-07-06    0
-2017-07-24    1
-2017-09-08    0
-2017-09-18    1
-2017-11-29    0
-2017-12-15    1
-2018-02-05    0
-2018-03-16    1
-2018-03-27    0
-2018-05-09    1
-2018-06-28    0
-2018-07-18    1
-2018-07-23    0
-2018-07-25    1
-2018-07-31    0
-2018-09-20    1
-2018-10-15    0
-2018-12-04    1
-2018-12-25    0
-2019-01-03    1
-2019-05-10    0
-2019-06-14    1
-2019-07-19    0
-2019-08-13    1
-2019-11-28    0
-2020-01-02    1
-2020-01-03    0
-2020-02-19    1
-2020-02-28    0
-2020-03-03    1
-2020-03-18    0
-2020-04-02    1
-2020-08-10    0
-2020-08-19    1
-2020-09-21    0
-2020-10-14    1
-2020-10-27    0
-2020-11-05    1
-2021-03-01    0
-2021-04-02    1
-2021-04-15    0
-2021-04-16    1
-dtype: int64
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">first_money = <span class="number">100000</span>    <span class="comment"># 本金不变</span></span><br><span class="line">money = first_money <span class="comment"># 可变，买股票花的钱和卖股票赚的钱都在该变量中操作</span></span><br><span class="line">hold = <span class="number">0</span>    <span class="comment"># 持有股票的数量（股数：100股=1手）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(l)): </span><br><span class="line">    <span class="keyword">if</span> l[i] == <span class="number">1</span>:  <span class="comment"># 金叉时间，基于10W单价尽多买入</span></span><br><span class="line">        time = l.index[i]   <span class="comment"># 获取金叉时间</span></span><br><span class="line">        p = df.loc[time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 取出该时间对应的开盘价，即当前单价</span></span><br><span class="line">        hand_count = money // (p*<span class="number">100</span>)   <span class="comment"># 10W能买入多少手</span></span><br><span class="line">        hold = hand_count * <span class="number">100</span> <span class="comment"># 股数</span></span><br><span class="line">        money -= (hold*p)   <span class="comment"># 将买股票的钱从money中减去</span></span><br><span class="line">    <span class="keyword">else</span>:   <span class="comment"># 死叉时间，将买入的股票卖出去</span></span><br><span class="line">        death_time = l.index[i]</span><br><span class="line">        p_death = df.loc[death_time][<span class="string">&#x27;open&#x27;</span>]    <span class="comment"># 卖股票的单价</span></span><br><span class="line">        money += (p_death * hold)   <span class="comment"># 卖股票的收入加进money中</span></span><br><span class="line">        hold = <span class="number">0</span>    <span class="comment"># 股票卖出后，注意hold要清空</span></span><br><span class="line"><span class="comment"># 判定最后一次是金叉还是死叉可以判断l[i]最后一位是1还是0，但也可以使用hold判断，hold=0则最后一次为死叉反之金叉。</span></span><br><span class="line">last_money = hold * df[<span class="string">&#x27;close&#x27;</span>][-<span class="number">1</span>] <span class="comment"># 剩余股票的价值，若为金叉有剩余价值若为死叉该值为0，不用再进行判断直接加上即可。</span></span><br><span class="line"><span class="comment"># 总收益</span></span><br><span class="line">final_money = money + last_money - first_money</span><br><span class="line"><span class="built_in">print</span>(final_money)</span><br></pre></td></tr></table></figure>
-
-<pre><code>198082.0
-</code></pre>
-<ul>
-<li>金融量化实用平台：聚宽joinQuant</li>
-</ul>
-]]></content>
-      <categories>
-        <category>数据分析</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>处理丢失数据</title>
     <url>/2021/05/25/test_3/</url>
     <content><![CDATA[<h1 id="处理丢失数据"><a href="#处理丢失数据" class="headerlink" title="处理丢失数据"></a>处理丢失数据</h1><p>1、原始数据中会存在缺失值（空值）<br>2、重复值<br>3、异常值  </p>
@@ -959,32 +959,13 @@ dtype: bool
 5  97   7   2.0  37.0  26.0  90
 6  52  79   2.0  46.0   1.0  21
 7   7  58  29.0  87.0   7.0  49
-
-
-
-
-
-&#39;\n但无论如何覆盖都不是最合理的，故一般选择删除而不选择覆盖，假如删除的成本太高（删除数据太多），才选择覆盖\n&#39;
 </code></pre>
-<h1 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h1><ul>
-<li>数据说明：<ul>
-<li>数据是一个冷库的温度数据，1-7对应7个温度采集设备，1分钟采集一次。</li>
+<ul>
+<li>实例<ul>
+<li>处理丢失数据和空值</li>
+<li>此处所用数据集在文章末尾给出</li>
 </ul>
 </li>
-<li>数据处理目标：<ul>
-<li>用1-4对应的4个必须设备，通过建立冷库的温度场关系模型，预估出5-7对应的数据。</li>
-<li>最后每个冷库中仅需放置4个设备，取代放置7个设备。</li>
-<li>f(1-4) –&gt; y(5-7)</li>
-</ul>
-</li>
-<li>数据处理过程：<ul>
-<li>1.原始数据中有丢帧现象，需要做预处理；</li>
-<li>2.matplotlib绘图；</li>
-<li>3.建立逻辑回归模型。</li>
-</ul>
-</li>
-<li>无标准答案，按个人理解操作即可，请把自己的操作过程以文字形式简单描述。</li>
-<li>测试数据为testData.xlsx</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df2 = pd.read_excel(<span class="string">&#x27;testData.xlsx&#x27;</span>,engine=<span class="string">&#x27;openpyxl&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(df2.head())</span><br><span class="line">df2 = df2[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line">df2.head()</span><br></pre></td></tr></table></figure>
 
@@ -1644,6 +1625,749 @@ Name: C, Length: 1000, dtype: bool
 <pre><code>&lt;matplotlib.collections.PathCollection at 0x1d4420c7ba8&gt;
 </code></pre>
 <p><a href="https://imgtu.com/i/23RoWD"><img src="https://z3.ax1x.com/2021/06/03/23RoWD.jpg" alt="23RoWD.jpg"></a></p>
+]]></content>
+      <categories>
+        <category>数据分析</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人口分析案例</title>
+    <url>/2021/05/25/test_5/</url>
+    <content><![CDATA[<h1 id="人口分析案例"><a href="#人口分析案例" class="headerlink" title="人口分析案例"></a>人口分析案例</h1><ul>
+<li>需求：<ul>
+<li>导入文件，查看原始数据</li>
+<li>将人口数据和各州的简称数据进行合并</li>
+<li>将合并的数据中重复的abbreviation列进行删除</li>
+<li>查看存在缺失数据的列</li>
+<li>找到有哪些state/region使得state的值为NaN，进行去重操作</li>
+<li>为找到的这些state/region的state项补上正确的值，从而去除掉state这一列的所有NaN</li>
+<li>合并各州面积数据areas</li>
+<li>我们会发现area(sq.mi)这一列有缺失数据，找出是哪些行</li>
+<li>去除含有缺失数据的行</li>
+<li>找出2010年的全民人口数据</li>
+<li>计算各州的人口密度</li>
+<li>排序，并找出人口密度最高的州</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 导入文件，查看原始数据</span></span><br><span class="line">abb = pd.read_csv(<span class="string">&#x27;data\\state-abbrevs.csv&#x27;</span>)    <span class="comment"># state表示州的全称，abbreviation表示州的简称</span></span><br><span class="line"><span class="built_in">print</span>(abb.head())</span><br><span class="line">area = pd.read_csv(<span class="string">&#x27;data\\state-areas.csv&#x27;</span>) <span class="comment"># state州全称，area(sq.mi)州面积</span></span><br><span class="line"><span class="built_in">print</span>(area.head())</span><br><span class="line">pop = pd.read_csv(<span class="string">&#x27;data\\state-population.csv&#x27;</span>)    <span class="comment"># state/region简称，population人口数量</span></span><br><span class="line"><span class="built_in">print</span>(pop.head())</span><br><span class="line"><span class="comment"># 将人口数据和各州的简称数据进行合并</span></span><br><span class="line">abb_pop = pd.merge(abb,pop,left_on=<span class="string">&#x27;abbreviation&#x27;</span>,right_on=<span class="string">&#x27;state/region&#x27;</span>,how=<span class="string">&#x27;outer&#x27;</span>) <span class="comment"># 默认是内连接inner,为了保证数据完整性此处指定outer</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.head())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<pre><code>        state abbreviation
+0     Alabama           AL
+1      Alaska           AK
+2     Arizona           AZ
+3    Arkansas           AR
+4  California           CA
+        state  area (sq. mi)
+0     Alabama          52423
+1      Alaska         656425
+2     Arizona         114006
+3    Arkansas          53182
+4  California         163707
+  state/region     ages  year  population
+0           AL  under18  2012   1117489.0
+1           AL    total  2012   4817528.0
+2           AL  under18  2010   1130966.0
+3           AL    total  2010   4785570.0
+4           AL  under18  2011   1125763.0
+     state abbreviation state/region     ages  year  population
+0  Alabama           AL           AL  under18  2012   1117489.0
+1  Alabama           AL           AL    total  2012   4817528.0
+2  Alabama           AL           AL  under18  2010   1130966.0
+3  Alabama           AL           AL    total  2010   4785570.0
+4  Alabama           AL           AL  under18  2011   1125763.0
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将合并的数据中重复的abbreviation列进行删除</span></span><br><span class="line">abb_pop.drop(labels=<span class="string">&#x27;abbreviation&#x27;</span>,axis=<span class="number">1</span>,inplace=<span class="literal">True</span>) <span class="comment"># inplace=True将编辑的数据映射入原始数据,故不需要再次使用‘abb_pop=’来重新赋值</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.head())</span><br><span class="line"><span class="comment"># 查看存在缺失数据的列</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.isnull().<span class="built_in">any</span>(axis=<span class="number">0</span>)) <span class="comment"># 存在空值的列为True</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.info())   <span class="comment"># 返回数据基本信息，从数据数量看出哪些列存在空值</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>     state state/region     ages  year  population
+0  Alabama           AL  under18  2012   1117489.0
+1  Alabama           AL    total  2012   4817528.0
+2  Alabama           AL  under18  2010   1130966.0
+3  Alabama           AL    total  2010   4785570.0
+4  Alabama           AL  under18  2011   1125763.0
+state            True
+state/region    False
+ages            False
+year            False
+population       True
+dtype: bool
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 2544 entries, 0 to 2543
+Data columns (total 5 columns):
+ #   Column        Non-Null Count  Dtype  
+---  ------        --------------  -----  
+ 0   state         2448 non-null   object 
+ 1   state/region  2544 non-null   object 
+ 2   ages          2544 non-null   object 
+ 3   year          2544 non-null   int64  
+ 4   population    2524 non-null   float64
+dtypes: float64(1), int64(1), object(3)
+memory usage: 119.2+ KB
+None
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找到有哪些state/region使得state的值为NaN，进行去重操作</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state&#x27;</span>].isnull()][<span class="string">&#x27;state/region&#x27;</span>].unique())  <span class="comment"># series的unique方法按顺序返回出现唯一一次的内容</span></span><br><span class="line"><span class="comment"># 为找到的这些state/region的state项补上正确的值，从而去除掉state这一列的所有NaN</span></span><br><span class="line"><span class="comment"># 此处不能使用fillna填充，因为不是使用临近值和固定值填充；使用元素赋值的方式进行填充</span></span><br><span class="line"><span class="comment"># 1.先给USA的全称对应的空值进行批量赋值，首先找到USA对应的行数据。</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state/region&#x27;</span>] == <span class="string">&#x27;USA&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<pre><code>[&#39;PR&#39; &#39;USA&#39;]
+     state state/region     ages  year   population
+2496   NaN          USA  under18  1990   64218512.0
+2497   NaN          USA    total  1990  249622814.0
+2498   NaN          USA    total  1991  252980942.0
+2499   NaN          USA  under18  1991   65313018.0
+2500   NaN          USA  under18  1992   66509177.0
+2501   NaN          USA    total  1992  256514231.0
+2502   NaN          USA    total  1993  259918595.0
+2503   NaN          USA  under18  1993   67594938.0
+2504   NaN          USA  under18  1994   68640936.0
+2505   NaN          USA    total  1994  263125826.0
+2506   NaN          USA  under18  1995   69473140.0
+2507   NaN          USA  under18  1996   70233512.0
+2508   NaN          USA    total  1995  266278403.0
+2509   NaN          USA    total  1996  269394291.0
+2510   NaN          USA    total  1997  272646932.0
+2511   NaN          USA  under18  1997   70920738.0
+2512   NaN          USA  under18  1998   71431406.0
+2513   NaN          USA    total  1998  275854116.0
+2514   NaN          USA  under18  1999   71946051.0
+2515   NaN          USA    total  2000  282162411.0
+2516   NaN          USA  under18  2000   72376189.0
+2517   NaN          USA    total  1999  279040181.0
+2518   NaN          USA    total  2001  284968955.0
+2519   NaN          USA  under18  2001   72671175.0
+2520   NaN          USA    total  2002  287625193.0
+2521   NaN          USA  under18  2002   72936457.0
+2522   NaN          USA    total  2003  290107933.0
+2523   NaN          USA  under18  2003   73100758.0
+2524   NaN          USA    total  2004  292805298.0
+2525   NaN          USA  under18  2004   73297735.0
+2526   NaN          USA    total  2005  295516599.0
+2527   NaN          USA  under18  2005   73523669.0
+2528   NaN          USA    total  2006  298379912.0
+2529   NaN          USA  under18  2006   73757714.0
+2530   NaN          USA    total  2007  301231207.0
+2531   NaN          USA  under18  2007   74019405.0
+2532   NaN          USA    total  2008  304093966.0
+2533   NaN          USA  under18  2008   74104602.0
+2534   NaN          USA  under18  2013   73585872.0
+2535   NaN          USA    total  2013  316128839.0
+2536   NaN          USA    total  2009  306771529.0
+2537   NaN          USA  under18  2009   74134167.0
+2538   NaN          USA  under18  2010   74119556.0
+2539   NaN          USA    total  2010  309326295.0
+2540   NaN          USA  under18  2011   73902222.0
+2541   NaN          USA    total  2011  311582564.0
+2542   NaN          USA  under18  2012   73708179.0
+2543   NaN          USA    total  2012  313873685.0
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 2.获取USA全称为空的数据对应的行索引</span></span><br><span class="line">indexs = abb_pop.loc[abb_pop[<span class="string">&#x27;state/region&#x27;</span>] == <span class="string">&#x27;USA&#x27;</span>].index</span><br><span class="line"><span class="built_in">print</span>(indexs)</span><br><span class="line">abb_pop.loc[indexs,<span class="string">&#x27;state&#x27;</span>] = <span class="string">&#x27;United States&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state&#x27;</span>].isnull()][<span class="string">&#x27;state/region&#x27;</span>].unique())  <span class="comment"># 此处只剩PR</span></span><br><span class="line"><span class="comment"># 对于PR来说过程与USA相同</span></span><br><span class="line">indexs = abb_pop.loc[abb_pop[<span class="string">&#x27;state/region&#x27;</span>] == <span class="string">&#x27;PR&#x27;</span>].index</span><br><span class="line">abb_pop.loc[indexs,<span class="string">&#x27;state&#x27;</span>] = <span class="string">&#x27;Puerto Rico&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state&#x27;</span>].isnull()][<span class="string">&#x27;state/region&#x27;</span>].unique())  <span class="comment"># 此处没有空值了</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>Int64Index([2496, 2497, 2498, 2499, 2500, 2501, 2502, 2503, 2504, 2505, 2506,
+            2507, 2508, 2509, 2510, 2511, 2512, 2513, 2514, 2515, 2516, 2517,
+            2518, 2519, 2520, 2521, 2522, 2523, 2524, 2525, 2526, 2527, 2528,
+            2529, 2530, 2531, 2532, 2533, 2534, 2535, 2536, 2537, 2538, 2539,
+            2540, 2541, 2542, 2543],
+           dtype=&#39;int64&#39;)
+[&#39;PR&#39;]
+[]
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 合并各州面积数据areas</span></span><br><span class="line">abb_pop_area = pd.merge(abb_pop,area,how=<span class="string">&#x27;outer&#x27;</span>)</span><br><span class="line"><span class="comment"># 我们会发现area(sq.mi)这一列有缺失数据，找出是哪些行</span></span><br><span class="line">abb_pop_area.loc[abb_pop_area[<span class="string">&#x27;area (sq. mi)&#x27;</span>].isnull()]    <span class="comment"># 空对应的行数据</span></span><br><span class="line">indexs = abb_pop_area.loc[abb_pop_area[<span class="string">&#x27;area (sq. mi)&#x27;</span>].isnull()].index</span><br><span class="line"><span class="comment"># 去除含有缺失数据的行</span></span><br><span class="line">abb_pop_area.drop(labels=indexs,axis=<span class="number">0</span>,inplace=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>state</th>
+      <th>state/region</th>
+      <th>ages</th>
+      <th>year</th>
+      <th>population</th>
+      <th>area (sq. mi)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2496</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1990</td>
+      <td>64218512.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2497</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1990</td>
+      <td>249622814.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2498</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1991</td>
+      <td>252980942.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2499</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1991</td>
+      <td>65313018.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2500</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1992</td>
+      <td>66509177.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2501</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1992</td>
+      <td>256514231.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2502</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1993</td>
+      <td>259918595.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2503</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1993</td>
+      <td>67594938.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2504</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1994</td>
+      <td>68640936.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2505</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1994</td>
+      <td>263125826.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2506</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1995</td>
+      <td>69473140.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2507</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1996</td>
+      <td>70233512.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2508</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1995</td>
+      <td>266278403.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2509</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1996</td>
+      <td>269394291.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2510</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1997</td>
+      <td>272646932.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2511</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1997</td>
+      <td>70920738.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2512</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1998</td>
+      <td>71431406.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2513</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1998</td>
+      <td>275854116.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2514</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>1999</td>
+      <td>71946051.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2515</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2000</td>
+      <td>282162411.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2516</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2000</td>
+      <td>72376189.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2517</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>1999</td>
+      <td>279040181.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2518</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2001</td>
+      <td>284968955.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2519</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2001</td>
+      <td>72671175.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2520</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2002</td>
+      <td>287625193.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2521</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2002</td>
+      <td>72936457.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2522</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2003</td>
+      <td>290107933.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2523</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2003</td>
+      <td>73100758.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2524</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2004</td>
+      <td>292805298.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2525</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2004</td>
+      <td>73297735.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2526</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2005</td>
+      <td>295516599.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2527</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2005</td>
+      <td>73523669.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2528</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2006</td>
+      <td>298379912.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2529</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2006</td>
+      <td>73757714.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2530</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2007</td>
+      <td>301231207.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2531</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2007</td>
+      <td>74019405.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2532</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2008</td>
+      <td>304093966.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2533</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2008</td>
+      <td>74104602.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2534</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2013</td>
+      <td>73585872.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2535</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2013</td>
+      <td>316128839.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2536</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2009</td>
+      <td>306771529.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2537</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2009</td>
+      <td>74134167.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2538</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2010</td>
+      <td>74119556.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2539</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2010</td>
+      <td>309326295.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2540</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2011</td>
+      <td>73902222.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2541</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2011</td>
+      <td>311582564.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2542</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>under18</td>
+      <td>2012</td>
+      <td>73708179.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2543</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>total</td>
+      <td>2012</td>
+      <td>313873685.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找出2010年的全民人口数据(基于df做条件查询)</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop_area.query(<span class="string">&#x27;ages == &quot;total&quot; &amp; year == 2010&#x27;</span>))</span><br><span class="line"><span class="comment"># 计算各州的人口密度(人口/面积)</span></span><br><span class="line">abb_pop_area[<span class="string">&#x27;density of population&#x27;</span>] = abb_pop_area[<span class="string">&#x27;population&#x27;</span>] / abb_pop_area[<span class="string">&#x27;area (sq. mi)&#x27;</span>]</span><br><span class="line">abb_pop_area.head()</span><br><span class="line"><span class="comment"># 排序，并找出人口密度最高的州</span></span><br><span class="line">abb_pop_area.sort_values(by=<span class="string">&#x27;density of population&#x27;</span>,axis=<span class="number">0</span>,ascending=<span class="literal">False</span>).iloc[<span class="number">0</span>][<span class="string">&#x27;state&#x27;</span>]    <span class="comment"># ascending是否升序排序，默认升序为True，降序则为False。</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>                     state state/region   ages  year   population  \
+3                  Alabama           AL  total  2010    4785570.0   
+91                  Alaska           AK  total  2010     713868.0   
+101                Arizona           AZ  total  2010    6408790.0   
+189               Arkansas           AR  total  2010    2922280.0   
+197             California           CA  total  2010   37333601.0   
+283               Colorado           CO  total  2010    5048196.0   
+293            Connecticut           CT  total  2010    3579210.0   
+379               Delaware           DE  total  2010     899711.0   
+389   District of Columbia           DC  total  2010     605125.0   
+475                Florida           FL  total  2010   18846054.0   
+485                Georgia           GA  total  2010    9713248.0   
+570                 Hawaii           HI  total  2010    1363731.0   
+581                  Idaho           ID  total  2010    1570718.0   
+666               Illinois           IL  total  2010   12839695.0   
+677                Indiana           IN  total  2010    6489965.0   
+762                   Iowa           IA  total  2010    3050314.0   
+773                 Kansas           KS  total  2010    2858910.0   
+858               Kentucky           KY  total  2010    4347698.0   
+869              Louisiana           LA  total  2010    4545392.0   
+954                  Maine           ME  total  2010    1327366.0   
+965                Montana           MT  total  2010     990527.0   
+1050              Nebraska           NE  total  2010    1829838.0   
+1061                Nevada           NV  total  2010    2703230.0   
+1146         New Hampshire           NH  total  2010    1316614.0   
+1157            New Jersey           NJ  total  2010    8802707.0   
+1242            New Mexico           NM  total  2010    2064982.0   
+1253              New York           NY  total  2010   19398228.0   
+1338        North Carolina           NC  total  2010    9559533.0   
+1349          North Dakota           ND  total  2010     674344.0   
+1434                  Ohio           OH  total  2010   11545435.0   
+1445              Oklahoma           OK  total  2010    3759263.0   
+1530                Oregon           OR  total  2010    3837208.0   
+1541              Maryland           MD  total  2010    5787193.0   
+1626         Massachusetts           MA  total  2010    6563263.0   
+1637              Michigan           MI  total  2010    9876149.0   
+1722             Minnesota           MN  total  2010    5310337.0   
+1733           Mississippi           MS  total  2010    2970047.0   
+1818              Missouri           MO  total  2010    5996063.0   
+1829          Pennsylvania           PA  total  2010   12710472.0   
+1914          Rhode Island           RI  total  2010    1052669.0   
+1925        South Carolina           SC  total  2010    4636361.0   
+2010          South Dakota           SD  total  2010     816211.0   
+2021             Tennessee           TN  total  2010    6356683.0   
+2106                 Texas           TX  total  2010   25245178.0   
+2117                  Utah           UT  total  2010    2774424.0   
+2202               Vermont           VT  total  2010     625793.0   
+2213              Virginia           VA  total  2010    8024417.0   
+2298            Washington           WA  total  2010    6742256.0   
+2309         West Virginia           WV  total  2010    1854146.0   
+2394             Wisconsin           WI  total  2010    5689060.0   
+2405               Wyoming           WY  total  2010     564222.0   
+2490           Puerto Rico           PR  total  2010    3721208.0   
+2539         United States          USA  total  2010  309326295.0   
+
+      area (sq. mi)         midu  density of population  
+3           52423.0    91.287603              91.287603  
+91         656425.0     1.087509               1.087509  
+101        114006.0    56.214497              56.214497  
+189         53182.0    54.948667              54.948667  
+197        163707.0   228.051342             228.051342  
+283        104100.0    48.493718              48.493718  
+293          5544.0   645.600649             645.600649  
+379          1954.0   460.445752             460.445752  
+389            68.0  8898.897059            8898.897059  
+475         65758.0   286.597129             286.597129  
+485         59441.0   163.409902             163.409902  
+570         10932.0   124.746707             124.746707  
+581         83574.0    18.794338              18.794338  
+666         57918.0   221.687472             221.687472  
+677         36420.0   178.197831             178.197831  
+762         56276.0    54.202751              54.202751  
+773         82282.0    34.745266              34.745266  
+858         40411.0   107.586994             107.586994  
+869         51843.0    87.676099              87.676099  
+954         35387.0    37.509990              37.509990  
+965        147046.0     6.736171               6.736171  
+1050        77358.0    23.654153              23.654153  
+1061       110567.0    24.448796              24.448796  
+1146         9351.0   140.799273             140.799273  
+1157         8722.0  1009.253268            1009.253268  
+1242       121593.0    16.982737              16.982737  
+1253        54475.0   356.094135             356.094135  
+1338        53821.0   177.617157             177.617157  
+1349        70704.0     9.537565               9.537565  
+1434        44828.0   257.549634             257.549634  
+1445        69903.0    53.778278              53.778278  
+1530        98386.0    39.001565              39.001565  
+1541        12407.0   466.445797             466.445797  
+1626        10555.0   621.815538             621.815538  
+1637        96810.0   102.015794             102.015794  
+1722        86943.0    61.078373              61.078373  
+1733        48434.0    61.321530              61.321530  
+1818        69709.0    86.015622              86.015622  
+1829        46058.0   275.966651             275.966651  
+1914         1545.0   681.339159             681.339159  
+1925        32007.0   144.854594             144.854594  
+2010        77121.0    10.583512              10.583512  
+2021        42146.0   150.825298             150.825298  
+2106       268601.0    93.987655              93.987655  
+2117        84904.0    32.677188              32.677188  
+2202         9615.0    65.085075              65.085075  
+2213        42769.0   187.622273             187.622273  
+2298        71303.0    94.557817              94.557817  
+2309        24231.0    76.519582              76.519582  
+2394        65503.0    86.851900              86.851900  
+2405        97818.0     5.768079               5.768079  
+2490         3515.0  1058.665149            1058.665149  
+2539            NaN          NaN                    NaN  
+
+
+
+
+
+&#39;District of Columbia&#39;
+</code></pre>
+<hr>
+<p>本文提及的数据集下载地址：<br>链接：<a href="https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg">https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg</a><br>提取码：1111 </p>
+<hr>
 ]]></content>
       <categories>
         <category>数据分析</category>
@@ -2710,749 +3434,6 @@ Obama, Barack     4205.00
 Paul, Ron         2425.49
 Santorum, Rick     250.00
 Name: contb_receipt_amt, dtype: float64
-</code></pre>
-<hr>
-<p>本文提及的数据集下载地址：<br>链接：<a href="https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg">https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg</a><br>提取码：1111 </p>
-<hr>
-]]></content>
-      <categories>
-        <category>数据分析</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>人口分析案例</title>
-    <url>/2021/05/25/test_5/</url>
-    <content><![CDATA[<h1 id="人口分析案例"><a href="#人口分析案例" class="headerlink" title="人口分析案例"></a>人口分析案例</h1><ul>
-<li>需求：<ul>
-<li>导入文件，查看原始数据</li>
-<li>将人口数据和各州的简称数据进行合并</li>
-<li>将合并的数据中重复的abbreviation列进行删除</li>
-<li>查看存在缺失数据的列</li>
-<li>找到有哪些state/region使得state的值为NaN，进行去重操作</li>
-<li>为找到的这些state/region的state项补上正确的值，从而去除掉state这一列的所有NaN</li>
-<li>合并各州面积数据areas</li>
-<li>我们会发现area(sq.mi)这一列有缺失数据，找出是哪些行</li>
-<li>去除含有缺失数据的行</li>
-<li>找出2010年的全民人口数据</li>
-<li>计算各州的人口密度</li>
-<li>排序，并找出人口密度最高的州</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 导入文件，查看原始数据</span></span><br><span class="line">abb = pd.read_csv(<span class="string">&#x27;data\\state-abbrevs.csv&#x27;</span>)    <span class="comment"># state表示州的全称，abbreviation表示州的简称</span></span><br><span class="line"><span class="built_in">print</span>(abb.head())</span><br><span class="line">area = pd.read_csv(<span class="string">&#x27;data\\state-areas.csv&#x27;</span>) <span class="comment"># state州全称，area(sq.mi)州面积</span></span><br><span class="line"><span class="built_in">print</span>(area.head())</span><br><span class="line">pop = pd.read_csv(<span class="string">&#x27;data\\state-population.csv&#x27;</span>)    <span class="comment"># state/region简称，population人口数量</span></span><br><span class="line"><span class="built_in">print</span>(pop.head())</span><br><span class="line"><span class="comment"># 将人口数据和各州的简称数据进行合并</span></span><br><span class="line">abb_pop = pd.merge(abb,pop,left_on=<span class="string">&#x27;abbreviation&#x27;</span>,right_on=<span class="string">&#x27;state/region&#x27;</span>,how=<span class="string">&#x27;outer&#x27;</span>) <span class="comment"># 默认是内连接inner,为了保证数据完整性此处指定outer</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.head())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<pre><code>        state abbreviation
-0     Alabama           AL
-1      Alaska           AK
-2     Arizona           AZ
-3    Arkansas           AR
-4  California           CA
-        state  area (sq. mi)
-0     Alabama          52423
-1      Alaska         656425
-2     Arizona         114006
-3    Arkansas          53182
-4  California         163707
-  state/region     ages  year  population
-0           AL  under18  2012   1117489.0
-1           AL    total  2012   4817528.0
-2           AL  under18  2010   1130966.0
-3           AL    total  2010   4785570.0
-4           AL  under18  2011   1125763.0
-     state abbreviation state/region     ages  year  population
-0  Alabama           AL           AL  under18  2012   1117489.0
-1  Alabama           AL           AL    total  2012   4817528.0
-2  Alabama           AL           AL  under18  2010   1130966.0
-3  Alabama           AL           AL    total  2010   4785570.0
-4  Alabama           AL           AL  under18  2011   1125763.0
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将合并的数据中重复的abbreviation列进行删除</span></span><br><span class="line">abb_pop.drop(labels=<span class="string">&#x27;abbreviation&#x27;</span>,axis=<span class="number">1</span>,inplace=<span class="literal">True</span>) <span class="comment"># inplace=True将编辑的数据映射入原始数据,故不需要再次使用‘abb_pop=’来重新赋值</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.head())</span><br><span class="line"><span class="comment"># 查看存在缺失数据的列</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.isnull().<span class="built_in">any</span>(axis=<span class="number">0</span>)) <span class="comment"># 存在空值的列为True</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.info())   <span class="comment"># 返回数据基本信息，从数据数量看出哪些列存在空值</span></span><br></pre></td></tr></table></figure>
-
-<pre><code>     state state/region     ages  year  population
-0  Alabama           AL  under18  2012   1117489.0
-1  Alabama           AL    total  2012   4817528.0
-2  Alabama           AL  under18  2010   1130966.0
-3  Alabama           AL    total  2010   4785570.0
-4  Alabama           AL  under18  2011   1125763.0
-state            True
-state/region    False
-ages            False
-year            False
-population       True
-dtype: bool
-&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-Int64Index: 2544 entries, 0 to 2543
-Data columns (total 5 columns):
- #   Column        Non-Null Count  Dtype  
----  ------        --------------  -----  
- 0   state         2448 non-null   object 
- 1   state/region  2544 non-null   object 
- 2   ages          2544 non-null   object 
- 3   year          2544 non-null   int64  
- 4   population    2524 non-null   float64
-dtypes: float64(1), int64(1), object(3)
-memory usage: 119.2+ KB
-None
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找到有哪些state/region使得state的值为NaN，进行去重操作</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state&#x27;</span>].isnull()][<span class="string">&#x27;state/region&#x27;</span>].unique())  <span class="comment"># series的unique方法按顺序返回出现唯一一次的内容</span></span><br><span class="line"><span class="comment"># 为找到的这些state/region的state项补上正确的值，从而去除掉state这一列的所有NaN</span></span><br><span class="line"><span class="comment"># 此处不能使用fillna填充，因为不是使用临近值和固定值填充；使用元素赋值的方式进行填充</span></span><br><span class="line"><span class="comment"># 1.先给USA的全称对应的空值进行批量赋值，首先找到USA对应的行数据。</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state/region&#x27;</span>] == <span class="string">&#x27;USA&#x27;</span>])</span><br></pre></td></tr></table></figure>
-
-<pre><code>[&#39;PR&#39; &#39;USA&#39;]
-     state state/region     ages  year   population
-2496   NaN          USA  under18  1990   64218512.0
-2497   NaN          USA    total  1990  249622814.0
-2498   NaN          USA    total  1991  252980942.0
-2499   NaN          USA  under18  1991   65313018.0
-2500   NaN          USA  under18  1992   66509177.0
-2501   NaN          USA    total  1992  256514231.0
-2502   NaN          USA    total  1993  259918595.0
-2503   NaN          USA  under18  1993   67594938.0
-2504   NaN          USA  under18  1994   68640936.0
-2505   NaN          USA    total  1994  263125826.0
-2506   NaN          USA  under18  1995   69473140.0
-2507   NaN          USA  under18  1996   70233512.0
-2508   NaN          USA    total  1995  266278403.0
-2509   NaN          USA    total  1996  269394291.0
-2510   NaN          USA    total  1997  272646932.0
-2511   NaN          USA  under18  1997   70920738.0
-2512   NaN          USA  under18  1998   71431406.0
-2513   NaN          USA    total  1998  275854116.0
-2514   NaN          USA  under18  1999   71946051.0
-2515   NaN          USA    total  2000  282162411.0
-2516   NaN          USA  under18  2000   72376189.0
-2517   NaN          USA    total  1999  279040181.0
-2518   NaN          USA    total  2001  284968955.0
-2519   NaN          USA  under18  2001   72671175.0
-2520   NaN          USA    total  2002  287625193.0
-2521   NaN          USA  under18  2002   72936457.0
-2522   NaN          USA    total  2003  290107933.0
-2523   NaN          USA  under18  2003   73100758.0
-2524   NaN          USA    total  2004  292805298.0
-2525   NaN          USA  under18  2004   73297735.0
-2526   NaN          USA    total  2005  295516599.0
-2527   NaN          USA  under18  2005   73523669.0
-2528   NaN          USA    total  2006  298379912.0
-2529   NaN          USA  under18  2006   73757714.0
-2530   NaN          USA    total  2007  301231207.0
-2531   NaN          USA  under18  2007   74019405.0
-2532   NaN          USA    total  2008  304093966.0
-2533   NaN          USA  under18  2008   74104602.0
-2534   NaN          USA  under18  2013   73585872.0
-2535   NaN          USA    total  2013  316128839.0
-2536   NaN          USA    total  2009  306771529.0
-2537   NaN          USA  under18  2009   74134167.0
-2538   NaN          USA  under18  2010   74119556.0
-2539   NaN          USA    total  2010  309326295.0
-2540   NaN          USA  under18  2011   73902222.0
-2541   NaN          USA    total  2011  311582564.0
-2542   NaN          USA  under18  2012   73708179.0
-2543   NaN          USA    total  2012  313873685.0
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 2.获取USA全称为空的数据对应的行索引</span></span><br><span class="line">indexs = abb_pop.loc[abb_pop[<span class="string">&#x27;state/region&#x27;</span>] == <span class="string">&#x27;USA&#x27;</span>].index</span><br><span class="line"><span class="built_in">print</span>(indexs)</span><br><span class="line">abb_pop.loc[indexs,<span class="string">&#x27;state&#x27;</span>] = <span class="string">&#x27;United States&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state&#x27;</span>].isnull()][<span class="string">&#x27;state/region&#x27;</span>].unique())  <span class="comment"># 此处只剩PR</span></span><br><span class="line"><span class="comment"># 对于PR来说过程与USA相同</span></span><br><span class="line">indexs = abb_pop.loc[abb_pop[<span class="string">&#x27;state/region&#x27;</span>] == <span class="string">&#x27;PR&#x27;</span>].index</span><br><span class="line">abb_pop.loc[indexs,<span class="string">&#x27;state&#x27;</span>] = <span class="string">&#x27;Puerto Rico&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop.loc[abb_pop[<span class="string">&#x27;state&#x27;</span>].isnull()][<span class="string">&#x27;state/region&#x27;</span>].unique())  <span class="comment"># 此处没有空值了</span></span><br></pre></td></tr></table></figure>
-
-<pre><code>Int64Index([2496, 2497, 2498, 2499, 2500, 2501, 2502, 2503, 2504, 2505, 2506,
-            2507, 2508, 2509, 2510, 2511, 2512, 2513, 2514, 2515, 2516, 2517,
-            2518, 2519, 2520, 2521, 2522, 2523, 2524, 2525, 2526, 2527, 2528,
-            2529, 2530, 2531, 2532, 2533, 2534, 2535, 2536, 2537, 2538, 2539,
-            2540, 2541, 2542, 2543],
-           dtype=&#39;int64&#39;)
-[&#39;PR&#39;]
-[]
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 合并各州面积数据areas</span></span><br><span class="line">abb_pop_area = pd.merge(abb_pop,area,how=<span class="string">&#x27;outer&#x27;</span>)</span><br><span class="line"><span class="comment"># 我们会发现area(sq.mi)这一列有缺失数据，找出是哪些行</span></span><br><span class="line">abb_pop_area.loc[abb_pop_area[<span class="string">&#x27;area (sq. mi)&#x27;</span>].isnull()]    <span class="comment"># 空对应的行数据</span></span><br><span class="line">indexs = abb_pop_area.loc[abb_pop_area[<span class="string">&#x27;area (sq. mi)&#x27;</span>].isnull()].index</span><br><span class="line"><span class="comment"># 去除含有缺失数据的行</span></span><br><span class="line">abb_pop_area.drop(labels=indexs,axis=<span class="number">0</span>,inplace=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-<pre><code>.dataframe tbody tr th &#123;
-    vertical-align: top;
-&#125;
-
-.dataframe thead th &#123;
-    text-align: right;
-&#125;
-</code></pre>
-<p></style></p>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>state</th>
-      <th>state/region</th>
-      <th>ages</th>
-      <th>year</th>
-      <th>population</th>
-      <th>area (sq. mi)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2496</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>1990</td>
-      <td>64218512.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2497</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>1990</td>
-      <td>249622814.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2498</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>1991</td>
-      <td>252980942.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2499</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>1991</td>
-      <td>65313018.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2500</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>1992</td>
-      <td>66509177.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2501</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>1992</td>
-      <td>256514231.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2502</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>1993</td>
-      <td>259918595.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2503</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>1993</td>
-      <td>67594938.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2504</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>1994</td>
-      <td>68640936.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2505</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>1994</td>
-      <td>263125826.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2506</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>1995</td>
-      <td>69473140.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2507</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>1996</td>
-      <td>70233512.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2508</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>1995</td>
-      <td>266278403.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2509</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>1996</td>
-      <td>269394291.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2510</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>1997</td>
-      <td>272646932.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2511</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>1997</td>
-      <td>70920738.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2512</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>1998</td>
-      <td>71431406.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2513</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>1998</td>
-      <td>275854116.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2514</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>1999</td>
-      <td>71946051.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2515</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2000</td>
-      <td>282162411.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2516</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2000</td>
-      <td>72376189.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2517</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>1999</td>
-      <td>279040181.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2518</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2001</td>
-      <td>284968955.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2519</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2001</td>
-      <td>72671175.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2520</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2002</td>
-      <td>287625193.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2521</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2002</td>
-      <td>72936457.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2522</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2003</td>
-      <td>290107933.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2523</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2003</td>
-      <td>73100758.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2524</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2004</td>
-      <td>292805298.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2525</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2004</td>
-      <td>73297735.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2526</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2005</td>
-      <td>295516599.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2527</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2005</td>
-      <td>73523669.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2528</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2006</td>
-      <td>298379912.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2529</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2006</td>
-      <td>73757714.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2530</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2007</td>
-      <td>301231207.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2531</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2007</td>
-      <td>74019405.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2532</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2008</td>
-      <td>304093966.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2533</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2008</td>
-      <td>74104602.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2534</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2013</td>
-      <td>73585872.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2535</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2013</td>
-      <td>316128839.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2536</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2009</td>
-      <td>306771529.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2537</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2009</td>
-      <td>74134167.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2538</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2010</td>
-      <td>74119556.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2539</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2010</td>
-      <td>309326295.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2540</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2011</td>
-      <td>73902222.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2541</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2011</td>
-      <td>311582564.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2542</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>under18</td>
-      <td>2012</td>
-      <td>73708179.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2543</th>
-      <td>United States</td>
-      <td>USA</td>
-      <td>total</td>
-      <td>2012</td>
-      <td>313873685.0</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找出2010年的全民人口数据(基于df做条件查询)</span></span><br><span class="line"><span class="built_in">print</span>(abb_pop_area.query(<span class="string">&#x27;ages == &quot;total&quot; &amp; year == 2010&#x27;</span>))</span><br><span class="line"><span class="comment"># 计算各州的人口密度(人口/面积)</span></span><br><span class="line">abb_pop_area[<span class="string">&#x27;density of population&#x27;</span>] = abb_pop_area[<span class="string">&#x27;population&#x27;</span>] / abb_pop_area[<span class="string">&#x27;area (sq. mi)&#x27;</span>]</span><br><span class="line">abb_pop_area.head()</span><br><span class="line"><span class="comment"># 排序，并找出人口密度最高的州</span></span><br><span class="line">abb_pop_area.sort_values(by=<span class="string">&#x27;density of population&#x27;</span>,axis=<span class="number">0</span>,ascending=<span class="literal">False</span>).iloc[<span class="number">0</span>][<span class="string">&#x27;state&#x27;</span>]    <span class="comment"># ascending是否升序排序，默认升序为True，降序则为False。</span></span><br></pre></td></tr></table></figure>
-
-<pre><code>                     state state/region   ages  year   population  \
-3                  Alabama           AL  total  2010    4785570.0   
-91                  Alaska           AK  total  2010     713868.0   
-101                Arizona           AZ  total  2010    6408790.0   
-189               Arkansas           AR  total  2010    2922280.0   
-197             California           CA  total  2010   37333601.0   
-283               Colorado           CO  total  2010    5048196.0   
-293            Connecticut           CT  total  2010    3579210.0   
-379               Delaware           DE  total  2010     899711.0   
-389   District of Columbia           DC  total  2010     605125.0   
-475                Florida           FL  total  2010   18846054.0   
-485                Georgia           GA  total  2010    9713248.0   
-570                 Hawaii           HI  total  2010    1363731.0   
-581                  Idaho           ID  total  2010    1570718.0   
-666               Illinois           IL  total  2010   12839695.0   
-677                Indiana           IN  total  2010    6489965.0   
-762                   Iowa           IA  total  2010    3050314.0   
-773                 Kansas           KS  total  2010    2858910.0   
-858               Kentucky           KY  total  2010    4347698.0   
-869              Louisiana           LA  total  2010    4545392.0   
-954                  Maine           ME  total  2010    1327366.0   
-965                Montana           MT  total  2010     990527.0   
-1050              Nebraska           NE  total  2010    1829838.0   
-1061                Nevada           NV  total  2010    2703230.0   
-1146         New Hampshire           NH  total  2010    1316614.0   
-1157            New Jersey           NJ  total  2010    8802707.0   
-1242            New Mexico           NM  total  2010    2064982.0   
-1253              New York           NY  total  2010   19398228.0   
-1338        North Carolina           NC  total  2010    9559533.0   
-1349          North Dakota           ND  total  2010     674344.0   
-1434                  Ohio           OH  total  2010   11545435.0   
-1445              Oklahoma           OK  total  2010    3759263.0   
-1530                Oregon           OR  total  2010    3837208.0   
-1541              Maryland           MD  total  2010    5787193.0   
-1626         Massachusetts           MA  total  2010    6563263.0   
-1637              Michigan           MI  total  2010    9876149.0   
-1722             Minnesota           MN  total  2010    5310337.0   
-1733           Mississippi           MS  total  2010    2970047.0   
-1818              Missouri           MO  total  2010    5996063.0   
-1829          Pennsylvania           PA  total  2010   12710472.0   
-1914          Rhode Island           RI  total  2010    1052669.0   
-1925        South Carolina           SC  total  2010    4636361.0   
-2010          South Dakota           SD  total  2010     816211.0   
-2021             Tennessee           TN  total  2010    6356683.0   
-2106                 Texas           TX  total  2010   25245178.0   
-2117                  Utah           UT  total  2010    2774424.0   
-2202               Vermont           VT  total  2010     625793.0   
-2213              Virginia           VA  total  2010    8024417.0   
-2298            Washington           WA  total  2010    6742256.0   
-2309         West Virginia           WV  total  2010    1854146.0   
-2394             Wisconsin           WI  total  2010    5689060.0   
-2405               Wyoming           WY  total  2010     564222.0   
-2490           Puerto Rico           PR  total  2010    3721208.0   
-2539         United States          USA  total  2010  309326295.0   
-
-      area (sq. mi)         midu  density of population  
-3           52423.0    91.287603              91.287603  
-91         656425.0     1.087509               1.087509  
-101        114006.0    56.214497              56.214497  
-189         53182.0    54.948667              54.948667  
-197        163707.0   228.051342             228.051342  
-283        104100.0    48.493718              48.493718  
-293          5544.0   645.600649             645.600649  
-379          1954.0   460.445752             460.445752  
-389            68.0  8898.897059            8898.897059  
-475         65758.0   286.597129             286.597129  
-485         59441.0   163.409902             163.409902  
-570         10932.0   124.746707             124.746707  
-581         83574.0    18.794338              18.794338  
-666         57918.0   221.687472             221.687472  
-677         36420.0   178.197831             178.197831  
-762         56276.0    54.202751              54.202751  
-773         82282.0    34.745266              34.745266  
-858         40411.0   107.586994             107.586994  
-869         51843.0    87.676099              87.676099  
-954         35387.0    37.509990              37.509990  
-965        147046.0     6.736171               6.736171  
-1050        77358.0    23.654153              23.654153  
-1061       110567.0    24.448796              24.448796  
-1146         9351.0   140.799273             140.799273  
-1157         8722.0  1009.253268            1009.253268  
-1242       121593.0    16.982737              16.982737  
-1253        54475.0   356.094135             356.094135  
-1338        53821.0   177.617157             177.617157  
-1349        70704.0     9.537565               9.537565  
-1434        44828.0   257.549634             257.549634  
-1445        69903.0    53.778278              53.778278  
-1530        98386.0    39.001565              39.001565  
-1541        12407.0   466.445797             466.445797  
-1626        10555.0   621.815538             621.815538  
-1637        96810.0   102.015794             102.015794  
-1722        86943.0    61.078373              61.078373  
-1733        48434.0    61.321530              61.321530  
-1818        69709.0    86.015622              86.015622  
-1829        46058.0   275.966651             275.966651  
-1914         1545.0   681.339159             681.339159  
-1925        32007.0   144.854594             144.854594  
-2010        77121.0    10.583512              10.583512  
-2021        42146.0   150.825298             150.825298  
-2106       268601.0    93.987655              93.987655  
-2117        84904.0    32.677188              32.677188  
-2202         9615.0    65.085075              65.085075  
-2213        42769.0   187.622273             187.622273  
-2298        71303.0    94.557817              94.557817  
-2309        24231.0    76.519582              76.519582  
-2394        65503.0    86.851900              86.851900  
-2405        97818.0     5.768079               5.768079  
-2490         3515.0  1058.665149            1058.665149  
-2539            NaN          NaN                    NaN  
-
-
-
-
-
-&#39;District of Columbia&#39;
 </code></pre>
 <hr>
 <p>本文提及的数据集下载地址：<br>链接：<a href="https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg">https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg</a><br>提取码：1111 </p>
