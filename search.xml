@@ -255,6 +255,434 @@ dtype: int64
       </tags>
   </entry>
   <entry>
+    <title>处理丢失数据</title>
+    <url>/2021/05/25/test_3/</url>
+    <content><![CDATA[<h1 id="处理丢失数据"><a href="#处理丢失数据" class="headerlink" title="处理丢失数据"></a>处理丢失数据</h1><p>1、原始数据中会存在缺失值（空值）<br>2、重复值<br>3、异常值  </p>
+<ul>
+<li>有两种丢失数据  <ul>
+<li>None  </li>
+<li>np.nan(NAN)</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">两种丢失数据的区别</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="literal">None</span>))   <span class="comment"># None对象类型</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(np.nan)) <span class="comment"># NAN浮点型</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;class &#39;NoneType&#39;&gt;
+&lt;class &#39;float&#39;&gt;
+</code></pre>
+<span id="more"></span>
+
+<ul>
+<li>为什么在数据分析中需要用到的是浮点类型的空而不是对象类型？  <ul>
+<li>数据分析中会经常使用某些形式的运算来处理原始数据，如果原始数据中的空值为NAN形式，则不会干扰或者中断运算，NAN是可以参与运算的；  </li>
+<li>None是不可以参与运算的  </li>
+</ul>
+</li>
+<li>在pandas中如果遇到了None形式的空值则pandas会将其强转成NAN的形式。    </li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(np.nan+<span class="number">1</span>) <span class="comment"># 输出结果仍为nan</span></span><br><span class="line"><span class="built_in">print</span>(<span class="literal">None</span>+<span class="number">1</span>)   <span class="comment"># 会出现编译错误</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>nan
+
+
+
+---------------------------------------------------------------------------
+
+TypeError                                 Traceback (most recent call last)
+
+&lt;ipython-input-49-e38e0a464830&gt; in &lt;module&gt;()
+      1 print(np.nan+1) # 输出结果仍为nan
+----&gt; 2 print(None+1)   # 会出现编译错误
+
+
+TypeError: unsupported operand type(s) for +: &#39;NoneType&#39; and &#39;int&#39;
+</code></pre>
+<h1 id="pandas处理空值操作"><a href="#pandas处理空值操作" class="headerlink" title="pandas处理空值操作"></a>pandas处理空值操作</h1><ul>
+<li>isnull</li>
+<li>notnull</li>
+<li>any</li>
+<li>all</li>
+<li>dropna</li>
+<li>fillna</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame,Series</span><br><span class="line"><span class="comment"># 创建一组含有空值的数据</span></span><br><span class="line">df = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">8</span>,<span class="number">6</span>)))</span><br><span class="line">df.iloc[<span class="number">2</span>,<span class="number">3</span>] = <span class="literal">None</span></span><br><span class="line">df.iloc[<span class="number">4</span>,<span class="number">4</span>] = np.nan</span><br><span class="line">df.iloc[<span class="number">5</span>,<span class="number">2</span>] = <span class="literal">None</span></span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1     2     3     4   5
+0  44  13  76.0  12.0  75.0  27
+1   7  67  62.0  46.0  95.0  60
+2  88  31   2.0   NaN  18.0  33
+3  90   1  61.0  66.0  50.0  69
+4  54  78  65.0  31.0   NaN  19
+5  97   7   NaN  37.0  26.0  90
+6  52  79   2.0  46.0   1.0  21
+7   7  58  29.0  87.0   7.0  49
+</code></pre>
+<ul>
+<li>方式1：对空值进行过滤（删除空值所在的行数据）<ul>
+<li>isnull, notnull, any, all  <ul>
+<li>isnull-&gt;any</li>
+<li>notnull-&gt;all</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.isnull())</span><br><span class="line"><span class="comment"># 哪些行中存在true</span></span><br><span class="line"><span class="built_in">print</span>(df.isnull().<span class="built_in">any</span>(axis=<span class="number">1</span>)) <span class="comment"># any：用来检测行或列中是否存在True，若存在返回True否则返回False</span></span><br><span class="line"><span class="comment"># 将该Boolean值作为行索引，即可得到存在缺失值的行数据以及相应的行索引</span></span><br><span class="line"><span class="built_in">print</span>(df.loc[df.isnull().<span class="built_in">any</span>(axis=<span class="number">1</span>)])</span><br><span class="line">drop_index = df.loc[df.isnull().<span class="built_in">any</span>(axis=<span class="number">1</span>)].index  <span class="comment"># 将要删除的行索引</span></span><br><span class="line"><span class="built_in">print</span>(df.drop(labels=drop_index,axis=<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>       0      1      2      3      4      5
+0  False  False  False  False  False  False
+1  False  False  False  False  False  False
+2  False  False  False   True  False  False
+3  False  False  False  False  False  False
+4  False  False  False  False   True  False
+5  False  False   True  False  False  False
+6  False  False  False  False  False  False
+7  False  False  False  False  False  False
+0    False
+1    False
+2     True
+3    False
+4     True
+5     True
+6    False
+7    False
+dtype: bool
+    0   1     2     3     4   5
+2  88  31   2.0   NaN  18.0  33
+4  54  78  65.0  31.0   NaN  19
+5  97   7   NaN  37.0  26.0  90
+    0   1     2     3     4   5
+0  44  13  76.0  12.0  75.0  27
+1   7  67  62.0  46.0  95.0  60
+3  90   1  61.0  66.0  50.0  69
+6  52  79   2.0  46.0   1.0  21
+7   7  58  29.0  87.0   7.0  49
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.notnull())</span><br><span class="line"><span class="built_in">print</span>(df.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>)) <span class="comment"># all:用来检测行或列中是否存在False,如果全为True返回True否则返回False</span></span><br><span class="line"><span class="built_in">print</span>(df.loc[df.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>)]) <span class="comment"># 以True为索引即忽略了含有缺失值的行</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>      0     1      2      3      4     5
+0  True  True   True   True   True  True
+1  True  True   True   True   True  True
+2  True  True   True  False   True  True
+3  True  True   True   True   True  True
+4  True  True   True   True  False  True
+5  True  True  False   True   True  True
+6  True  True   True   True   True  True
+7  True  True   True   True   True  True
+0     True
+1     True
+2    False
+3     True
+4    False
+5    False
+6     True
+7     True
+dtype: bool
+    0   1     2     3     4   5
+0  44  13  76.0  12.0  75.0  27
+1   7  67  62.0  46.0  95.0  60
+3  90   1  61.0  66.0  50.0  69
+6  52  79   2.0  46.0   1.0  21
+7   7  58  29.0  87.0   7.0  49
+</code></pre>
+<ul>
+<li><p>方式2：</p>
+<ul>
+<li>dropna:可以直接将缺失的行或者列进行删除</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.dropna(axis=<span class="number">0</span>))</span><br><span class="line"><span class="built_in">print</span>(df.dropna(axis=<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1     2     3     4   5
+0  44  13  76.0  12.0  75.0  27
+1   7  67  62.0  46.0  95.0  60
+3  90   1  61.0  66.0  50.0  69
+6  52  79   2.0  46.0   1.0  21
+7   7  58  29.0  87.0   7.0  49
+    0   1   5
+0  44  13  27
+1   7  67  60
+2  88  31  33
+3  90   1  69
+4  54  78  19
+5  97   7  90
+6  52  79  21
+7   7  58  49
+</code></pre>
+<ul>
+<li>对缺失值进行覆盖<ul>
+<li>fillna</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.fillna(value=<span class="number">666</span>)) <span class="comment"># 使用设定值覆盖缺失值，但合理性不足意义不大</span></span><br><span class="line"><span class="built_in">print</span>(df.fillna(method=<span class="string">&#x27;ffill&#x27;</span>,axis=<span class="number">1</span>)) <span class="comment"># 一般采用缺失值周围临近的值去覆盖,ffill使用前值覆盖bfill使用后值覆盖，axis选择水平或垂直方向</span></span><br><span class="line"><span class="built_in">print</span>(df.fillna(method=<span class="string">&#x27;bfill&#x27;</span>,axis=<span class="number">0</span>)) <span class="comment"># 使用垂直方向的后值覆盖</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">但无论如何覆盖都不是最合理的，故一般选择删除而不选择覆盖，假如删除的成本太高（删除数据太多），才选择覆盖</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1      2      3      4   5
+0  44  13   76.0   12.0   75.0  27
+1   7  67   62.0   46.0   95.0  60
+2  88  31    2.0  666.0   18.0  33
+3  90   1   61.0   66.0   50.0  69
+4  54  78   65.0   31.0  666.0  19
+5  97   7  666.0   37.0   26.0  90
+6  52  79    2.0   46.0    1.0  21
+7   7  58   29.0   87.0    7.0  49
+      0     1     2     3     4     5
+0  44.0  13.0  76.0  12.0  75.0  27.0
+1   7.0  67.0  62.0  46.0  95.0  60.0
+2  88.0  31.0   2.0   2.0  18.0  33.0
+3  90.0   1.0  61.0  66.0  50.0  69.0
+4  54.0  78.0  65.0  31.0  31.0  19.0
+5  97.0   7.0   7.0  37.0  26.0  90.0
+6  52.0  79.0   2.0  46.0   1.0  21.0
+7   7.0  58.0  29.0  87.0   7.0  49.0
+    0   1     2     3     4   5
+0  44  13  76.0  12.0  75.0  27
+1   7  67  62.0  46.0  95.0  60
+2  88  31   2.0  66.0  18.0  33
+3  90   1  61.0  66.0  50.0  69
+4  54  78  65.0  31.0  26.0  19
+5  97   7   2.0  37.0  26.0  90
+6  52  79   2.0  46.0   1.0  21
+7   7  58  29.0  87.0   7.0  49
+</code></pre>
+<ul>
+<li>实例<ul>
+<li>处理丢失数据和空值</li>
+<li>此处所用数据集在文章末尾给出</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df2 = pd.read_excel(<span class="string">&#x27;testData.xlsx&#x27;</span>,engine=<span class="string">&#x27;openpyxl&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(df2.head())</span><br><span class="line">df2 = df2[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line">df2.head()</span><br></pre></td></tr></table></figure>
+
+<pre><code>                 time  none     1     2     3     4  none1     5     6     7
+0 2019-01-27 17:00:00   NaN -24.8 -18.2 -20.8 -18.8    NaN   NaN   NaN   NaN
+1 2019-01-27 17:01:00   NaN -23.5 -18.8 -20.5 -19.8    NaN -15.2 -14.5 -16.0
+2 2019-01-27 17:02:00   NaN -23.2 -19.2   NaN   NaN    NaN -13.0   NaN -14.0
+3 2019-01-27 17:03:00   NaN -22.8 -19.2 -20.0 -20.5    NaN   NaN -12.2  -9.8
+4 2019-01-27 17:04:00   NaN -23.2 -18.5 -20.0 -18.8    NaN -10.2 -10.8  -8.8
+C:\Users\86156\.conda\envs\DL\lib\site-packages\openpyxl\worksheet\_reader.py:312: UserWarning: Unknown extension is not supported and will be removed
+  warn(msg)
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-24.8</td>
+      <td>-18.2</td>
+      <td>-20.8</td>
+      <td>-18.8</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-23.5</td>
+      <td>-18.8</td>
+      <td>-20.5</td>
+      <td>-19.8</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-23.2</td>
+      <td>-19.2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-22.8</td>
+      <td>-19.2</td>
+      <td>-20.0</td>
+      <td>-20.5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-23.2</td>
+      <td>-18.5</td>
+      <td>-20.0</td>
+      <td>-18.8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 可将空值对应的行数据删除</span></span><br><span class="line"><span class="built_in">print</span>(df2.dropna(axis=<span class="number">0</span>))</span><br><span class="line"><span class="built_in">print</span>(df2.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(df2.loc[df2.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>)])</span><br></pre></td></tr></table></figure>
+
+<pre><code>         1     2     3     4
+0    -24.8 -18.2 -20.8 -18.8
+1    -23.5 -18.8 -20.5 -19.8
+3    -22.8 -19.2 -20.0 -20.5
+4    -23.2 -18.5 -20.0 -18.8
+7    -24.8 -18.0 -17.5 -17.2
+...    ...   ...   ...   ...
+1055 -26.2 -27.2 -28.8 -27.5
+1056 -26.8 -27.5 -29.0 -27.8
+1057 -27.2 -27.8 -29.0 -28.0
+1058 -27.5 -27.0 -29.0 -28.0
+1059 -27.0 -27.2 -29.0 -27.8
+
+[982 rows x 4 columns]
+0        True
+1        True
+2       False
+3        True
+4        True
+        ...  
+1055     True
+1056     True
+1057     True
+1058     True
+1059     True
+Length: 1060, dtype: bool
+         1     2     3     4
+0    -24.8 -18.2 -20.8 -18.8
+1    -23.5 -18.8 -20.5 -19.8
+3    -22.8 -19.2 -20.0 -20.5
+4    -23.2 -18.5 -20.0 -18.8
+7    -24.8 -18.0 -17.5 -17.2
+...    ...   ...   ...   ...
+1055 -26.2 -27.2 -28.8 -27.5
+1056 -26.8 -27.5 -29.0 -27.8
+1057 -27.2 -27.8 -29.0 -28.0
+1058 -27.5 -27.0 -29.0 -28.0
+1059 -27.0 -27.2 -29.0 -27.8
+
+[982 rows x 4 columns]
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 填充空值</span></span><br><span class="line">data = df2.fillna(method=<span class="string">&#x27;ffill&#x27;</span>,axis=<span class="number">0</span>).fillna(method=<span class="string">&#x27;bfill&#x27;</span>,axis=<span class="number">0</span>)  <span class="comment"># 前部填充一次再候补填充一次确保开头和结尾没有缺失值</span></span><br><span class="line"><span class="built_in">print</span>(data.isnull().<span class="built_in">any</span>(axis=<span class="number">0</span>))    <span class="comment"># 检测下是否填充完整，any检查是否有True，此处4列中均无True故返回False</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>1    False
+2    False
+3    False
+4    False
+dtype: bool
+</code></pre>
+<h1 id="处理重复数据"><a href="#处理重复数据" class="headerlink" title="处理重复数据"></a>处理重复数据</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 生成一组带有重复数据的数据源</span></span><br><span class="line">df3 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">8</span>,<span class="number">4</span>)))</span><br><span class="line">df3.iloc[<span class="number">2</span>] = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">df3.iloc[<span class="number">5</span>] = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line"><span class="built_in">print</span>(df3)</span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1   2   3
+0  77  77  99  27
+1  70  38  58  77
+2   0   0   0   0
+3  93  73  10   8
+4  66  45  98  29
+5   0   0   0   0
+6  14  40  61  81
+7  67  10  92  42
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用drop_duplicates</span></span><br><span class="line"><span class="built_in">print</span>(df3.drop_duplicates(keep=<span class="string">&#x27;first&#x27;</span>))    <span class="comment"># keep为保留第几条重复数据，也可使用last保留最后一条</span></span><br><span class="line"><span class="built_in">print</span>(df3.drop_duplicates(keep=<span class="literal">False</span>))    <span class="comment"># keep=False,删除所有重复数据</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>    0   1   2   3
+0  77  77  99  27
+1  70  38  58  77
+2   0   0   0   0
+3  93  73  10   8
+4  66  45  98  29
+6  14  40  61  81
+7  67  10  92  42
+    0   1   2   3
+0  77  77  99  27
+1  70  38  58  77
+3  93  73  10   8
+4  66  45  98  29
+6  14  40  61  81
+7  67  10  92  42
+</code></pre>
+<h1 id="处理异常数据"><a href="#处理异常数据" class="headerlink" title="处理异常数据"></a>处理异常数据</h1><ul>
+<li>自定义一个1000行3列(A,B,C)取值范围为0-1的数据源，然后将C列中的值大于其两倍标准差的异常值进行清洗</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df4 = DataFrame(np.random.random(size=(<span class="number">1000</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(df4)</span><br><span class="line"><span class="comment"># 判定异常值的条件</span></span><br><span class="line">twice_std = df4[<span class="string">&#x27;C&#x27;</span>].std() * <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span>(df4[<span class="string">&#x27;C&#x27;</span>] &gt; twice_std)  <span class="comment"># 此时True为异常值</span></span><br><span class="line"><span class="built_in">print</span>(~(df4[<span class="string">&#x27;C&#x27;</span>] &gt; twice_std))   <span class="comment"># 对其取反则False为异常值，使用True作为索引即可保留正常值</span></span><br><span class="line"><span class="built_in">print</span>(df4.loc[~(df4[<span class="string">&#x27;C&#x27;</span>] &gt; twice_std)])</span><br></pre></td></tr></table></figure>
+
+<pre><code>            A         B         C
+0    0.215693  0.959250  0.528953
+1    0.136710  0.114971  0.941449
+2    0.295452  0.295154  0.238188
+3    0.187619  0.066753  0.999018
+4    0.398977  0.446377  0.432628
+..        ...       ...       ...
+995  0.908120  0.968931  0.765458
+996  0.649668  0.783493  0.058060
+997  0.605072  0.751010  0.243683
+998  0.304012  0.571452  0.004855
+999  0.364485  0.937335  0.601111
+
+[1000 rows x 3 columns]
+0      False
+1       True
+2      False
+3       True
+4      False
+       ...  
+995     True
+996    False
+997    False
+998    False
+999     True
+Name: C, Length: 1000, dtype: bool
+0       True
+1      False
+2       True
+3      False
+4       True
+       ...  
+995    False
+996     True
+997     True
+998     True
+999    False
+Name: C, Length: 1000, dtype: bool
+            A         B         C
+0    0.215693  0.959250  0.528953
+2    0.295452  0.295154  0.238188
+4    0.398977  0.446377  0.432628
+5    0.402174  0.704057  0.327663
+6    0.938079  0.919880  0.308305
+..        ...       ...       ...
+992  0.693904  0.050679  0.171809
+994  0.663767  0.883826  0.119215
+996  0.649668  0.783493  0.058060
+997  0.605072  0.751010  0.243683
+998  0.304012  0.571452  0.004855
+
+[574 rows x 3 columns]
+</code></pre>
+<hr>
+<p>本文提及的数据集下载地址：<br>链接：<a href="https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg">https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg</a><br>提取码：1111 </p>
+<hr>
+]]></content>
+      <categories>
+        <category>数据分析</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>股票分析</title>
     <url>/2021/05/25/test_1/</url>
     <content><![CDATA[<h1 id="需求：股票分析"><a href="#需求：股票分析" class="headerlink" title="需求：股票分析"></a>需求：股票分析</h1><p>1.使用tushare包获取某股票的历史行情数据<br>2.输出该股票所有收盘比开盘上涨3%以上的日期<br>3.输出该股票所有开盘比前日收盘跌幅超2%的日期<br>4.假如从2017年1月1日开始，每月第一个交易日买入1手股票，每年最后一个交易日卖出所有股票，迄今为止收益如何？</p>
@@ -760,434 +1188,6 @@ date
 2020-12-31  1941.000  1998.000  1998.980  1939.000  38860.0  600519
 1089960.7999999998
 </code></pre>
-]]></content>
-      <categories>
-        <category>数据分析</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>处理丢失数据</title>
-    <url>/2021/05/25/test_3/</url>
-    <content><![CDATA[<h1 id="处理丢失数据"><a href="#处理丢失数据" class="headerlink" title="处理丢失数据"></a>处理丢失数据</h1><p>1、原始数据中会存在缺失值（空值）<br>2、重复值<br>3、异常值  </p>
-<ul>
-<li>有两种丢失数据  <ul>
-<li>None  </li>
-<li>np.nan(NAN)</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">两种丢失数据的区别</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="literal">None</span>))   <span class="comment"># None对象类型</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(np.nan)) <span class="comment"># NAN浮点型</span></span><br></pre></td></tr></table></figure>
-
-<pre><code>&lt;class &#39;NoneType&#39;&gt;
-&lt;class &#39;float&#39;&gt;
-</code></pre>
-<span id="more"></span>
-
-<ul>
-<li>为什么在数据分析中需要用到的是浮点类型的空而不是对象类型？  <ul>
-<li>数据分析中会经常使用某些形式的运算来处理原始数据，如果原始数据中的空值为NAN形式，则不会干扰或者中断运算，NAN是可以参与运算的；  </li>
-<li>None是不可以参与运算的  </li>
-</ul>
-</li>
-<li>在pandas中如果遇到了None形式的空值则pandas会将其强转成NAN的形式。    </li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(np.nan+<span class="number">1</span>) <span class="comment"># 输出结果仍为nan</span></span><br><span class="line"><span class="built_in">print</span>(<span class="literal">None</span>+<span class="number">1</span>)   <span class="comment"># 会出现编译错误</span></span><br></pre></td></tr></table></figure>
-
-<pre><code>nan
-
-
-
----------------------------------------------------------------------------
-
-TypeError                                 Traceback (most recent call last)
-
-&lt;ipython-input-49-e38e0a464830&gt; in &lt;module&gt;()
-      1 print(np.nan+1) # 输出结果仍为nan
-----&gt; 2 print(None+1)   # 会出现编译错误
-
-
-TypeError: unsupported operand type(s) for +: &#39;NoneType&#39; and &#39;int&#39;
-</code></pre>
-<h1 id="pandas处理空值操作"><a href="#pandas处理空值操作" class="headerlink" title="pandas处理空值操作"></a>pandas处理空值操作</h1><ul>
-<li>isnull</li>
-<li>notnull</li>
-<li>any</li>
-<li>all</li>
-<li>dropna</li>
-<li>fillna</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame,Series</span><br><span class="line"><span class="comment"># 创建一组含有空值的数据</span></span><br><span class="line">df = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">8</span>,<span class="number">6</span>)))</span><br><span class="line">df.iloc[<span class="number">2</span>,<span class="number">3</span>] = <span class="literal">None</span></span><br><span class="line">df.iloc[<span class="number">4</span>,<span class="number">4</span>] = np.nan</span><br><span class="line">df.iloc[<span class="number">5</span>,<span class="number">2</span>] = <span class="literal">None</span></span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
-
-<pre><code>    0   1     2     3     4   5
-0  44  13  76.0  12.0  75.0  27
-1   7  67  62.0  46.0  95.0  60
-2  88  31   2.0   NaN  18.0  33
-3  90   1  61.0  66.0  50.0  69
-4  54  78  65.0  31.0   NaN  19
-5  97   7   NaN  37.0  26.0  90
-6  52  79   2.0  46.0   1.0  21
-7   7  58  29.0  87.0   7.0  49
-</code></pre>
-<ul>
-<li>方式1：对空值进行过滤（删除空值所在的行数据）<ul>
-<li>isnull, notnull, any, all  <ul>
-<li>isnull-&gt;any</li>
-<li>notnull-&gt;all</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.isnull())</span><br><span class="line"><span class="comment"># 哪些行中存在true</span></span><br><span class="line"><span class="built_in">print</span>(df.isnull().<span class="built_in">any</span>(axis=<span class="number">1</span>)) <span class="comment"># any：用来检测行或列中是否存在True，若存在返回True否则返回False</span></span><br><span class="line"><span class="comment"># 将该Boolean值作为行索引，即可得到存在缺失值的行数据以及相应的行索引</span></span><br><span class="line"><span class="built_in">print</span>(df.loc[df.isnull().<span class="built_in">any</span>(axis=<span class="number">1</span>)])</span><br><span class="line">drop_index = df.loc[df.isnull().<span class="built_in">any</span>(axis=<span class="number">1</span>)].index  <span class="comment"># 将要删除的行索引</span></span><br><span class="line"><span class="built_in">print</span>(df.drop(labels=drop_index,axis=<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
-
-<pre><code>       0      1      2      3      4      5
-0  False  False  False  False  False  False
-1  False  False  False  False  False  False
-2  False  False  False   True  False  False
-3  False  False  False  False  False  False
-4  False  False  False  False   True  False
-5  False  False   True  False  False  False
-6  False  False  False  False  False  False
-7  False  False  False  False  False  False
-0    False
-1    False
-2     True
-3    False
-4     True
-5     True
-6    False
-7    False
-dtype: bool
-    0   1     2     3     4   5
-2  88  31   2.0   NaN  18.0  33
-4  54  78  65.0  31.0   NaN  19
-5  97   7   NaN  37.0  26.0  90
-    0   1     2     3     4   5
-0  44  13  76.0  12.0  75.0  27
-1   7  67  62.0  46.0  95.0  60
-3  90   1  61.0  66.0  50.0  69
-6  52  79   2.0  46.0   1.0  21
-7   7  58  29.0  87.0   7.0  49
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.notnull())</span><br><span class="line"><span class="built_in">print</span>(df.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>)) <span class="comment"># all:用来检测行或列中是否存在False,如果全为True返回True否则返回False</span></span><br><span class="line"><span class="built_in">print</span>(df.loc[df.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>)]) <span class="comment"># 以True为索引即忽略了含有缺失值的行</span></span><br></pre></td></tr></table></figure>
-
-<pre><code>      0     1      2      3      4     5
-0  True  True   True   True   True  True
-1  True  True   True   True   True  True
-2  True  True   True  False   True  True
-3  True  True   True   True   True  True
-4  True  True   True   True  False  True
-5  True  True  False   True   True  True
-6  True  True   True   True   True  True
-7  True  True   True   True   True  True
-0     True
-1     True
-2    False
-3     True
-4    False
-5    False
-6     True
-7     True
-dtype: bool
-    0   1     2     3     4   5
-0  44  13  76.0  12.0  75.0  27
-1   7  67  62.0  46.0  95.0  60
-3  90   1  61.0  66.0  50.0  69
-6  52  79   2.0  46.0   1.0  21
-7   7  58  29.0  87.0   7.0  49
-</code></pre>
-<ul>
-<li><p>方式2：</p>
-<ul>
-<li>dropna:可以直接将缺失的行或者列进行删除</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.dropna(axis=<span class="number">0</span>))</span><br><span class="line"><span class="built_in">print</span>(df.dropna(axis=<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
-
-<pre><code>    0   1     2     3     4   5
-0  44  13  76.0  12.0  75.0  27
-1   7  67  62.0  46.0  95.0  60
-3  90   1  61.0  66.0  50.0  69
-6  52  79   2.0  46.0   1.0  21
-7   7  58  29.0  87.0   7.0  49
-    0   1   5
-0  44  13  27
-1   7  67  60
-2  88  31  33
-3  90   1  69
-4  54  78  19
-5  97   7  90
-6  52  79  21
-7   7  58  49
-</code></pre>
-<ul>
-<li>对缺失值进行覆盖<ul>
-<li>fillna</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.fillna(value=<span class="number">666</span>)) <span class="comment"># 使用设定值覆盖缺失值，但合理性不足意义不大</span></span><br><span class="line"><span class="built_in">print</span>(df.fillna(method=<span class="string">&#x27;ffill&#x27;</span>,axis=<span class="number">1</span>)) <span class="comment"># 一般采用缺失值周围临近的值去覆盖,ffill使用前值覆盖bfill使用后值覆盖，axis选择水平或垂直方向</span></span><br><span class="line"><span class="built_in">print</span>(df.fillna(method=<span class="string">&#x27;bfill&#x27;</span>,axis=<span class="number">0</span>)) <span class="comment"># 使用垂直方向的后值覆盖</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">但无论如何覆盖都不是最合理的，故一般选择删除而不选择覆盖，假如删除的成本太高（删除数据太多），才选择覆盖</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<pre><code>    0   1      2      3      4   5
-0  44  13   76.0   12.0   75.0  27
-1   7  67   62.0   46.0   95.0  60
-2  88  31    2.0  666.0   18.0  33
-3  90   1   61.0   66.0   50.0  69
-4  54  78   65.0   31.0  666.0  19
-5  97   7  666.0   37.0   26.0  90
-6  52  79    2.0   46.0    1.0  21
-7   7  58   29.0   87.0    7.0  49
-      0     1     2     3     4     5
-0  44.0  13.0  76.0  12.0  75.0  27.0
-1   7.0  67.0  62.0  46.0  95.0  60.0
-2  88.0  31.0   2.0   2.0  18.0  33.0
-3  90.0   1.0  61.0  66.0  50.0  69.0
-4  54.0  78.0  65.0  31.0  31.0  19.0
-5  97.0   7.0   7.0  37.0  26.0  90.0
-6  52.0  79.0   2.0  46.0   1.0  21.0
-7   7.0  58.0  29.0  87.0   7.0  49.0
-    0   1     2     3     4   5
-0  44  13  76.0  12.0  75.0  27
-1   7  67  62.0  46.0  95.0  60
-2  88  31   2.0  66.0  18.0  33
-3  90   1  61.0  66.0  50.0  69
-4  54  78  65.0  31.0  26.0  19
-5  97   7   2.0  37.0  26.0  90
-6  52  79   2.0  46.0   1.0  21
-7   7  58  29.0  87.0   7.0  49
-</code></pre>
-<ul>
-<li>实例<ul>
-<li>处理丢失数据和空值</li>
-<li>此处所用数据集在文章末尾给出</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df2 = pd.read_excel(<span class="string">&#x27;testData.xlsx&#x27;</span>,engine=<span class="string">&#x27;openpyxl&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(df2.head())</span><br><span class="line">df2 = df2[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line">df2.head()</span><br></pre></td></tr></table></figure>
-
-<pre><code>                 time  none     1     2     3     4  none1     5     6     7
-0 2019-01-27 17:00:00   NaN -24.8 -18.2 -20.8 -18.8    NaN   NaN   NaN   NaN
-1 2019-01-27 17:01:00   NaN -23.5 -18.8 -20.5 -19.8    NaN -15.2 -14.5 -16.0
-2 2019-01-27 17:02:00   NaN -23.2 -19.2   NaN   NaN    NaN -13.0   NaN -14.0
-3 2019-01-27 17:03:00   NaN -22.8 -19.2 -20.0 -20.5    NaN   NaN -12.2  -9.8
-4 2019-01-27 17:04:00   NaN -23.2 -18.5 -20.0 -18.8    NaN -10.2 -10.8  -8.8
-C:\Users\86156\.conda\envs\DL\lib\site-packages\openpyxl\worksheet\_reader.py:312: UserWarning: Unknown extension is not supported and will be removed
-  warn(msg)
-</code></pre>
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-<pre><code>.dataframe tbody tr th &#123;
-    vertical-align: top;
-&#125;
-
-.dataframe thead th &#123;
-    text-align: right;
-&#125;
-</code></pre>
-<p></style></p>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-      <th>4</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>-24.8</td>
-      <td>-18.2</td>
-      <td>-20.8</td>
-      <td>-18.8</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>-23.5</td>
-      <td>-18.8</td>
-      <td>-20.5</td>
-      <td>-19.8</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>-23.2</td>
-      <td>-19.2</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>-22.8</td>
-      <td>-19.2</td>
-      <td>-20.0</td>
-      <td>-20.5</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>-23.2</td>
-      <td>-18.5</td>
-      <td>-20.0</td>
-      <td>-18.8</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 可将空值对应的行数据删除</span></span><br><span class="line"><span class="built_in">print</span>(df2.dropna(axis=<span class="number">0</span>))</span><br><span class="line"><span class="built_in">print</span>(df2.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(df2.loc[df2.notnull().<span class="built_in">all</span>(axis=<span class="number">1</span>)])</span><br></pre></td></tr></table></figure>
-
-<pre><code>         1     2     3     4
-0    -24.8 -18.2 -20.8 -18.8
-1    -23.5 -18.8 -20.5 -19.8
-3    -22.8 -19.2 -20.0 -20.5
-4    -23.2 -18.5 -20.0 -18.8
-7    -24.8 -18.0 -17.5 -17.2
-...    ...   ...   ...   ...
-1055 -26.2 -27.2 -28.8 -27.5
-1056 -26.8 -27.5 -29.0 -27.8
-1057 -27.2 -27.8 -29.0 -28.0
-1058 -27.5 -27.0 -29.0 -28.0
-1059 -27.0 -27.2 -29.0 -27.8
-
-[982 rows x 4 columns]
-0        True
-1        True
-2       False
-3        True
-4        True
-        ...  
-1055     True
-1056     True
-1057     True
-1058     True
-1059     True
-Length: 1060, dtype: bool
-         1     2     3     4
-0    -24.8 -18.2 -20.8 -18.8
-1    -23.5 -18.8 -20.5 -19.8
-3    -22.8 -19.2 -20.0 -20.5
-4    -23.2 -18.5 -20.0 -18.8
-7    -24.8 -18.0 -17.5 -17.2
-...    ...   ...   ...   ...
-1055 -26.2 -27.2 -28.8 -27.5
-1056 -26.8 -27.5 -29.0 -27.8
-1057 -27.2 -27.8 -29.0 -28.0
-1058 -27.5 -27.0 -29.0 -28.0
-1059 -27.0 -27.2 -29.0 -27.8
-
-[982 rows x 4 columns]
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 填充空值</span></span><br><span class="line">data = df2.fillna(method=<span class="string">&#x27;ffill&#x27;</span>,axis=<span class="number">0</span>).fillna(method=<span class="string">&#x27;bfill&#x27;</span>,axis=<span class="number">0</span>)  <span class="comment"># 前部填充一次再候补填充一次确保开头和结尾没有缺失值</span></span><br><span class="line"><span class="built_in">print</span>(data.isnull().<span class="built_in">any</span>(axis=<span class="number">0</span>))    <span class="comment"># 检测下是否填充完整，any检查是否有True，此处4列中均无True故返回False</span></span><br></pre></td></tr></table></figure>
-
-<pre><code>1    False
-2    False
-3    False
-4    False
-dtype: bool
-</code></pre>
-<h1 id="处理重复数据"><a href="#处理重复数据" class="headerlink" title="处理重复数据"></a>处理重复数据</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 生成一组带有重复数据的数据源</span></span><br><span class="line">df3 = DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">8</span>,<span class="number">4</span>)))</span><br><span class="line">df3.iloc[<span class="number">2</span>] = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">df3.iloc[<span class="number">5</span>] = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line"><span class="built_in">print</span>(df3)</span><br></pre></td></tr></table></figure>
-
-<pre><code>    0   1   2   3
-0  77  77  99  27
-1  70  38  58  77
-2   0   0   0   0
-3  93  73  10   8
-4  66  45  98  29
-5   0   0   0   0
-6  14  40  61  81
-7  67  10  92  42
-</code></pre>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用drop_duplicates</span></span><br><span class="line"><span class="built_in">print</span>(df3.drop_duplicates(keep=<span class="string">&#x27;first&#x27;</span>))    <span class="comment"># keep为保留第几条重复数据，也可使用last保留最后一条</span></span><br><span class="line"><span class="built_in">print</span>(df3.drop_duplicates(keep=<span class="literal">False</span>))    <span class="comment"># keep=False,删除所有重复数据</span></span><br></pre></td></tr></table></figure>
-
-<pre><code>    0   1   2   3
-0  77  77  99  27
-1  70  38  58  77
-2   0   0   0   0
-3  93  73  10   8
-4  66  45  98  29
-6  14  40  61  81
-7  67  10  92  42
-    0   1   2   3
-0  77  77  99  27
-1  70  38  58  77
-3  93  73  10   8
-4  66  45  98  29
-6  14  40  61  81
-7  67  10  92  42
-</code></pre>
-<h1 id="处理异常数据"><a href="#处理异常数据" class="headerlink" title="处理异常数据"></a>处理异常数据</h1><ul>
-<li>自定义一个1000行3列(A,B,C)取值范围为0-1的数据源，然后将C列中的值大于其两倍标准差的异常值进行清洗</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df4 = DataFrame(np.random.random(size=(<span class="number">1000</span>,<span class="number">3</span>)),columns=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(df4)</span><br><span class="line"><span class="comment"># 判定异常值的条件</span></span><br><span class="line">twice_std = df4[<span class="string">&#x27;C&#x27;</span>].std() * <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span>(df4[<span class="string">&#x27;C&#x27;</span>] &gt; twice_std)  <span class="comment"># 此时True为异常值</span></span><br><span class="line"><span class="built_in">print</span>(~(df4[<span class="string">&#x27;C&#x27;</span>] &gt; twice_std))   <span class="comment"># 对其取反则False为异常值，使用True作为索引即可保留正常值</span></span><br><span class="line"><span class="built_in">print</span>(df4.loc[~(df4[<span class="string">&#x27;C&#x27;</span>] &gt; twice_std)])</span><br></pre></td></tr></table></figure>
-
-<pre><code>            A         B         C
-0    0.215693  0.959250  0.528953
-1    0.136710  0.114971  0.941449
-2    0.295452  0.295154  0.238188
-3    0.187619  0.066753  0.999018
-4    0.398977  0.446377  0.432628
-..        ...       ...       ...
-995  0.908120  0.968931  0.765458
-996  0.649668  0.783493  0.058060
-997  0.605072  0.751010  0.243683
-998  0.304012  0.571452  0.004855
-999  0.364485  0.937335  0.601111
-
-[1000 rows x 3 columns]
-0      False
-1       True
-2      False
-3       True
-4      False
-       ...  
-995     True
-996    False
-997    False
-998    False
-999     True
-Name: C, Length: 1000, dtype: bool
-0       True
-1      False
-2       True
-3      False
-4       True
-       ...  
-995    False
-996     True
-997     True
-998     True
-999    False
-Name: C, Length: 1000, dtype: bool
-            A         B         C
-0    0.215693  0.959250  0.528953
-2    0.295452  0.295154  0.238188
-4    0.398977  0.446377  0.432628
-5    0.402174  0.704057  0.327663
-6    0.938079  0.919880  0.308305
-..        ...       ...       ...
-992  0.693904  0.050679  0.171809
-994  0.663767  0.883826  0.119215
-996  0.649668  0.783493  0.058060
-997  0.605072  0.751010  0.243683
-998  0.304012  0.571452  0.004855
-
-[574 rows x 3 columns]
-</code></pre>
-<hr>
-<p>本文提及的数据集下载地址：<br>链接：<a href="https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg">https://pan.baidu.com/s/1lhAiSXBw47MK9QdqwA05Lg</a><br>提取码：1111 </p>
-<hr>
 ]]></content>
       <categories>
         <category>数据分析</category>
