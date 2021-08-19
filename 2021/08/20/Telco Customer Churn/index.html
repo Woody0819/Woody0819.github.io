@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>Telco Customer Churn |  Woody</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
+      
+    <link rel="alternate" href="/atom.xml" title="Woody" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Telco Customer Churn"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Telco Customer Churn
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/08/20/Telco%20Customer%20Churn/" class="article-date">
+  <time datetime="2021-08-19T17:00:48.955Z" itemprop="datePublished">2021-08-20</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">4.4k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">24 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Telcom-Customer-Churn"><a href="#Telcom-Customer-Churn" class="headerlink" title="Telcom Customer Churn"></a><strong>Telcom Customer Churn</strong></h1><p>每行代表一个客户每列是一个特征，原始数据包含 7043 行 21 列. “Churn” 是标签.</p>
+<ul>
+<li><p><strong>customerID</strong> : 客户 ID</p>
+</li>
+<li><p><strong>gender</strong> : 客户性别</p>
+</li>
+<li><p><strong>SeniorCitizen</strong> : 用户是否退休 (1, 0)</p>
+</li>
+<li><p><strong>Partner</strong> : 客户是否有合作伙伴 (Yes, No)</p>
+</li>
+<li><p><strong>Dependents</strong> : 客户是否有家属 (Yes, No)</p>
+</li>
+<li><p><strong>tenure</strong> : 客户留存月数</p>
+</li>
+<li><p><strong>PhoneService</strong> : 客户是否有电话服务 (Yes, No)</p>
+</li>
+<li><p><strong>MultipleLines</strong> : 客户是否有多条线路 (Yes, No, No phone service)</p>
+</li>
+<li><p><strong>InternetService</strong> : 客户网络服务提供商 (DSL, Fiber optic, No)</p>
+</li>
+<li><p><strong>OnlineSecurity</strong> : 客户是否有在线安全 (Yes, No, No internet service)</p>
+</li>
+<li><p><strong>OnlineBackup</strong> : 客户是否有在线备份 (Yes, No, No internet service)</p>
+</li>
+<li><p><strong>DeviceProtection</strong> : 客户是否有设备保护 (Yes, No, No internet service)</p>
+</li>
+<li><p><strong>TechSupport</strong> : 客户是否有技术支持 (Yes, No, No internet service)</p>
+</li>
+<li><p><strong>StreamingTV</strong> : 客户是否有流媒体电视 (Yes, No, No internet service)</p>
+</li>
+<li><p><strong>StreamingMovies</strong> : 客户是否有流媒体电影 (Yes, No, No internet service)</p>
+</li>
+<li><p><strong>Contract</strong> : 客户合同期限 (Month-to-month, One year, Two year)</p>
+</li>
+<li><p><strong>PaperlessBilling</strong> : 客户是否有无纸化计费 (Yes, No)</p>
+</li>
+<li><p><strong>PaymentMethod</strong> : 客户付款方式 (Electronic check, Mailed check, Bank transfer (automatic), Credit card (automatic))</p>
+</li>
+<li><p><strong>MonthlyCharges</strong> : 客户月付金额</p>
+</li>
+<li><p><strong>TotalCharges</strong> : 客户付款总金额</p>
+</li>
+<li><p><strong>Churn</strong> : 客户是否流失 (Yes or No)</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<ul>
+<li><ol>
+<li>Load libraries and read the data</li>
+</ol>
+<ul>
+<li><p>1.1. Load libraries</p>
+</li>
+<li><p>1.2. Read the data</p>
+</li>
+<li><p>1.3. Head, describe, shape and info</p>
+</li>
+<li><p>1.4. Reassign target, encode variables and replace missing values</p>
+</li>
+</ul>
+</li>
+<li><ol start="2">
+<li>Exploratory Data Analysis (EDA)</li>
+</ol>
+<ul>
+<li><p>2.1. Target distribution (number and %)</p>
+</li>
+<li><p>2.2. Numeric features : Seaborn</p>
+</li>
+<li><p>2.3. Numeric features : Correlation</p>
+</li>
+<li><p>2.4. Object features : Seaborn </p>
+</li>
+</ul>
+</li>
+<li><ol start="3">
+<li>Feature engineering and selection</li>
+</ol>
+<ul>
+<li><p>3.1. New features</p>
+</li>
+<li><p>3.2. Drop some features</p>
+</li>
+<li><p>3.3. Features encoding and scaling</p>
+</li>
+<li><p>3.4. Correlation Matrix</p>
+</li>
+<li><p>3.5. Remove collinear features</p>
+</li>
+</ul>
+</li>
+<li><ol start="4">
+<li>Prepare dataset and stylized report</li>
+</ol>
+<ul>
+<li><p>4.1. Define (X,  y)</p>
+</li>
+<li><p>4.2. Train test split</p>
+</li>
+<li><p>4.3. Stylized report with sns (confusion matrix, roc, precision-recall, etc…)</p>
+</li>
+<li><p>4.4. Define cross validation metrics</p>
+</li>
+</ul>
+</li>
+<li><ol start="5">
+<li>Light GBM Model</li>
+</ol>
+<ul>
+<li><p>5.1. LightGBM - Before RandomizedSearchCV</p>
+</li>
+<li><p>5.2. LightGBM - RandomizedSearchCV to optimise hyperparameters  (1000 fits)</p>
+</li>
+<li><p>5.3. LightGBM - After RandomizedSearchCV</p>
+</li>
+<li><p>5.4. LightGBM – Cross validation (5 folds)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="1-Load-libraries-and-read-the-data"><a href="#1-Load-libraries-and-read-the-data" class="headerlink" title="1. Load libraries and read the data"></a>1. Load libraries and read the data</h1><h2 id="1-1-Load-libraries"><a href="#1-1-Load-libraries" class="headerlink" title="1.1. Load libraries"></a>1.1. Load libraries</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.ticker <span class="keyword">as</span> mtick</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scipy.stats <span class="keyword">as</span> ss</span><br><span class="line"></span><br><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler, LabelEncoder</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV, cross_val_score, train_test_split, GridSearchCV, RandomizedSearchCV</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> auc, precision_score, recall_score, confusion_matrix, roc_curve, precision_recall_curve, accuracy_score, roc_auc_score, classification_report</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lightgbm <span class="keyword">as</span> lgbm</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> randint <span class="keyword">as</span> sp_randint</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> uniform <span class="keyword">as</span> sp_uniform</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line">warnings.filterwarnings(<span class="string">&#x27;ignore&#x27;</span>) <span class="comment">#ignore warning messages </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@contextmanager</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timer</span>(<span class="params">title</span>):</span></span><br><span class="line"></span><br><span class="line">    t0 = time.time()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">yield</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&#123;&#125; - done in &#123;:.0f&#125;s&quot;</span>.<span class="built_in">format</span>(title, time.time() - t0))</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-Read-the-data"><a href="#1-2-Read-the-data" class="headerlink" title="1.2. Read the data"></a>1.2. Read the data</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = pd.read_csv(<span class="string">r&quot;./dataset/WA_Fn-UseC_-Telco-Customer-Churn.csv&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-Head-describe-shape-and-info"><a href="#1-3-Head-describe-shape-and-info" class="headerlink" title="1.3. Head, describe, shape and info"></a>1.3. Head, describe, shape and info</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">display(data.head())</span><br><span class="line"></span><br><span class="line">display(data.describe())</span><br><span class="line"></span><br><span class="line">display(data.shape)</span><br><span class="line"></span><br><span class="line">display(data.info())</span><br></pre></td></tr></table></figure>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>customerID</th>
+      <th>gender</th>
+      <th>SeniorCitizen</th>
+      <th>Partner</th>
+      <th>Dependents</th>
+      <th>tenure</th>
+      <th>PhoneService</th>
+      <th>MultipleLines</th>
+      <th>InternetService</th>
+      <th>OnlineSecurity</th>
+      <th>...</th>
+      <th>DeviceProtection</th>
+      <th>TechSupport</th>
+      <th>StreamingTV</th>
+      <th>StreamingMovies</th>
+      <th>Contract</th>
+      <th>PaperlessBilling</th>
+      <th>PaymentMethod</th>
+      <th>MonthlyCharges</th>
+      <th>TotalCharges</th>
+      <th>Churn</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>7590-VHVEG</td>
+      <td>Female</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>1</td>
+      <td>No</td>
+      <td>No phone service</td>
+      <td>DSL</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Electronic check</td>
+      <td>29.85</td>
+      <td>29.85</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5575-GNVDE</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>No</td>
+      <td>No</td>
+      <td>34</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>DSL</td>
+      <td>Yes</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>One year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>56.95</td>
+      <td>1889.5</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3668-QPYBK</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>No</td>
+      <td>No</td>
+      <td>2</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>DSL</td>
+      <td>Yes</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Mailed check</td>
+      <td>53.85</td>
+      <td>108.15</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7795-CFOCW</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>No</td>
+      <td>No</td>
+      <td>45</td>
+      <td>No</td>
+      <td>No phone service</td>
+      <td>DSL</td>
+      <td>Yes</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>One year</td>
+      <td>No</td>
+      <td>Bank transfer (automatic)</td>
+      <td>42.30</td>
+      <td>1840.75</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>9237-HQITU</td>
+      <td>Female</td>
+      <td>0</td>
+      <td>No</td>
+      <td>No</td>
+      <td>2</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Fiber optic</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Electronic check</td>
+      <td>70.70</td>
+      <td>151.65</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SeniorCitizen</th>
+      <th>tenure</th>
+      <th>MonthlyCharges</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>7043.000000</td>
+      <td>7043.000000</td>
+      <td>7043.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.162147</td>
+      <td>32.371149</td>
+      <td>64.761692</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.368612</td>
+      <td>24.559481</td>
+      <td>30.090047</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>18.250000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.000000</td>
+      <td>9.000000</td>
+      <td>35.500000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.000000</td>
+      <td>29.000000</td>
+      <td>70.350000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.000000</td>
+      <td>55.000000</td>
+      <td>89.850000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.000000</td>
+      <td>72.000000</td>
+      <td>118.750000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<pre><code>(7043, 21)
+
+
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 7043 entries, 0 to 7042
+Data columns (total 21 columns):
+ #   Column            Non-Null Count  Dtype  
+---  ------            --------------  -----  
+ 0   customerID        7043 non-null   object 
+ 1   gender            7043 non-null   object 
+ 2   SeniorCitizen     7043 non-null   int64  
+ 3   Partner           7043 non-null   object 
+ 4   Dependents        7043 non-null   object 
+ 5   tenure            7043 non-null   int64  
+ 6   PhoneService      7043 non-null   object 
+ 7   MultipleLines     7043 non-null   object 
+ 8   InternetService   7043 non-null   object 
+ 9   OnlineSecurity    7043 non-null   object 
+ 10  OnlineBackup      7043 non-null   object 
+ 11  DeviceProtection  7043 non-null   object 
+ 12  TechSupport       7043 non-null   object 
+ 13  StreamingTV       7043 non-null   object 
+ 14  StreamingMovies   7043 non-null   object 
+ 15  Contract          7043 non-null   object 
+ 16  PaperlessBilling  7043 non-null   object 
+ 17  PaymentMethod     7043 non-null   object 
+ 18  MonthlyCharges    7043 non-null   float64
+ 19  TotalCharges      7043 non-null   object 
+ 20  Churn             7043 non-null   object 
+dtypes: float64(1), int64(2), object(18)
+memory usage: 1.1+ MB
+
+
+
+None
+</code></pre>
+<h2 id="1-4-Reassign-target-encode-variables-and-replace-missing-values"><a href="#1-4-Reassign-target-encode-variables-and-replace-missing-values" class="headerlink" title="1.4. Reassign target, encode variables and replace missing values"></a>1.4. Reassign target, encode variables and replace missing values</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Reassign target 将是否替换为0，1</span></span><br><span class="line"></span><br><span class="line">data.Churn.replace(to_replace = <span class="built_in">dict</span>(Yes = <span class="number">1</span>, No = <span class="number">0</span>), inplace = <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Encode as object 将指示位替换为对象类型</span></span><br><span class="line"></span><br><span class="line">col_name = [<span class="string">&#x27;SeniorCitizen&#x27;</span>, <span class="string">&#x27;Churn&#x27;</span>]</span><br><span class="line"></span><br><span class="line">data[col_name] = data[col_name].astype(<span class="built_in">object</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Encode as float 将钱数替换为float类型</span></span><br><span class="line"></span><br><span class="line">data[<span class="string">&#x27;TotalCharges&#x27;</span>] = data[<span class="string">&#x27;TotalCharges&#x27;</span>].replace(<span class="string">&quot; &quot;</span>, <span class="number">0</span>).astype(<span class="string">&#x27;float64&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-Exploratory-Data-Analysis-EDA"><a href="#2-Exploratory-Data-Analysis-EDA" class="headerlink" title="2. Exploratory Data Analysis (EDA)"></a>2. Exploratory Data Analysis (EDA)</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">churn = data[(data[<span class="string">&#x27;Churn&#x27;</span>] != <span class="number">0</span>)]      <span class="comment"># 取流失的客户全部数据</span></span><br><span class="line"></span><br><span class="line">no_churn = data[(data[<span class="string">&#x27;Churn&#x27;</span>] == <span class="number">0</span>)]   <span class="comment"># 取留存的客户全部数据</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-1-Target-distribution-number-and"><a href="#2-1-Target-distribution-number-and" class="headerlink" title="2.1. Target distribution (number and %)"></a>2.1. Target distribution (number and %)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ax = sns.catplot(y=<span class="string">&quot;Churn&quot;</span>, kind=<span class="string">&quot;count&quot;</span>, data=data, height=<span class="number">2.6</span>, aspect=<span class="number">2.5</span>, palette =&#123;<span class="number">0</span> : <span class="string">&#x27;lightblue&#x27;</span>, <span class="number">1</span> : <span class="string">&#x27;gold&#x27;</span>&#125;, orient=<span class="string">&#x27;h&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLpqKK"><img src="https://z3.ax1x.com/2021/08/20/fLpqKK.png" alt="fLpqKK.png"></a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ax = (data[<span class="string">&#x27;Churn&#x27;</span>].value_counts()*<span class="number">100.0</span> /<span class="built_in">len</span>(data))\</span><br><span class="line"></span><br><span class="line">.plot.pie(autopct=<span class="string">&#x27;%.1f%%&#x27;</span>, labels = [<span class="string">&#x27;No&#x27;</span>, <span class="string">&#x27;Yes&#x27;</span>],figsize =(<span class="number">5</span>,<span class="number">5</span>), colors=[<span class="string">&#x27;lightblue&#x27;</span>, <span class="string">&#x27;gold&#x27;</span>], fontsize = <span class="number">12</span>)                                                                           </span><br><span class="line"></span><br><span class="line">ax.yaxis.set_major_formatter(mtick.PercentFormatter())</span><br><span class="line"></span><br><span class="line">ax.set_ylabel(<span class="string">&#x27;Churn&#x27;</span>,fontsize = <span class="number">12</span>)</span><br><span class="line"></span><br><span class="line">ax.set_title(<span class="string">&#x27;% of Churn&#x27;</span>, fontsize = <span class="number">12</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>Text(0.5, 1.0, &#39;% of Churn&#39;)
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLpLDO"><img src="https://z3.ax1x.com/2021/08/20/fLpLDO.png" alt="fLpLDO.png"></a></p>
+<h2 id="2-2-Numeric-features-Seaborn"><a href="#2-2-Numeric-features-Seaborn" class="headerlink" title="2.2. Numeric features : Seaborn"></a>2.2. Numeric features : Seaborn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_distribution_num</span>(<span class="params">data_select</span>) :</span> </span><br><span class="line"></span><br><span class="line">    sns.set_style(<span class="string">&quot;ticks&quot;</span>)</span><br><span class="line"></span><br><span class="line">    s = sns.FacetGrid(data, hue = <span class="string">&#x27;Churn&#x27;</span>,aspect = <span class="number">2.5</span>, palette =&#123;<span class="number">0</span> : <span class="string">&#x27;lightblue&#x27;</span>, <span class="number">1</span> : <span class="string">&#x27;gold&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line">    s.<span class="built_in">map</span>(sns.kdeplot, data_select, shade = <span class="literal">False</span>, alpha = <span class="number">0.8</span>)</span><br><span class="line"></span><br><span class="line">    s.<span class="built_in">set</span>(xlim=(<span class="number">0</span>, data[data_select].<span class="built_in">max</span>()))</span><br><span class="line"></span><br><span class="line">    s.add_legend()</span><br><span class="line"></span><br><span class="line">    s.set_axis_labels(data_select, <span class="string">&#x27;proportion&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    s.fig.suptitle(data_select)</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">plot_distribution_num(<span class="string">&#x27;tenure&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plot_distribution_num(<span class="string">&#x27;MonthlyCharges&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plot_distribution_num(<span class="string">&#x27;TotalCharges&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLpvUH"><img src="https://z3.ax1x.com/2021/08/20/fLpvUH.png" alt="fLpvUH.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLpjVe"><img src="https://z3.ax1x.com/2021/08/20/fLpjVe.png" alt="fLpjVe.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLpObD"><img src="https://z3.ax1x.com/2021/08/20/fLpObD.png" alt="fLpObD.png"></a></p>
+<h2 id="2-3-Numeric-features-Correlation"><a href="#2-3-Numeric-features-Correlation" class="headerlink" title="2.3. Numeric features : Correlation"></a>2.3. Numeric features : Correlation</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">df_quant = data.select_dtypes(exclude=[<span class="built_in">object</span>])</span><br><span class="line"></span><br><span class="line">df_quant.head()</span><br><span class="line"></span><br><span class="line">corr_quant = df_quant.corr()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">15</span>, <span class="number">10</span>))</span><br><span class="line"></span><br><span class="line">ax = sns.heatmap(corr_quant, annot=<span class="literal">True</span>, cmap = <span class="string">&#x27;viridis&#x27;</span>, linewidths = <span class="number">.1</span>, linecolor = <span class="string">&#x27;grey&#x27;</span>, fmt=<span class="string">&quot;.2f&quot;</span>)</span><br><span class="line"></span><br><span class="line">ax.invert_yaxis()</span><br><span class="line"></span><br><span class="line">ax.set_title(<span class="string">&quot;Correlation&quot;</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLpx5d"><img src="https://z3.ax1x.com/2021/08/20/fLpx5d.png" alt="fLpx5d.png"></a></p>
+<h2 id="2-4-Object-features-Seaborn"><a href="#2-4-Object-features-Seaborn" class="headerlink" title="2.4. Object features : Seaborn"></a>2.4. Object features : Seaborn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_distribution_cat</span>(<span class="params">feature1,feature2, df</span>):</span> </span><br><span class="line"></span><br><span class="line">    plt.figure(figsize=(<span class="number">18</span>,<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">    plt.subplot(<span class="number">121</span>)</span><br><span class="line"></span><br><span class="line">    s = sns.countplot(x = feature1, hue=<span class="string">&#x27;Churn&#x27;</span>, data = df, </span><br><span class="line"></span><br><span class="line">                      palette = &#123;<span class="number">0</span> : <span class="string">&#x27;lightblue&#x27;</span>, <span class="number">1</span> :<span class="string">&#x27;gold&#x27;</span>&#125;, alpha = <span class="number">0.8</span>, </span><br><span class="line"></span><br><span class="line">                      linewidth = <span class="number">0.4</span>, edgecolor=<span class="string">&#x27;grey&#x27;</span>) </span><br><span class="line"></span><br><span class="line">    s.set_title(feature1)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> s.patches:</span><br><span class="line"></span><br><span class="line">        s.annotate(<span class="string">&#x27;&#123;:.0f&#125;&#x27;</span>.<span class="built_in">format</span>(p.get_height()), (p.get_x()+<span class="number">0.15</span>, p.get_height()+<span class="number">30</span>))</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    plt.subplot(<span class="number">122</span>)</span><br><span class="line"></span><br><span class="line">    s = sns.countplot(x = feature2, hue=<span class="string">&#x27;Churn&#x27;</span>, data = df, </span><br><span class="line"></span><br><span class="line">                      palette = &#123;<span class="number">0</span> : <span class="string">&#x27;lightblue&#x27;</span>, <span class="number">1</span> :<span class="string">&#x27;gold&#x27;</span>&#125;, alpha = <span class="number">0.8</span>, </span><br><span class="line"></span><br><span class="line">                      linewidth = <span class="number">0.4</span>, edgecolor=<span class="string">&#x27;grey&#x27;</span>) </span><br><span class="line"></span><br><span class="line">    s.set_title(feature2)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> s.patches:</span><br><span class="line"></span><br><span class="line">        s.annotate(<span class="string">&#x27;&#123;:.0f&#125;&#x27;</span>.<span class="built_in">format</span>(p.get_height()), (p.get_x()+<span class="number">0.15</span>, p.get_height()+<span class="number">30</span>))</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">plot_distribution_cat(<span class="string">&#x27;SeniorCitizen&#x27;</span>, <span class="string">&#x27;gender&#x27;</span>, data)</span><br><span class="line"></span><br><span class="line">plot_distribution_cat(<span class="string">&#x27;Partner&#x27;</span>, <span class="string">&#x27;Dependents&#x27;</span>, data)</span><br><span class="line"></span><br><span class="line">plot_distribution_cat(<span class="string">&#x27;MultipleLines&#x27;</span>, <span class="string">&#x27;InternetService&#x27;</span>, data)</span><br><span class="line"></span><br><span class="line">plot_distribution_cat(<span class="string">&#x27;OnlineSecurity&#x27;</span>, <span class="string">&#x27;TechSupport&#x27;</span>, data)</span><br><span class="line"></span><br><span class="line">plot_distribution_cat(<span class="string">&#x27;DeviceProtection&#x27;</span>, <span class="string">&#x27;StreamingTV&#x27;</span>,data)</span><br><span class="line"></span><br><span class="line">plot_distribution_cat(<span class="string">&#x27;StreamingMovies&#x27;</span>, <span class="string">&#x27;PaperlessBilling&#x27;</span>,data)</span><br><span class="line"></span><br><span class="line">plot_distribution_cat(<span class="string">&#x27;PaymentMethod&#x27;</span>, <span class="string">&#x27;Contract&#x27;</span>,data)</span><br></pre></td></tr></table></figure>
+
+
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9SPA"><img src="https://z3.ax1x.com/2021/08/20/fL9SPA.png" alt="fL9SPA.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9p8I"><img src="https://z3.ax1x.com/2021/08/20/fL9p8I.png" alt="fL9p8I.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL992t"><img src="https://z3.ax1x.com/2021/08/20/fL992t.png" alt="fL992t.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9CxP"><img src="https://z3.ax1x.com/2021/08/20/fL9CxP.png" alt="fL9CxP.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9Fr8"><img src="https://z3.ax1x.com/2021/08/20/fL9Fr8.png" alt="fL9Fr8.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9kqS"><img src="https://z3.ax1x.com/2021/08/20/fL9kqS.png" alt="fL9kqS.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9EVg"><img src="https://z3.ax1x.com/2021/08/20/fL9EVg.png" alt="fL9EVg.png"></a></p>
+<h1 id="3-Feature-engineering-and-selection"><a href="#3-Feature-engineering-and-selection" class="headerlink" title="3. Feature engineering and selection"></a>3. Feature engineering and selection</h1><h2 id="3-1-New-features"><a href="#3-1-New-features" class="headerlink" title="3.1. New features"></a>3.1. New features</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">data.loc[:,<span class="string">&#x27;Engaged&#x27;</span>]=<span class="number">1</span> </span><br><span class="line"></span><br><span class="line">data.loc[(data[<span class="string">&#x27;Contract&#x27;</span>]==<span class="string">&#x27;Month-to-month&#x27;</span>),<span class="string">&#x27;Engaged&#x27;</span>]=<span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data.loc[:,<span class="string">&#x27;YandNotE&#x27;</span>]=<span class="number">0</span></span><br><span class="line"></span><br><span class="line">data.loc[(data[<span class="string">&#x27;SeniorCitizen&#x27;</span>]==<span class="number">0</span>) &amp; (data[<span class="string">&#x27;Engaged&#x27;</span>]==<span class="number">0</span>),<span class="string">&#x27;YandNotE&#x27;</span>]=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data.loc[:,<span class="string">&#x27;ElectCheck&#x27;</span>]=<span class="number">0</span> </span><br><span class="line"></span><br><span class="line">data.loc[(data[<span class="string">&#x27;PaymentMethod&#x27;</span>]==<span class="string">&#x27;Electronic check&#x27;</span>) &amp; (data[<span class="string">&#x27;Engaged&#x27;</span>]==<span class="number">0</span>),<span class="string">&#x27;ElectCheck&#x27;</span>]=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data.loc[:,<span class="string">&#x27;fiberopt&#x27;</span>]=<span class="number">1</span> </span><br><span class="line"></span><br><span class="line">data.loc[(data[<span class="string">&#x27;InternetService&#x27;</span>]!=<span class="string">&#x27;Fiber optic&#x27;</span>),<span class="string">&#x27;fiberopt&#x27;</span>]=<span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data.loc[:,<span class="string">&#x27;StreamNoInt&#x27;</span>]=<span class="number">1</span> </span><br><span class="line"></span><br><span class="line">data.loc[(data[<span class="string">&#x27;StreamingTV&#x27;</span>]!=<span class="string">&#x27;No internet service&#x27;</span>),<span class="string">&#x27;StreamNoInt&#x27;</span>]=<span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data.loc[:,<span class="string">&#x27;NoProt&#x27;</span>]=<span class="number">1</span> </span><br><span class="line"></span><br><span class="line">data.loc[(data[<span class="string">&#x27;OnlineBackup&#x27;</span>]!=<span class="string">&#x27;No&#x27;</span>) | (data[<span class="string">&#x27;DeviceProtection&#x27;</span>]!=<span class="string">&#x27;No&#x27;</span>) | (data[<span class="string">&#x27;TechSupport&#x27;</span>]!=<span class="string">&#x27;No&#x27;</span>),<span class="string">&#x27;NoProt&#x27;</span>]=<span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data[<span class="string">&#x27;TotalServices&#x27;</span>] = (data[[<span class="string">&#x27;PhoneService&#x27;</span>, <span class="string">&#x27;InternetService&#x27;</span>, <span class="string">&#x27;OnlineSecurity&#x27;</span>, <span class="string">&#x27;OnlineBackup&#x27;</span>, <span class="string">&#x27;DeviceProtection&#x27;</span>, <span class="string">&#x27;TechSupport&#x27;</span>, <span class="string">&#x27;StreamingTV&#x27;</span>, <span class="string">&#x27;StreamingMovies&#x27;</span>]]== <span class="string">&#x27;Yes&#x27;</span>).<span class="built_in">sum</span>(axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">&#x27;tenure&#x27;</span>] = pd.cut(data[<span class="string">&#x27;tenure&#x27;</span>], <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-Drop-some-features"><a href="#3-2-Drop-some-features" class="headerlink" title="3.2. Drop some features"></a>3.2. Drop some features</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.columns</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>Index([&#39;customerID&#39;, &#39;gender&#39;, &#39;SeniorCitizen&#39;, &#39;Partner&#39;, &#39;Dependents&#39;,
+       &#39;tenure&#39;, &#39;PhoneService&#39;, &#39;MultipleLines&#39;, &#39;InternetService&#39;,
+       &#39;OnlineSecurity&#39;, &#39;OnlineBackup&#39;, &#39;DeviceProtection&#39;, &#39;TechSupport&#39;,
+       &#39;StreamingTV&#39;, &#39;StreamingMovies&#39;, &#39;Contract&#39;, &#39;PaperlessBilling&#39;,
+       &#39;PaymentMethod&#39;, &#39;MonthlyCharges&#39;, &#39;TotalCharges&#39;, &#39;Churn&#39;, &#39;Engaged&#39;,
+       &#39;YandNotE&#39;, &#39;ElectCheck&#39;, &#39;fiberopt&#39;, &#39;StreamNoInt&#39;, &#39;NoProt&#39;,
+       &#39;TotalServices&#39;],
+      dtype=&#39;object&#39;)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">data = data.drop(columns = [</span><br><span class="line"></span><br><span class="line">                            <span class="string">&#x27;Contract&#x27;</span>,</span><br><span class="line"></span><br><span class="line">                            <span class="string">&#x27;DeviceProtection&#x27;</span>, </span><br><span class="line"></span><br><span class="line">                            <span class="string">&#x27;Partner&#x27;</span></span><br><span class="line"></span><br><span class="line">                           ])</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-3-Features-encoding-and-scaling"><a href="#3-3-Features-encoding-and-scaling" class="headerlink" title="3.3. Features encoding and scaling"></a>3.3. Features encoding and scaling</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#customer id col</span></span><br><span class="line"></span><br><span class="line">Id_col     = [<span class="string">&#x27;customerID&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#Target columns</span></span><br><span class="line"></span><br><span class="line">target_col = [<span class="string">&quot;Churn&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#categorical columns</span></span><br><span class="line"></span><br><span class="line">cat_cols   = data.nunique()[data.nunique() &lt; <span class="number">10</span>].keys().tolist()</span><br><span class="line"></span><br><span class="line">cat_cols   = [x <span class="keyword">for</span> x <span class="keyword">in</span> cat_cols <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> target_col]</span><br><span class="line"></span><br><span class="line"><span class="comment">#numerical columns</span></span><br><span class="line"></span><br><span class="line">num_cols   = [x <span class="keyword">for</span> x <span class="keyword">in</span> data.columns <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> cat_cols + target_col + Id_col]</span><br><span class="line"></span><br><span class="line"><span class="comment">#Binary columns with 2 values</span></span><br><span class="line"></span><br><span class="line">bin_cols   = data.nunique()[data.nunique() == <span class="number">2</span>].keys().tolist()</span><br><span class="line"></span><br><span class="line"><span class="comment">#Columns more than 2 values</span></span><br><span class="line"></span><br><span class="line">multi_cols = [i <span class="keyword">for</span> i <span class="keyword">in</span> cat_cols <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> bin_cols]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Label encoding Binary columns</span></span><br><span class="line"></span><br><span class="line">le = LabelEncoder()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> bin_cols :</span><br><span class="line"></span><br><span class="line">    data[i] = le.fit_transform(data[i])</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="comment">#Duplicating columns for multi value columns</span></span><br><span class="line"></span><br><span class="line">data = pd.get_dummies(data = data,columns = multi_cols )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Scaling Numerical columns</span></span><br><span class="line"></span><br><span class="line">std = StandardScaler()</span><br><span class="line"></span><br><span class="line">scaled = std.fit_transform(data[num_cols])</span><br><span class="line"></span><br><span class="line">scaled = pd.DataFrame(scaled,columns=num_cols)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#dropping original values merging scaled values for numerical columns</span></span><br><span class="line"></span><br><span class="line">df_data_og = data.copy()</span><br><span class="line"></span><br><span class="line">data = data.drop(columns = num_cols,axis = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">data = data.merge(scaled,left_index=<span class="literal">True</span>,right_index=<span class="literal">True</span>,how = <span class="string">&quot;left&quot;</span>)</span><br><span class="line"></span><br><span class="line">data = data.drop([<span class="string">&#x27;customerID&#x27;</span>],axis = <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-Correlation-Heatmap"><a href="#3-4-Correlation-Heatmap" class="headerlink" title="3.4. Correlation Heatmap"></a>3.4. Correlation Heatmap</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">correlation_plot</span>(<span class="params">data</span>):</span></span><br><span class="line"></span><br><span class="line">    data = data.corr()</span><br><span class="line"></span><br><span class="line">    fig, ax = plt.subplots(figsize=(<span class="number">15</span>, <span class="number">10</span>))</span><br><span class="line"></span><br><span class="line">    ax = sns.heatmap(data, annot=<span class="literal">False</span>, cmap = <span class="string">&#x27;viridis&#x27;</span>, linewidths = <span class="number">.1</span>, linecolor = <span class="string">&#x27;grey&#x27;</span>, fmt=<span class="string">&quot;.2f&quot;</span>)</span><br><span class="line"></span><br><span class="line">    ax.invert_yaxis()</span><br><span class="line"></span><br><span class="line">    ax.set_title(<span class="string">&quot;Correlation&quot;</span>)</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">correlation_plot(data)</span><br></pre></td></tr></table></figure>
+
+
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9VaQ"><img src="https://z3.ax1x.com/2021/08/20/fL9VaQ.png" alt="fL9VaQ.png"></a></p>
+<h2 id="3-5-Remove-collinear-features"><a href="#3-5-Remove-collinear-features" class="headerlink" title="3.5. Remove collinear features"></a>3.5. Remove collinear features</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 相关特征进行删除的阈值</span></span><br><span class="line"></span><br><span class="line">threshold = <span class="number">0.9</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对相关性矩阵取绝对值</span></span><br><span class="line"></span><br><span class="line">corr_matrix = data.corr().<span class="built_in">abs</span>()</span><br><span class="line"></span><br><span class="line">display(corr_matrix.head().append(corr_matrix.tail()))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取相关性矩阵上三角 np.triu 此处方法先将数据全部置1然后取上三角，此时下三角全为0，将0-1转换为bool值，以选取True所在单元格的数据</span></span><br><span class="line"></span><br><span class="line">upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=<span class="number">1</span>).astype(np.<span class="built_in">bool</span>))</span><br><span class="line"></span><br><span class="line">display(upper.head().append(upper.tail()))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取阈值之上的特征并删除</span></span><br><span class="line"></span><br><span class="line">to_drop = [column <span class="keyword">for</span> column <span class="keyword">in</span> upper.columns <span class="keyword">if</span> <span class="built_in">any</span>(upper[column] &gt; threshold)]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;There are %d columns to remove :&#x27;</span> % (<span class="built_in">len</span>(to_drop)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data = data.drop(columns = to_drop)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">to_drop</span><br></pre></td></tr></table></figure>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>gender</th>
+      <th>SeniorCitizen</th>
+      <th>Dependents</th>
+      <th>PhoneService</th>
+      <th>PaperlessBilling</th>
+      <th>Churn</th>
+      <th>Engaged</th>
+      <th>YandNotE</th>
+      <th>ElectCheck</th>
+      <th>fiberopt</th>
+      <th>...</th>
+      <th>TotalServices_0</th>
+      <th>TotalServices_1</th>
+      <th>TotalServices_2</th>
+      <th>TotalServices_3</th>
+      <th>TotalServices_4</th>
+      <th>TotalServices_5</th>
+      <th>TotalServices_6</th>
+      <th>TotalServices_7</th>
+      <th>MonthlyCharges</th>
+      <th>TotalCharges</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>gender</th>
+      <td>1.000000</td>
+      <td>0.001874</td>
+      <td>0.010517</td>
+      <td>0.006488</td>
+      <td>0.011754</td>
+      <td>0.008612</td>
+      <td>0.003386</td>
+      <td>0.003776</td>
+      <td>0.006969</td>
+      <td>0.011286</td>
+      <td>...</td>
+      <td>0.012379</td>
+      <td>0.006565</td>
+      <td>0.001029</td>
+      <td>0.001161</td>
+      <td>0.005514</td>
+      <td>0.002264</td>
+      <td>0.017296</td>
+      <td>0.013176</td>
+      <td>0.014569</td>
+      <td>0.000080</td>
+    </tr>
+    <tr>
+      <th>SeniorCitizen</th>
+      <td>0.001874</td>
+      <td>1.000000</td>
+      <td>0.211185</td>
+      <td>0.008576</td>
+      <td>0.156530</td>
+      <td>0.150889</td>
+      <td>0.138360</td>
+      <td>0.386482</td>
+      <td>0.186468</td>
+      <td>0.255338</td>
+      <td>...</td>
+      <td>0.003738</td>
+      <td>0.122491</td>
+      <td>0.041459</td>
+      <td>0.046895</td>
+      <td>0.050380</td>
+      <td>0.029801</td>
+      <td>0.002747</td>
+      <td>0.014319</td>
+      <td>0.220173</td>
+      <td>0.103006</td>
+    </tr>
+    <tr>
+      <th>Dependents</th>
+      <td>0.010517</td>
+      <td>0.211185</td>
+      <td>1.000000</td>
+      <td>0.001762</td>
+      <td>0.111377</td>
+      <td>0.164221</td>
+      <td>0.231720</td>
+      <td>0.111982</td>
+      <td>0.169907</td>
+      <td>0.165818</td>
+      <td>...</td>
+      <td>0.023303</td>
+      <td>0.059161</td>
+      <td>0.084852</td>
+      <td>0.047922</td>
+      <td>0.013134</td>
+      <td>0.029117</td>
+      <td>0.029168</td>
+      <td>0.048430</td>
+      <td>0.113890</td>
+      <td>0.062078</td>
+    </tr>
+    <tr>
+      <th>PhoneService</th>
+      <td>0.006488</td>
+      <td>0.008576</td>
+      <td>0.001762</td>
+      <td>1.000000</td>
+      <td>0.016505</td>
+      <td>0.011942</td>
+      <td>0.000742</td>
+      <td>0.000083</td>
+      <td>0.004519</td>
+      <td>0.289999</td>
+      <td>...</td>
+      <td>0.327354</td>
+      <td>0.107222</td>
+      <td>0.065522</td>
+      <td>0.069257</td>
+      <td>0.009174</td>
+      <td>0.013544</td>
+      <td>0.047230</td>
+      <td>0.063979</td>
+      <td>0.247398</td>
+      <td>0.113214</td>
+    </tr>
+    <tr>
+      <th>PaperlessBilling</th>
+      <td>0.011754</td>
+      <td>0.156530</td>
+      <td>0.111377</td>
+      <td>0.016505</td>
+      <td>1.000000</td>
+      <td>0.191825</td>
+      <td>0.169096</td>
+      <td>0.070549</td>
+      <td>0.197873</td>
+      <td>0.326853</td>
+      <td>...</td>
+      <td>0.006482</td>
+      <td>0.251039</td>
+      <td>0.068116</td>
+      <td>0.068790</td>
+      <td>0.082407</td>
+      <td>0.070216</td>
+      <td>0.058396</td>
+      <td>0.011691</td>
+      <td>0.352150</td>
+      <td>0.158574</td>
+    </tr>
+    <tr>
+      <th>TotalServices_5</th>
+      <td>0.002264</td>
+      <td>0.029801</td>
+      <td>0.029117</td>
+      <td>0.013544</td>
+      <td>0.070216</td>
+      <td>0.037420</td>
+      <td>0.164026</td>
+      <td>0.141655</td>
+      <td>0.075395</td>
+      <td>0.115043</td>
+      <td>...</td>
+      <td>0.039097</td>
+      <td>0.250156</td>
+      <td>0.148032</td>
+      <td>0.151906</td>
+      <td>0.153700</td>
+      <td>1.000000</td>
+      <td>0.103519</td>
+      <td>0.071270</td>
+      <td>0.299248</td>
+      <td>0.315356</td>
+    </tr>
+    <tr>
+      <th>TotalServices_6</th>
+      <td>0.017296</td>
+      <td>0.002747</td>
+      <td>0.029168</td>
+      <td>0.047230</td>
+      <td>0.058396</td>
+      <td>0.089768</td>
+      <td>0.217169</td>
+      <td>0.176288</td>
+      <td>0.116575</td>
+      <td>0.064497</td>
+      <td>...</td>
+      <td>0.030421</td>
+      <td>0.194641</td>
+      <td>0.115181</td>
+      <td>0.118195</td>
+      <td>0.119591</td>
+      <td>0.103519</td>
+      <td>1.000000</td>
+      <td>0.055454</td>
+      <td>0.289082</td>
+      <td>0.391785</td>
+    </tr>
+    <tr>
+      <th>TotalServices_7</th>
+      <td>0.013176</td>
+      <td>0.014319</td>
+      <td>0.048430</td>
+      <td>0.063979</td>
+      <td>0.011691</td>
+      <td>0.091806</td>
+      <td>0.202449</td>
+      <td>0.162530</td>
+      <td>0.109766</td>
+      <td>0.041263</td>
+      <td>...</td>
+      <td>0.020944</td>
+      <td>0.134005</td>
+      <td>0.079299</td>
+      <td>0.081374</td>
+      <td>0.082335</td>
+      <td>0.071270</td>
+      <td>0.055454</td>
+      <td>1.000000</td>
+      <td>0.246353</td>
+      <td>0.378530</td>
+    </tr>
+    <tr>
+      <th>MonthlyCharges</th>
+      <td>0.014569</td>
+      <td>0.220173</td>
+      <td>0.113890</td>
+      <td>0.247398</td>
+      <td>0.352150</td>
+      <td>0.193356</td>
+      <td>0.060165</td>
+      <td>0.048075</td>
+      <td>0.202893</td>
+      <td>0.787066</td>
+      <td>...</td>
+      <td>0.141994</td>
+      <td>0.724004</td>
+      <td>0.010335</td>
+      <td>0.116311</td>
+      <td>0.249383</td>
+      <td>0.299248</td>
+      <td>0.289082</td>
+      <td>0.246353</td>
+      <td>1.000000</td>
+      <td>0.651174</td>
+    </tr>
+    <tr>
+      <th>TotalCharges</th>
+      <td>0.000080</td>
+      <td>0.103006</td>
+      <td>0.062078</td>
+      <td>0.113214</td>
+      <td>0.158574</td>
+      <td>0.198324</td>
+      <td>0.444255</td>
+      <td>0.413707</td>
+      <td>0.212875</td>
+      <td>0.361655</td>
+      <td>...</td>
+      <td>0.097310</td>
+      <td>0.492495</td>
+      <td>0.196423</td>
+      <td>0.059875</td>
+      <td>0.151065</td>
+      <td>0.315356</td>
+      <td>0.391785</td>
+      <td>0.378530</td>
+      <td>0.651174</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+<p>10 rows × 50 columns</p>
+</div>
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>gender</th>
+      <th>SeniorCitizen</th>
+      <th>Dependents</th>
+      <th>PhoneService</th>
+      <th>PaperlessBilling</th>
+      <th>Churn</th>
+      <th>Engaged</th>
+      <th>YandNotE</th>
+      <th>ElectCheck</th>
+      <th>fiberopt</th>
+      <th>...</th>
+      <th>TotalServices_0</th>
+      <th>TotalServices_1</th>
+      <th>TotalServices_2</th>
+      <th>TotalServices_3</th>
+      <th>TotalServices_4</th>
+      <th>TotalServices_5</th>
+      <th>TotalServices_6</th>
+      <th>TotalServices_7</th>
+      <th>MonthlyCharges</th>
+      <th>TotalCharges</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>gender</th>
+      <td>NaN</td>
+      <td>0.001874</td>
+      <td>0.010517</td>
+      <td>0.006488</td>
+      <td>0.011754</td>
+      <td>0.008612</td>
+      <td>0.003386</td>
+      <td>0.003776</td>
+      <td>0.006969</td>
+      <td>0.011286</td>
+      <td>...</td>
+      <td>0.012379</td>
+      <td>0.006565</td>
+      <td>0.001029</td>
+      <td>0.001161</td>
+      <td>0.005514</td>
+      <td>0.002264</td>
+      <td>0.017296</td>
+      <td>0.013176</td>
+      <td>0.014569</td>
+      <td>0.000080</td>
+    </tr>
+    <tr>
+      <th>SeniorCitizen</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.211185</td>
+      <td>0.008576</td>
+      <td>0.156530</td>
+      <td>0.150889</td>
+      <td>0.138360</td>
+      <td>0.386482</td>
+      <td>0.186468</td>
+      <td>0.255338</td>
+      <td>...</td>
+      <td>0.003738</td>
+      <td>0.122491</td>
+      <td>0.041459</td>
+      <td>0.046895</td>
+      <td>0.050380</td>
+      <td>0.029801</td>
+      <td>0.002747</td>
+      <td>0.014319</td>
+      <td>0.220173</td>
+      <td>0.103006</td>
+    </tr>
+    <tr>
+      <th>Dependents</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.001762</td>
+      <td>0.111377</td>
+      <td>0.164221</td>
+      <td>0.231720</td>
+      <td>0.111982</td>
+      <td>0.169907</td>
+      <td>0.165818</td>
+      <td>...</td>
+      <td>0.023303</td>
+      <td>0.059161</td>
+      <td>0.084852</td>
+      <td>0.047922</td>
+      <td>0.013134</td>
+      <td>0.029117</td>
+      <td>0.029168</td>
+      <td>0.048430</td>
+      <td>0.113890</td>
+      <td>0.062078</td>
+    </tr>
+    <tr>
+      <th>PhoneService</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.016505</td>
+      <td>0.011942</td>
+      <td>0.000742</td>
+      <td>0.000083</td>
+      <td>0.004519</td>
+      <td>0.289999</td>
+      <td>...</td>
+      <td>0.327354</td>
+      <td>0.107222</td>
+      <td>0.065522</td>
+      <td>0.069257</td>
+      <td>0.009174</td>
+      <td>0.013544</td>
+      <td>0.047230</td>
+      <td>0.063979</td>
+      <td>0.247398</td>
+      <td>0.113214</td>
+    </tr>
+    <tr>
+      <th>PaperlessBilling</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.191825</td>
+      <td>0.169096</td>
+      <td>0.070549</td>
+      <td>0.197873</td>
+      <td>0.326853</td>
+      <td>...</td>
+      <td>0.006482</td>
+      <td>0.251039</td>
+      <td>0.068116</td>
+      <td>0.068790</td>
+      <td>0.082407</td>
+      <td>0.070216</td>
+      <td>0.058396</td>
+      <td>0.011691</td>
+      <td>0.352150</td>
+      <td>0.158574</td>
+    </tr>
+    <tr>
+      <th>TotalServices_5</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.103519</td>
+      <td>0.071270</td>
+      <td>0.299248</td>
+      <td>0.315356</td>
+    </tr>
+    <tr>
+      <th>TotalServices_6</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.055454</td>
+      <td>0.289082</td>
+      <td>0.391785</td>
+    </tr>
+    <tr>
+      <th>TotalServices_7</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.246353</td>
+      <td>0.378530</td>
+    </tr>
+    <tr>
+      <th>MonthlyCharges</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.651174</td>
+    </tr>
+    <tr>
+      <th>TotalCharges</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>10 rows × 50 columns</p>
+</div>
+
+
+<pre><code>There are 8 columns to remove :
+
+
+[&#39;MultipleLines_No phone service&#39;,
+ &#39;InternetService_Fiber optic&#39;,
+ &#39;InternetService_No&#39;,
+ &#39;OnlineSecurity_No internet service&#39;,
+ &#39;OnlineBackup_No internet service&#39;,
+ &#39;TechSupport_No internet service&#39;,
+ &#39;StreamingTV_No internet service&#39;,
+ &#39;StreamingMovies_No internet service&#39;]
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">correlation_plot(data)</span><br></pre></td></tr></table></figure>
+
+
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9mPs"><img src="https://z3.ax1x.com/2021/08/20/fL9mPs.png" alt="fL9mPs.png"></a></p>
+<h1 id="4-Prepare-dataset-and-stylized-report"><a href="#4-Prepare-dataset-and-stylized-report" class="headerlink" title="4. Prepare dataset and stylized report"></a>4. Prepare dataset and stylized report</h1><h2 id="4-1-Define-X-y"><a href="#4-1-Define-X-y" class="headerlink" title="4.1. Define (X,  y)"></a>4.1. Define (X,  y)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">y = np.array(data.Churn.tolist())</span><br><span class="line"></span><br><span class="line">data = data.drop(<span class="string">&#x27;Churn&#x27;</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">features = data.columns</span><br><span class="line"></span><br><span class="line">X = np.array(data.values)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-2-Train-test-split"><a href="#4-2-Train-test-split" class="headerlink" title="4.2. Train_test_split"></a>4.2. Train_test_split</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 训练数据分割训练集测试集</span></span><br><span class="line"></span><br><span class="line">random_state = <span class="number">51</span></span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = <span class="number">0.2</span>, random_state = random_state)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-3-Stylized-report-with-sns-confusion-matrix-roc-precision-recall-etc…"><a href="#4-3-Stylized-report-with-sns-confusion-matrix-roc-precision-recall-etc…" class="headerlink" title="4.3. Stylized report with sns (confusion matrix, roc, precision-recall, etc…)"></a>4.3. Stylized report with sns (confusion matrix, roc, precision-recall, etc…)</h2><p>为了衡量模型的性能，我们需要几个元素：</p>
+<p>这部分必不可少</p>
+<ul>
+<li><strong>Confusion matrix</strong> : 也称为误差矩阵，使算法的性能可视化：</li>
+</ul>
+<pre><code>* true positive (TP) : 识别正确，识别样本为正例，实际为正例
+
+* true negative (TN) : 识别正确，识别样本为反例，实际为反例
+
+* false positive (FP) : 识别错误，识别样本为正例，实际为反例
+
+* false negative (FN) : 识别错误，识别样本为反例，实际为正例
+</code></pre>
+<ul>
+<li><strong>Metrics</strong> :</li>
+</ul>
+<pre><code>* Accuracy : (TP +TN) / (TP + TN + FP +FN)
+
+* Precision : TP / (TP + FP)
+
+* Recall : TP / (TP + FN)
+
+* F1 score : 2 x ((Precision x Recall) / (Precision + Recall))
+</code></pre>
+<ul>
+<li><strong>Roc Curve</strong> : ROC 曲线是通过在各种阈值设置下绘制真阳性率 (TPR) 与假阳性率 (FPR) 来创建的。</li>
+</ul>
+<ul>
+<li><strong>Precision Recall Curve</strong> :  显示了不同阈值下精确率和召回率之间的权衡</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">model_performance</span>(<span class="params">model</span>):</span>    </span><br><span class="line"></span><br><span class="line">    <span class="comment"># 混淆矩阵</span></span><br><span class="line"></span><br><span class="line">    sns.<span class="built_in">set</span>()</span><br><span class="line"></span><br><span class="line">    C2= confusion_matrix(y_test, y_pred, labels=[<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    sns.heatmap(C2,annot=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ROC曲线</span></span><br><span class="line"></span><br><span class="line">    fpr, tpr, threshold = roc_curve(y_test, y_score)</span><br><span class="line"></span><br><span class="line">    roc_auc = auc(fpr, tpr)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    plt.title(<span class="string">&#x27;Receiver Operating Characteristic:&#x27;</span>+ <span class="built_in">str</span>(<span class="built_in">round</span>(roc_auc_score(y_test, y_score), <span class="number">3</span>)))  </span><br><span class="line"></span><br><span class="line">    plt.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], color=<span class="string">&#x27;navy&#x27;</span>, lw=<span class="number">2</span>, linestyle=<span class="string">&#x27;--&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    plt.plot(fpr, tpr, <span class="string">&#x27;b&#x27;</span>, label=<span class="string">&#x27;AUC = %0.2f&#x27;</span> % roc_auc)</span><br><span class="line"></span><br><span class="line">    plt.legend(loc=<span class="string">&#x27;lower right&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    plt.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], <span class="string">&#x27;r &#x27;</span>)</span><br><span class="line"></span><br><span class="line">    plt.xlim([<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    plt.ylim([<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    plt.ylabel(<span class="string">&#x27;True Positive Rate&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    plt.xlabel(<span class="string">&#x27;False Positive Rate&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Recall曲线</span></span><br><span class="line"></span><br><span class="line">    precision, recall, thresholds = precision_recall_curve(y_test, y_score)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    plt.plot(precision, recall)</span><br><span class="line"></span><br><span class="line">    plt.title(<span class="string">&#x27;Precision-Recall curve&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    plt.ylabel(<span class="string">&#x27;precision&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    plt.xlabel(<span class="string">&#x27;recall&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 特征重要性</span></span><br><span class="line"></span><br><span class="line">    importances = <span class="built_in">eval</span>(model).feature_importances_</span><br><span class="line"></span><br><span class="line">    weights = pd.Series(importances, index=features)</span><br><span class="line"></span><br><span class="line">    weights.sort_values()[-<span class="number">10</span>:].plot(kind = <span class="string">&#x27;barh&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-4-Define-cross-validation-metrics"><a href="#4-4-Define-cross-validation-metrics" class="headerlink" title="4.4. Define cross validation metrics"></a>4.4. Define cross validation metrics</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 交叉验证指标</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cross_val_metrics</span>(<span class="params">model</span>) :</span></span><br><span class="line"></span><br><span class="line">    scores = [<span class="string">&#x27;accuracy&#x27;</span>, <span class="string">&#x27;precision&#x27;</span>, <span class="string">&#x27;recall&#x27;</span>, <span class="string">&#x27;f1&#x27;</span>, <span class="string">&#x27;roc_auc&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> sc <span class="keyword">in</span> scores:</span><br><span class="line"></span><br><span class="line">        scores = cross_val_score(model, X, y, cv = <span class="number">5</span>, scoring = sc)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;[%s] : %0.5f (+/- %0.5f)&#x27;</span>%(sc, scores.mean(), scores.std()))</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-Light-GBM-Model"><a href="#5-Light-GBM-Model" class="headerlink" title="5. Light GBM Model"></a>5. Light GBM Model</h1><h2 id="5-1-LightGBM-Before-RandomizedSearchCV"><a href="#5-1-LightGBM-Before-RandomizedSearchCV" class="headerlink" title="5.1. LightGBM - Before RandomizedSearchCV"></a>5.1. LightGBM - Before RandomizedSearchCV</h2><p><strong>LightGBM</strong> 是一个梯度提升框架，它使用基于树的学习算法。 它旨在分布式和高效，具有以下优点：</p>
+<ul>
+<li><p>训练速度更快，效率更高。</p>
+</li>
+<li><p>较低的内存使用率。</p>
+</li>
+<li><p>更好的准确性。</p>
+</li>
+<li><p>支持并行和 GPU 学习。</p>
+</li>
+<li><p>能够处理大规模数据。</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">%%time</span><br><span class="line"></span><br><span class="line">lgbm_clf = lgbm.LGBMClassifier(n_estimators=<span class="number">1500</span>, random_state = <span class="number">51</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">lgbm_clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">y_pred = lgbm_clf.predict(X_test)</span><br><span class="line"></span><br><span class="line">y_score = lgbm_clf.predict_proba(X_test)[:,<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model_performance(<span class="string">&#x27;lgbm_clf&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9Z5j"><img src="https://z3.ax1x.com/2021/08/20/fL9Z5j.png" alt="fL9Z5j.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9nGn"><img src="https://z3.ax1x.com/2021/08/20/fL9nGn.png" alt="fL9nGn.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fL9u2q"><img src="https://z3.ax1x.com/2021/08/20/fL9u2q.png" alt="fL9u2q.png"></a></p>
+<pre><code>Wall time: 2.72 s
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLivOP"><img src="https://z3.ax1x.com/2021/08/20/fLivOP.png" alt="fLivOP.png"></a></p>
+<h2 id="5-2-LightGBM-RandomizedSearchCV-to-optimise-hyperparameters-1000-fits"><a href="#5-2-LightGBM-RandomizedSearchCV-to-optimise-hyperparameters-1000-fits" class="headerlink" title="5.2. LightGBM - RandomizedSearchCV to optimise hyperparameters  (1000 fits)"></a>5.2. LightGBM - RandomizedSearchCV to optimise hyperparameters  (1000 fits)</h2><p>为了找到最佳超参数，我们将使用随机搜索 CV。<br>随机搜索是一种使用超参数的随机组合来为构建的模型寻找最佳解决方案的技术。<br>通常，RandomizedSearchCV 比计算所有可能组合的 GridSearchCV 更快、更准确。 使用随机网格，指定我们想要的组合数量。</p>
+<ul>
+<li><strong>LightGBM : Hyperparameters</strong> :</li>
+</ul>
+<pre><code>* learning_rate : 学习率
+
+* n_estimators : 树的数量
+
+* num_leaves : 整棵树的叶子数，默认值为31
+
+* min_child_samples : 一片叶子中数据的最少数量。 可以用来处理过拟合
+
+* min_child_weight : 一片叶子中的最小Hessian和
+
+* subsample : 随机选择部分数据而不重新采样
+
+* max_depth : 它描述了树的最大深度。 该参数用于处理模型过拟合。
+
+* colsample_bytree : 如果该值小于1.0，LightGBM 将在每次迭代中随机选择部分特征。 例如，如果将其设置为 0.8，LightGBM 将在训练每棵树之前选择 80% 的特征
+
+* reg_alpha : 正则化
+
+* reg_lambda : 正则化
+
+* early_stopping_rounds : 早停机制，此参数可以加快分析速度。 如果一个验证数据的一个指标在上个 early_stopping_round 轮次中没有改进，模型将停止训练。 这将减少过多的迭代次数。
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">fit_params = &#123;<span class="string">&quot;early_stopping_rounds&quot;</span> : <span class="number">50</span>, </span><br><span class="line"></span><br><span class="line">             <span class="string">&quot;eval_metric&quot;</span> : <span class="string">&#x27;binary&#x27;</span>, </span><br><span class="line"></span><br><span class="line">             <span class="string">&quot;eval_set&quot;</span> : [(X_test,y_test)],</span><br><span class="line"></span><br><span class="line">             <span class="string">&#x27;eval_names&#x27;</span>: [<span class="string">&#x27;valid&#x27;</span>],</span><br><span class="line"></span><br><span class="line">             <span class="string">&#x27;verbose&#x27;</span>: <span class="number">0</span>,</span><br><span class="line"></span><br><span class="line">             <span class="string">&#x27;categorical_feature&#x27;</span>: <span class="string">&#x27;auto&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">param_test = &#123;<span class="string">&#x27;learning_rate&#x27;</span> : [<span class="number">0.01</span>, <span class="number">0.02</span>, <span class="number">0.03</span>, <span class="number">0.04</span>, <span class="number">0.05</span>, <span class="number">0.08</span>, <span class="number">0.1</span>, <span class="number">0.2</span>, <span class="number">0.3</span>, <span class="number">0.4</span>],</span><br><span class="line"></span><br><span class="line">              <span class="string">&#x27;n_estimators&#x27;</span> : [<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>, <span class="number">600</span>, <span class="number">800</span>, <span class="number">1000</span>, <span class="number">1500</span>, <span class="number">2000</span>, <span class="number">3000</span>, <span class="number">5000</span>],</span><br><span class="line"></span><br><span class="line">              <span class="string">&#x27;num_leaves&#x27;</span>: sp_randint(<span class="number">6</span>, <span class="number">50</span>), </span><br><span class="line"></span><br><span class="line">              <span class="string">&#x27;min_child_samples&#x27;</span>: sp_randint(<span class="number">100</span>, <span class="number">500</span>), </span><br><span class="line"></span><br><span class="line">              <span class="string">&#x27;min_child_weight&#x27;</span>: [<span class="number">1e-5</span>, <span class="number">1e-3</span>, <span class="number">1e-2</span>, <span class="number">1e-1</span>, <span class="number">1</span>, <span class="number">1e1</span>, <span class="number">1e2</span>, <span class="number">1e3</span>, <span class="number">1e4</span>],</span><br><span class="line"></span><br><span class="line">              <span class="string">&#x27;subsample&#x27;</span>: sp_uniform(loc=<span class="number">0.2</span>, scale=<span class="number">0.8</span>), </span><br><span class="line"></span><br><span class="line">              <span class="string">&#x27;max_depth&#x27;</span>: [-<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>],</span><br><span class="line"></span><br><span class="line">              <span class="string">&#x27;colsample_bytree&#x27;</span>: sp_uniform(loc=<span class="number">0.4</span>, scale=<span class="number">0.6</span>),</span><br><span class="line"></span><br><span class="line">              <span class="string">&#x27;reg_alpha&#x27;</span>: [<span class="number">0</span>, <span class="number">1e-1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">50</span>, <span class="number">100</span>],</span><br><span class="line"></span><br><span class="line">              <span class="string">&#x27;reg_lambda&#x27;</span>: [<span class="number">0</span>, <span class="number">1e-1</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">50</span>, <span class="number">100</span>]&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#number of combinations</span></span><br><span class="line"></span><br><span class="line">n_iter = <span class="number">200</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#intialize lgbm and lunch the search</span></span><br><span class="line"></span><br><span class="line">lgbm_clf = lgbm.LGBMClassifier(random_state=random_state, silent=<span class="literal">True</span>, metric=<span class="string">&#x27;None&#x27;</span>, n_jobs=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">grid_search = RandomizedSearchCV(</span><br><span class="line"></span><br><span class="line">    estimator=lgbm_clf, param_distributions=param_test, </span><br><span class="line"></span><br><span class="line">    n_iter=n_iter,</span><br><span class="line"></span><br><span class="line">    scoring=<span class="string">&#x27;accuracy&#x27;</span>,</span><br><span class="line"></span><br><span class="line">    cv=<span class="number">5</span>,</span><br><span class="line"></span><br><span class="line">    refit=<span class="literal">True</span>,</span><br><span class="line"></span><br><span class="line">    random_state=random_state,</span><br><span class="line"></span><br><span class="line">    verbose=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">grid_search.fit(X_train, y_train, **fit_params)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Best params: &#123;&#125; &#x27;</span>.<span class="built_in">format</span>(grid_search.best_params_))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">opt_parameters =  grid_search.best_params_</span><br></pre></td></tr></table></figure>
+
+<pre><code>Fitting 5 folds for each of 200 candidates, totalling 1000 fits
+Best params: &#123;&#39;colsample_bytree&#39;: 0.9970322000118677, &#39;learning_rate&#39;: 0.08, &#39;max_depth&#39;: 3, &#39;min_child_samples&#39;: 476, &#39;min_child_weight&#39;: 100.0, &#39;n_estimators&#39;: 500, &#39;num_leaves&#39;: 35, &#39;reg_alpha&#39;: 7, &#39;reg_lambda&#39;: 1, &#39;subsample&#39;: 0.6034489935154275&#125; 
+</code></pre>
+<h2 id="5-3-LightGBM-After-RandomizedSearchCV"><a href="#5-3-LightGBM-After-RandomizedSearchCV" class="headerlink" title="5.3. LightGBM - After RandomizedSearchCV"></a>5.3. LightGBM - After RandomizedSearchCV</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">%%time</span><br><span class="line"></span><br><span class="line">lgbm_clf = lgbm.LGBMClassifier(**opt_parameters)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">lgbm_clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">y_pred = lgbm_clf.predict(X_test)</span><br><span class="line"></span><br><span class="line">y_score = lgbm_clf.predict_proba(X_test)[:,<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model_performance(<span class="string">&#x27;lgbm_clf&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLiqWd"><img src="https://z3.ax1x.com/2021/08/20/fLiqWd.png" alt="fLiqWd.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLijyt"><img src="https://z3.ax1x.com/2021/08/20/fLijyt.png" alt="fLijyt.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLiOSA"><img src="https://z3.ax1x.com/2021/08/20/fLiOSA.png" alt="fLiOSA.png"></a></p>
+<pre><code>Wall time: 1.41 s
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/fLiXQI"><img src="https://z3.ax1x.com/2021/08/20/fLiXQI.png" alt="fLiXQI.png"></a></p>
+<h2 id="5-4-LightGBM-–-Cross-validation-5-folds"><a href="#5-4-LightGBM-–-Cross-validation-5-folds" class="headerlink" title="5.4. LightGBM – Cross validation (5 folds)"></a>5.4. LightGBM – Cross validation (5 folds)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cross_val_metrics(lgbm_clf)</span><br></pre></td></tr></table></figure>
+
+<pre><code>[accuracy] : 0.80591 (+/- 0.00951)
+[precision] : 0.66978 (+/- 0.02319)
+[recall] : 0.53023 (+/- 0.01859)
+[f1] : 0.59181 (+/- 0.01951)
+[roc_auc] : 0.84634 (+/- 0.00961)
+</code></pre>
+<hr>
+<p>本文提及的数据集下载地址：<br>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1ZVlY4KeAy6cvu8Aotb3CpQ">https://pan.baidu.com/s/1ZVlY4KeAy6cvu8Aotb3CpQ</a><br>提取码：1111</p>
+<hr>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://woody0819.github.io/2021/08/20/Telco%20Customer%20Churn/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kaggle/" rel="tag">Kaggle</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2021/08/20/Home%20Credit%20Default%20Risk/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Home Credit Default Risk</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "Q0bUd4kz7kv9o8cLXDqyYijd-gzGzoHsz",
+    app_key: "3xet4X44IIsU9kGHHuQiOa4B",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+    enableQQ: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Woody
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="Woody"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://woody0819.lofter.com/">旅途</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/guestbook">留言</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+  </div>
+</body>
+
+</html>
