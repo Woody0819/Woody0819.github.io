@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">4.4k</span>
+            <span class="post-count">4.3k</span>
         </span>
     </span>
 
@@ -148,80 +148,7 @@
 </ul>
 <span id="more"></span>
 
-<ul>
-<li><ol>
-<li>Load libraries and read the data</li>
-</ol>
-<ul>
-<li><p>1.1. Load libraries</p>
-</li>
-<li><p>1.2. Read the data</p>
-</li>
-<li><p>1.3. Head, describe, shape and info</p>
-</li>
-<li><p>1.4. Reassign target, encode variables and replace missing values</p>
-</li>
-</ul>
-</li>
-<li><ol start="2">
-<li>Exploratory Data Analysis (EDA)</li>
-</ol>
-<ul>
-<li><p>2.1. Target distribution (number and %)</p>
-</li>
-<li><p>2.2. Numeric features : Seaborn</p>
-</li>
-<li><p>2.3. Numeric features : Correlation</p>
-</li>
-<li><p>2.4. Object features : Seaborn </p>
-</li>
-</ul>
-</li>
-<li><ol start="3">
-<li>Feature engineering and selection</li>
-</ol>
-<ul>
-<li><p>3.1. New features</p>
-</li>
-<li><p>3.2. Drop some features</p>
-</li>
-<li><p>3.3. Features encoding and scaling</p>
-</li>
-<li><p>3.4. Correlation Matrix</p>
-</li>
-<li><p>3.5. Remove collinear features</p>
-</li>
-</ul>
-</li>
-<li><ol start="4">
-<li>Prepare dataset and stylized report</li>
-</ol>
-<ul>
-<li><p>4.1. Define (X,  y)</p>
-</li>
-<li><p>4.2. Train test split</p>
-</li>
-<li><p>4.3. Stylized report with sns (confusion matrix, roc, precision-recall, etc…)</p>
-</li>
-<li><p>4.4. Define cross validation metrics</p>
-</li>
-</ul>
-</li>
-<li><ol start="5">
-<li>Light GBM Model</li>
-</ol>
-<ul>
-<li><p>5.1. LightGBM - Before RandomizedSearchCV</p>
-</li>
-<li><p>5.2. LightGBM - RandomizedSearchCV to optimise hyperparameters  (1000 fits)</p>
-</li>
-<li><p>5.3. LightGBM - After RandomizedSearchCV</p>
-</li>
-<li><p>5.4. LightGBM – Cross validation (5 folds)</p>
-</li>
-</ul>
-</li>
-</ul>
+
 <h1 id="1-Load-libraries-and-read-the-data"><a href="#1-Load-libraries-and-read-the-data" class="headerlink" title="1. Load libraries and read the data"></a>1. Load libraries and read the data</h1><h2 id="1-1-Load-libraries"><a href="#1-1-Load-libraries" class="headerlink" title="1.1. Load libraries"></a>1.1. Load libraries</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.ticker <span class="keyword">as</span> mtick</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scipy.stats <span class="keyword">as</span> ss</span><br><span class="line"></span><br><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler, LabelEncoder</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV, cross_val_score, train_test_split, GridSearchCV, RandomizedSearchCV</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> auc, precision_score, recall_score, confusion_matrix, roc_curve, precision_recall_curve, accuracy_score, roc_auc_score, classification_report</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lightgbm <span class="keyword">as</span> lgbm</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> randint <span class="keyword">as</span> sp_randint</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> uniform <span class="keyword">as</span> sp_uniform</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line">warnings.filterwarnings(<span class="string">&#x27;ignore&#x27;</span>) <span class="comment">#ignore warning messages </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@contextmanager</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timer</span>(<span class="params">title</span>):</span></span><br><span class="line"></span><br><span class="line">    t0 = time.time()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">yield</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&#123;&#125; - done in &#123;:.0f&#125;s&quot;</span>.<span class="built_in">format</span>(title, time.time() - t0))</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-2-Read-the-data"><a href="#1-2-Read-the-data" class="headerlink" title="1.2. Read the data"></a>1.2. Read the data</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = pd.read_csv(<span class="string">r&quot;./dataset/WA_Fn-UseC_-Telco-Customer-Churn.csv&quot;</span>)</span><br></pre></td></tr></table></figure>
